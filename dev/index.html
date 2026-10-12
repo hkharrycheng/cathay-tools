@@ -385,13 +385,15 @@ body {
 <!-- ===== Token 設定 Modal ===== -->
 <div class="modal-overlay" id="tokenModal" onclick="if(event.target===this)closeTokenModal()">
   <div class="modal-box">
-    <h3>🔑 設定飛書 Access Token</h3>
-    <p>Token 會 XOR+Base64 加密後儲存喺瀏覽器 localStorage（無有效期）。用嚟將實付價錢直接更新到飛書多維表格。</p>
-    <input type="password" id="larkTokenInput" placeholder="輸入飛書 user_access_token" autocomplete="off">
+    <h3>🔑 設定飛書應用憑證</h3>
+    <p>輸入飛書開放平台應用嘅 <b>App ID</b> 同 <b>App Secret</b>（XOR+Base64 加密儲存喺 localStorage）。推送時會自動換取 tenant_access_token，過期都會自動重新換，唔使自己理。</p>
+    <input type="text" id="larkAppIdInput" placeholder="App ID（例如 cli_xxxxxxxx）" autocomplete="off" style="margin-bottom:8px">
+    <input type="password" id="larkAppSecretInput" placeholder="App Secret" autocomplete="off">
     <div class="modal-status" id="tokenStatus"></div>
     <div class="modal-actions">
       <button class="modal-btn secondary" onclick="closeTokenModal()">取消</button>
-      <button class="modal-btn primary" id="tokenSaveBtn" onclick="saveLarkToken()">儲存</button>
+      <button class="modal-btn danger" id="tokenClearBtn" onclick="clearAppCreds()" style="display:none">清除</button>
+      <button class="modal-btn primary" id="tokenSaveBtn" onclick="saveAppCreds()">儲存</button>
     </div>
   </div>
 </div>
@@ -1053,8 +1055,9 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => switchTab(btn.dataset.tab));
 });
 
-/* ===== Token 加密儲存（XOR + Base64，無有效期，似 J04） ===== */
-const TOKEN_KEY = 'cathayLarkTokenEnc';
+/* ===== 飛書 App 憑證加密儲存（XOR + Base64，無有效期，似 J04） ===== */
+const APP_ID_KEY = 'cathayLarkAppIdEnc';
+const APP_SECRET_KEY = 'cathayLarkAppSecretEnc';
 const TOKEN_XOR_KEY = 'cathay-2026-his-tools';
 
 function xorEncrypt(str) {
@@ -1074,29 +1077,70 @@ function xorDecrypt(enc) {
     return out;
   } catch (e) { return null; }
 }
-function getLarkToken() {
-  const enc = localStorage.getItem(TOKEN_KEY);
-  if (!enc) return null;
-  return xorDecrypt(enc);
+function getAppCreds() {
+  const idEnc = localStorage.getItem(APP_ID_KEY);
+  const secEnc = localStorage.getItem(APP_SECRET_KEY);
+  if (!idEnc || !secEnc) return null;
+  const app_id = xorDecrypt(idEnc);
+  const app_secret = xorDecrypt(secEnc);
+  if (!app_id || !app_secret) return null;
+  return { app_id, app_secret };
 }
 function openTokenModal() {
   document.getElementById('tokenModal').classList.add('show');
-  document.getElementById('larkTokenInput').value = '';
+  document.getElementById('larkAppIdInput').value = '';
+  document.getElementById('larkAppSecretInput').value = '';
   const st = document.getElementById('tokenStatus');
-  if (getLarkToken()) { st.textContent = '已設定 Token（隱藏）。輸入新 Token 可覆蓋。'; st.className = 'modal-status ok'; }
-  else { st.textContent = ''; st.className = 'modal-status'; }
-  document.getElementById('larkTokenInput').focus();
+  const creds = getAppCreds();
+  const clearBtn = document.getElementById('tokenClearBtn');
+  if (creds) {
+    st.textContent = '已設定 App ID：' + creds.app_id + '（Secret 已隱藏）。輸入新值可覆蓋。';
+    st.className = 'modal-status ok';
+    clearBtn.style.display = 'block';
+  } else {
+    st.textContent = '';
+    st.className = 'modal-status';
+    clearBtn.style.display = 'none';
+  }
+  document.getElementById('larkAppIdInput').focus();
 }
 function closeTokenModal() { document.getElementById('tokenModal').classList.remove('show'); }
-function saveLarkToken() {
-  const input = document.getElementById('larkTokenInput').value.trim();
+function saveAppCreds() {
+  const appId = document.getElementById('larkAppIdInput').value.trim();
+  const appSecret = document.getElementById('larkAppSecretInput').value.trim();
   const st = document.getElementById('tokenStatus');
-  if (!input) { st.textContent = '⚠️ 請輸入 Token'; st.className = 'modal-status err'; return; }
-  localStorage.setItem(TOKEN_KEY, xorEncrypt(input));
+  if (!appId || !appSecret) { st.textContent = '⚠️ 請填晒 App ID 同 App Secret'; st.className = 'modal-status err'; return; }
+  localStorage.setItem(APP_ID_KEY, xorEncrypt(appId));
+  localStorage.setItem(APP_SECRET_KEY, xorEncrypt(appSecret));
   st.textContent = '✅ 已加密儲存（localStorage，無有效期）';
   st.className = 'modal-status ok';
   updateActionBar();
   setTimeout(closeTokenModal, 900);
+}
+function clearAppCreds() {
+  localStorage.removeItem(APP_ID_KEY);
+  localStorage.removeItem(APP_SECRET_KEY);
+  const st = document.getElementById('tokenStatus');
+  st.textContent = '已清除憑證';
+  st.className = 'modal-status';
+  document.getElementById('tokenClearBtn').style.display = 'none';
+  updateActionBar();
+}
+
+/* ===== 自動換取 tenant_access_token（過期自動重新換） ===== */
+async function getTenantToken() {
+  const creds = getAppCreds();
+  if (!creds) return null;
+  const resp = await fetch('https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ app_id: creds.app_id, app_secret: creds.app_secret })
+  });
+  const j = await resp.json();
+  if (j.code !== 0) {
+    throw new Error('換 Token 失敗（code ' + j.code + '）：' + (j.msg || ''));
+  }
+  return j.tenant_access_token;
 }
 
 /* ===== 實付價錢編輯（IF NULL / 暫存 localStorage） ===== */
@@ -1133,9 +1177,9 @@ const LARK_TABLE_ID = 'tbl97F6lmemjat8V';
 const LARK_FIELD_PAID = 'Y HK$';
 
 function updateActionBar() {
-  const hasToken = !!getLarkToken();
-  document.getElementById('tokenBtn').classList.toggle('token-set', hasToken);
-  document.getElementById('tokenBtn').textContent = hasToken ? '🔑 Token 已設定' : '🔑 設定飛書Token';
+  const hasCreds = !!getAppCreds();
+  document.getElementById('tokenBtn').classList.toggle('token-set', hasCreds);
+  document.getElementById('tokenBtn').textContent = hasCreds ? '🔑 憑證已設定' : '🔑 設定飛書憑證';
   const pending = Object.keys(getPaidEdits());
   document.getElementById('pushBtn').classList.toggle('has-pending', pending.length > 0);
   document.getElementById('pushBtn').textContent = pending.length
@@ -1143,8 +1187,8 @@ function updateActionBar() {
 }
 
 async function pushToLark() {
-  const token = getLarkToken();
-  if (!token) { alert('⚠️ 請先按「🔑 設定飛書Token」輸入 Token'); openTokenModal(); return; }
+  const creds = getAppCreds();
+  if (!creds) { alert('⚠️ 請先按「🔑 設定飛書憑證」輸入 App ID 同 App Secret'); openTokenModal(); return; }
   const edits = getPaidEdits();
   const keys = Object.keys(edits);
   if (!keys.length) { alert('⚠️ 冇待推送嘅實付價錢。請先喺航班卡按「✏️ 補實付」輸入。'); return; }
@@ -1152,8 +1196,23 @@ async function pushToLark() {
   document.getElementById('pushModal').classList.add('show');
   const st = document.getElementById('pushStatus');
   st.className = 'modal-status';
-  st.textContent = '推送中...（' + keys.length + ' 項）';
+  st.textContent = '換取 tenant_access_token...';
 
+  let token;
+  try {
+    token = await getTenantToken();
+  } catch (e) {
+    st.className = 'modal-status err';
+    st.textContent = '❌ ' + e.message + '\n\n請檢查 App ID / App Secret 是否正確，以及應用有冇開「bitable:record」相關權限。';
+    return;
+  }
+  if (!token) {
+    st.className = 'modal-status err';
+    st.textContent = '❌ 未設定應用憑證';
+    return;
+  }
+
+  st.textContent = '推送中...（' + keys.length + ' 項）';
   const headers = {
     'Authorization': 'Bearer ' + token,
     'Content-Type': 'application/json'
