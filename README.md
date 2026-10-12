@@ -86,8 +86,8 @@
 
 ```json
 {
-  "version": "1.01",
-  "lastUpdate": "2026-10-12 22:13",
+  "version": "1.02",
+  "lastUpdate": "2026-10-13 07:27",
   "source": { "baseToken": "...", "ticketsTable": "...", "passengersTable": "...", "dashboardId": "..." },
   "stats": { "noOfFlights": 17, "successful": 12, "successRate": 70.6, "...": "..." },
   "rollingProb": [ { "time": "...", "prob": 0.7 } ],
@@ -106,6 +106,7 @@
 
 | 版本 | 日期 | 更新內容 |
 |------|------|----------|
+| v1.02 | 2026-10-13 | 數據更新：沖舅父由八月東京 NRT 行程移至五月大阪 KIX 行程（CX596/CX506 加入沖舅父；CX526/CX509 移除沖舅父） |
 | v1.01 | 2026-10-12 | 首個 GitHub 部署。3 Tab 結構 + 航班排序 dropdown + 地圖 filter（combobox/slider/dropdown）+ 新 LOGO + 刪機場方格 + 乘客「全部乘客」選項 + 機場「涉及 A 航班」邏輯 |
 | v1.00 | 2026-10-12 | 本地 Prototype（localhost:8773 測試版） |
 
