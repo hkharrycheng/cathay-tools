@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>國泰員工機票 - Cathay Staff Tickets</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+:root {
+  --bg: #0f1420;
+  --card: #1a2233;
+  --card2: #212c42;
+  --border: #2e3a55;
+  --text: #e8ecf4;
+  --sub: #8fa0b8;
+  --accent: #4f8cff;
+  --green: #3dd68c;
+  --red: #ff5d6c;
+  --yellow: #ffc53d;
+  --gold: #ffd700;
+  --tabbar-h: 56px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body {
+  font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding-bottom: var(--tabbar-h);
+}
+.container { max-width: 1400px; margin: 0 auto; padding: 14px 14px 20px; }
+
+/* Header */
+.header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; padding-top: 8px; }
+.header h1 {
+  font-size: 22px;
+  background: linear-gradient(135deg, #7eb0ff, #4f8cff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: flex; align-items: center; gap: 10px;
+}
+.header .logo { width: 36px; height: 36px; flex-shrink: 0; border-radius: 8px; }
+.header .meta { color: var(--sub); font-size: 12px; text-align: right; }
+.header .meta .version { color: var(--accent); font-weight: bold; }
+
+/* Tab Bar */
+.tab-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: var(--tabbar-h);
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  display: flex;
+  z-index: 100;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.tab-btn {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  background: transparent; border: none; color: var(--sub); font-size: 11px; cursor: pointer;
+  transition: color 0.2s;
+}
+.tab-btn .tab-icon { font-size: 20px; line-height: 1; }
+.tab-btn.active { color: var(--accent); }
+.tab-btn.active .tab-icon { transform: scale(1.15); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: fadeIn 0.25s; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* 統計卡 */
+.stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px; }
+.stat-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+  padding: 14px 12px; text-align: center; position: relative; overflow: hidden;
+}
+.stat-card .label { color: var(--sub); font-size: 12px; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stat-card .value { font-size: 24px; font-weight: 700; }
+.stat-card .sub-label { color: var(--sub); font-size: 10px; margin-top: 3px; }
+.stat-card.green .value { color: var(--green); }
+.stat-card.red .value { color: var(--red); }
+.stat-card.blue .value { color: var(--accent); }
+.stat-card.gold .value { color: var(--gold); }
+.stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--accent); }
+.stat-card.green::before { background: var(--green); }
+.stat-card.red::before { background: var(--red); }
+.stat-card.gold::before { background: var(--gold); }
+@media (min-width: 800px) {
+  .stats-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+  .charts-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* 圖表 */
+.charts-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 14px; }
+.chart-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 14px; }
+.chart-card h3 { font-size: 14px; color: var(--sub); margin-bottom: 8px; }
+.chart-box { width: 100%; height: 240px; }
+
+/* Section */
+.section-title { font-size: 16px; font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.section-title::before { content: ''; width: 4px; height: 16px; background: var(--accent); border-radius: 2px; }
+.upcoming-section { margin-bottom: 14px; }
+
+/* Filter Bar */
+.filter-bar { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; align-items: center; }
+.filter-btn {
+  background: var(--card); color: var(--text); border: 1px solid var(--border);
+  border-radius: 16px; padding: 5px 12px; font-size: 12px; cursor: pointer; transition: all 0.2s;
+}
+.filter-btn:hover { border-color: var(--accent); }
+.filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.search-box {
+  background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+  padding: 7px 14px; color: var(--text); font-size: 13px; outline: none; width: 100%;
+}
+.search-box:focus { border-color: var(--accent); }
+
+/* 排序列 + 通用 combo */
+.sort-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+.sort-row .fl-label { padding-top: 0; }
+.combo {
+  background: var(--card); color: var(--text); border: 1px solid var(--border);
+  border-radius: 10px; padding: 6px 8px; font-size: 12px; outline: none;
+  flex: 1; min-width: 110px; max-width: 240px;
+}
+.combo:focus { border-color: var(--accent); }
+.combo option { background: var(--card); color: var(--text); }
+
+/* 航班卡片（緊湊 + 棒型圖） */
+.ticket-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+  padding: 10px 12px; margin-bottom: 8px;
+  display: flex; gap: 10px; align-items: stretch;
+}
+.tc-main { flex: 1; min-width: 0; }
+.tc-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; gap: 8px; }
+.tc-flight { font-size: 16px; font-weight: 700; }
+.tc-route { color: var(--accent); font-size: 13px; margin-bottom: 6px; }
+.tc-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 3px 10px;
+  font-size: 11px;
+  color: var(--sub);
+}
+.tc-grid b { color: var(--text); font-weight: 600; }
+.tc-pax { margin-top: 5px; padding-top: 5px; border-top: 1px dashed var(--border); color: var(--sub); font-size: 11px; }
+.tc-pax b { color: var(--text); }
+.status-badge { display: inline-block; padding: 2px 9px; border-radius: 11px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+.status-Accepted { background: rgba(61,214,140,0.15); color: var(--green); }
+.status-Rejected { background: rgba(255,93,108,0.15); color: var(--red); }
+.status-No-Show { background: rgba(255,197,61,0.15); color: var(--yellow); }
+.status-null { background: rgba(79,140,255,0.15); color: var(--accent); }
+
+/* 棒型圖 */
+.tc-bars { display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; padding-left: 10px; border-left: 1px solid var(--border); }
+.bar-chart { display: flex; align-items: flex-end; gap: 5px; height: 74px; }
+.bar-col { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+.bar-val { font-size: 9px; font-weight: 700; color: var(--text); margin-bottom: 2px; white-space: nowrap; }
+.bar {
+  width: 16px; border-radius: 3px 3px 0 0;
+  background: var(--accent);
+  position: relative;
+  min-height: 2px;
+}
+.bar.b-orig { background: linear-gradient(180deg, #4f8cff, #2d5fc0); }
+.bar.b-paid { background: linear-gradient(180deg, #3dd68c, #1f9e63); }
+.bar.b-am   { background: linear-gradient(180deg, #ffc53d, #d99a1f); }
+.bar-name { font-size: 9px; color: var(--sub); margin-top: 3px; }
+.bar-null { font-size: 9px; color: var(--sub); height: 74px; display: flex; align-items: center; justify-content: center; padding: 0 8px; }
+.bar-discount { font-size: 11px; color: var(--green); margin-top: 6px; font-weight: 700; white-space: nowrap; }
+.bar-discount.none { color: var(--sub); font-weight: 400; }
+
+/* 乘客 clickable link（跳轉地圖） */
+.pax-link { color: var(--accent); cursor: pointer; text-decoration: underline; }
+.pax-link:active { color: #7eb0ff; }
+
+/* 乘客 selector（地圖用） */
+
+/* 地圖 filter 區（乘客/機場/月份/區域 4 合 1） */
+.map-filters { margin-bottom: 12px; }
+.filter-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+.fl-label { font-size: 12px; color: var(--sub); white-space: nowrap; flex-shrink: 0; font-weight: 600; }
+.month-slider { flex: 1; min-width: 80px; max-width: 150px; accent-color: var(--accent); }
+.month-label { font-size: 12px; color: var(--accent); font-weight: 700; min-width: 56px; text-align: center; white-space: nowrap; }
+.mini-btn {
+  background: var(--card); color: var(--sub); border: 1px solid var(--border);
+  border-radius: 10px; padding: 5px 10px; font-size: 11px; cursor: pointer; transition: all 0.2s;
+  flex-shrink: 0;
+}
+.mini-btn:hover { border-color: var(--accent); color: var(--text); }
+.mini-btn.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* 區域 toggle */
+
+/* 地圖 */
+.map-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 8px; margin-bottom: 10px; overflow: hidden; }
+#mapChart { width: 100%; height: 360px; }
+
+/* 機場列表 */
+
+/* 機場詳細 */
+.airport-detail-panel {
+  background: var(--card2); border: 1px solid var(--border); border-radius: 14px;
+  padding: 14px; margin-bottom: 10px; display: none;
+}
+.airport-detail-panel.show { display: block; }
+.airport-detail-panel .adp-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.airport-detail-panel .adp-row { display: flex; justify-content: space-between; font-size: 12px; color: var(--sub); padding: 4px 0; border-bottom: 1px dashed var(--border); }
+.airport-detail-panel .adp-row b { color: var(--text); }
+.airport-detail-panel .adp-flights { margin-top: 8px; }
+.airport-detail-panel .adp-flight {
+  font-size: 11px; color: var(--sub); padding: 4px 0; border-bottom: 1px dashed var(--border);
+  display: flex; justify-content: space-between; align-items: center; gap: 8px;
+}
+.airport-detail-panel .adp-flight b { color: var(--text); }
+
+/* 通用 */
+.footer { text-align: center; color: var(--sub); font-size: 11px; padding: 16px 0 8px; }
+.empty { color: var(--sub); text-align: center; padding: 24px; font-size: 13px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>
+      <img class="logo" src="cathay-logo.png" alt="Cathay">
+      國泰員工機票
+    </h1>
+    <div class="meta">
+      <div><span class="version" id="version">v1.01</span> &nbsp;|&nbsp; 更新：<span id="lastUpdate">-</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 航班 Tab ===== -->
+<div class="tab-panel active" id="panel-flights">
+  <div class="container">
+    <div class="section-title">📋 全部航班記錄</div>
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">全部</button>
+      <button class="filter-btn" data-filter="upcoming">✈️ 即將起飛</button>
+      <button class="filter-btn" data-filter="Accepted">Accepted</button>
+      <button class="filter-btn" data-filter="Rejected">Rejected</button>
+      <button class="filter-btn" data-filter="No Show">No Show</button>
+    </div>
+    <div class="sort-row">
+      <span class="fl-label">排序</span>
+      <select id="sortSelect" class="combo">
+        <option value="time_desc" selected>🕐 起飛時間 ↓（最新先）</option>
+        <option value="time_asc">🕐 起飛時間 ↑（最早先）</option>
+        <option value="disc_desc">💰 折扣% ↓（最大先）</option>
+        <option value="disc_asc">💰 折扣% ↑（最小先）</option>
+      </select>
+    </div>
+    <input type="text" class="search-box" id="searchBox" placeholder="🔍 搜尋航班號 / 航線 / 乘客...">
+    <div id="ticketList" style="margin-top:10px"></div>
+    <div class="footer">Cathay Staff Tickets · J01C</div>
+  </div>
+</div>
+
+<!-- ===== 統計 Tab ===== -->
+<div class="tab-panel" id="panel-stats">
+  <div class="container">
+    <div class="stats-grid" id="statsGrid"></div>
+    <div class="charts-grid">
+      <div class="chart-card">
+        <h3>Final Status 分佈</h3>
+        <div class="chart-box" id="pieChart"></div>
+      </div>
+      <div class="chart-card">
+        <h3>Rolling Probability 趨勢</h3>
+        <div class="chart-box" id="lineChart"></div>
+      </div>
+    </div>
+    <div class="footer">Cathay Staff Tickets · J01C</div>
+  </div>
+</div>
+
+<!-- ===== 地圖 Tab（地圖 + 乘客互動） ===== -->
+<div class="tab-panel" id="panel-map">
+  <div class="container">
+    <div class="section-title">🌍 世界地圖 · 乘客航線</div>
+    <div class="map-filters">
+      <div class="filter-row">
+        <span class="fl-label">👥 乘客</span>
+        <select id="paxSelect" class="combo">
+          <option value="">（無）不顯示航線</option>
+        </select>
+        <span class="fl-label">🗺 機場</span>
+        <select id="airportSelect" class="combo">
+          <option value="ALL">全部</option>
+        </select>
+      </div>
+      <div class="filter-row">
+        <span class="fl-label">🗓 月份</span>
+        <input type="range" id="monthSlider" class="month-slider" min="0" max="0" value="0">
+        <span id="monthLabel" class="month-label">全部</span>
+        <button id="monthAllBtn" class="mini-btn">全部</button>
+        <span class="fl-label">🌏 區域</span>
+        <select id="regionSelect" class="combo">
+          <option value="ALL">全部區域</option>
+          <option value="SEA">🌏 東南亞及澳洲</option>
+          <option value="NEA">🗾 東北亞</option>
+          <option value="EU">🏰 歐洲</option>
+          <option value="MEA">🕌 中東及非洲</option>
+          <option value="AM">🌎 美洲</option>
+        </select>
+      </div>
+    </div>
+    <div class="map-wrap">
+      <div id="mapChart"></div>
+    </div>
+    <div class="airport-detail-panel" id="airportDetail"></div>
+    <div class="footer">Cathay Staff Tickets · J01C</div>
+  </div>
+</div>
+
+<!-- Tab Bar -->
+<nav class="tab-bar">
+  <button class="tab-btn active" data-tab="flights">
+    <span class="tab-icon">✈️</span>
+    <span>航班</span>
+  </button>
+  <button class="tab-btn" data-tab="stats">
+    <span class="tab-icon">📊</span>
+    <span>統計</span>
+  </button>
+  <button class="tab-btn" data-tab="map">
+    <span class="tab-icon">🌍</span>
+    <span>地圖</span>
+  </button>
+</nav>
+
+<script>
+let DATA = null;
+
+/* ===== 機場資料（SYS_JOB 座標 + 區域分類） ===== */
+const AIRPORTS = {
+  HKG: { name: '香港國際機場', city: '香港', lat: 22.3080, lng: 113.9145, region: 'NEA' },
+  KIX: { name: '關西國際機場', city: '大阪', lat: 34.4347, lng: 135.2300, region: 'NEA' },
+  TAO: { name: '青島膠東國際機場', city: '青島', lat: 37.3918, lng: 120.0864, region: 'NEA' },
+  NRT: { name: '成田國際機場', city: '東京', lat: 35.7647, lng: 140.3864, region: 'NEA' },
+  URC: { name: '烏魯木齊天山國際機場', city: '烏魯木齊', lat: 43.9071, lng: 87.4742, region: 'NEA' },
+  YVR: { name: '溫哥華國際機場', city: '溫哥華', lat: 49.1967, lng: -123.1816, region: 'AM' },
+  ICN: { name: '仁川國際機場', city: '首爾', lat: 37.4602, lng: 126.4407, region: 'NEA' },
+  DPS: { name: '伍拉·賴國際機場', city: '峇里島', lat: -8.7482, lng: 115.1675, region: 'SEA' },
+  SYD: { name: '金斯福德·史密斯機場', city: '雪梨', lat: -33.9461, lng: 151.1772, region: 'SEA' }
+};
+const REGION_LABEL = { SEA: '東南亞及澳洲', NEA: '東北亞', EU: '歐洲', MEA: '中東及非洲', AM: '美洲' };
+
+/* 飛機 SVG path（機場 marker 用，固定大小）— Material Flight icon */
+const PLANE_PATH = 'M21,16v-2l-8,-5V3.5C13,2.67 12.33,2 11.5,2S10,2.67 10,3.5V9l-8,5v2l8,-2.5V19l-2,1.5V22l3.5,-1 3.5,1v-1.5L13,19v-5.5L21,16z';
+
+let mapChart = null;
+let mapHasGeo = true;          // world.json 加載狀態
+let selectedPax = null;        // 當前揀咗嘅乘客（null = 全部，唔顯示線）
+let selectedAirportCode = 'ALL'; // 'ALL' 或單一機場 code
+let selectedRegion = 'ALL';    // 'ALL' 或單一區域 code
+let selectedMonth = null;      // 揀咗嘅月份（null = 全部）
+let monthsList = [];           // 排序後嘅月份 list
+
+async function loadData() {
+  try {
+    const res = await fetch('cathay.json?v=' + Date.now());
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    DATA = await res.json();
+    renderAll();
+  } catch (e) {
+    console.error('載入失敗:', e);
+    document.getElementById('statsGrid').innerHTML = '<div class="empty">❌ 無法載入 cathay.json（' + e.message + '）<br>請確認檔案與 index.html 同一目錄</div>';
+  }
+}
+
+function fmtPct(v) { return (v * 100).toFixed(1) + '%'; }
+function fmtMoney(v) { return v != null && !isNaN(v) ? '$' + Number(v).toLocaleString() : null; }
+
+function renderAll() {
+  document.getElementById('version').textContent = 'v' + DATA.version;
+  document.getElementById('lastUpdate').textContent = DATA.lastUpdate;
+  renderStats();
+  renderPie();
+  renderLine();
+  renderTickets('all', '');
+  renderPaxCombo();
+  renderAirportCombo();
+  setupMonthSlider();
+  renderMap();
+}
+
+/* ===== 統計 Tab ===== */
+function renderStats() {
+  const s = DATA.stats;
+  const cards = [
+    { label: '航班總數', value: s.noOfFlights, sub: '（有狀態）', cls: 'blue' },
+    { label: '% Successful', value: fmtPct(s.successRate), sub: s.successful + ' 班 Accepted', cls: 'green' },
+    { label: 'Avg Booked', value: fmtPct(s.avgBooked), sub: '平均訂位率', cls: 'blue' },
+    { label: 'Avg Staff %', value: fmtPct(s.avgStaffPercent), sub: '平均員工比例', cls: 'gold' },
+    { label: 'Avg Discount', value: fmtPct(s.avgDiscount), sub: '平均折扣', cls: 'green' },
+    { label: 'Avg Standby', value: s.avgStaffCount, sub: '平均候補人數', cls: 'blue' }
+  ];
+  document.getElementById('statsGrid').innerHTML = cards.map(c =>
+    `<div class="stat-card ${c.cls}"><div class="label">${c.label}</div><div class="value">${c.value}</div><div class="sub-label">${c.sub}</div></div>`
+  ).join('');
+}
+
+function renderPie() {
+  const chart = echarts.init(document.getElementById('pieChart'));
+  const dist = DATA.stats.statusDist;
+  const colors = { Accepted: '#3dd68c', Rejected: '#ff5d6c', 'No Show': '#ffc53d' };
+  chart.setOption({
+    backgroundColor: 'transparent',
+    tooltip: { trigger: 'item', formatter: '{b}: {c} 班 ({d}%)' },
+    legend: { bottom: 0, textStyle: { color: '#8fa0b8' } },
+    series: [{
+      type: 'pie',
+      radius: ['45%', '70%'],
+      center: ['50%', '45%'],
+      itemStyle: { borderRadius: 6, borderColor: '#1a2233', borderWidth: 2 },
+      label: { color: '#e8ecf4', formatter: '{b}\n{c} 班' },
+      data: dist.map(d => ({
+        name: d.status, value: d.count,
+        itemStyle: { color: colors[d.status] || '#4f8cff' }
+      }))
+    }]
+  });
+  window.addEventListener('resize', () => chart.resize());
+}
+
+function renderLine() {
+  const chart = echarts.init(document.getElementById('lineChart'));
+  const rolling = DATA.rollingProb;
+  chart.setOption({
+    backgroundColor: 'transparent',
+    tooltip: { trigger: 'axis' },
+    grid: { left: 45, right: 20, top: 20, bottom: 40 },
+    xAxis: {
+      type: 'category',
+      data: rolling.map(r => r.time),
+      axisLabel: { color: '#8fa0b8', rotate: 30, fontSize: 10 },
+      axisLine: { lineStyle: { color: '#2e3a55' } }
+    },
+    yAxis: {
+      type: 'value', min: 0, max: 1,
+      axisLabel: { color: '#8fa0b8', formatter: v => (v * 100).toFixed(0) + '%' },
+      splitLine: { lineStyle: { color: '#1a2233' } }
+    },
+    series: [{
+      type: 'line',
+      data: rolling.map(r => r.prob),
+      smooth: true, symbol: 'circle', symbolSize: 6,
+      lineStyle: { color: '#4f8cff', width: 3 },
+      itemStyle: { color: '#4f8cff' },
+      areaStyle: { color: 'rgba(79,140,255,0.15)' }
+    }]
+  });
+  window.addEventListener('resize', () => chart.resize());
+}
+
+/* ===== 航班 Tab ===== */
+let currentFilter = 'all';
+let currentSearch = '';
+let currentSort = 'time_desc';   // time_desc / time_asc / disc_desc / disc_asc
+
+function discOf(t) {
+  const origV = t.yListedHk != null ? Number(t.yListedHk) : null;
+  const paidV = t.yHk != null ? Number(t.yHk) : null;
+  return (origV && paidV && origV > 0) ? (1 - paidV / origV) * 100 : null;
+}
+
+function renderTickets(filter, search) {
+  const list = document.getElementById('ticketList');
+  let rows = [...DATA.tickets];
+  if (filter === 'upcoming') {
+    rows = rows.filter(t => !t.finalStatus);
+  } else if (filter !== 'all') {
+    rows = rows.filter(t => (t.finalStatus || 'null') === filter);
+  }
+  if (search) {
+    const q = search.toLowerCase();
+    rows = rows.filter(t =>
+      (t.flightNumber || '').toLowerCase().includes(q) ||
+      (t.from || '').toLowerCase().includes(q) ||
+      (t.to || '').toLowerCase().includes(q) ||
+      (t.displayName || '').toLowerCase().includes(q) ||
+      (t.passengers || []).some(p => p.toLowerCase().includes(q))
+    );
+  }
+  // 排序：起飛時間 或 折扣%，方向 asc/desc
+  rows.sort((a, b) => {
+    if (currentSort.startsWith('time')) {
+      const d = (a.startTime || '').localeCompare(b.startTime || '');
+      return currentSort === 'time_asc' ? d : -d;
+    }
+    const da = discOf(a), db = discOf(b);
+    if (da == null && db == null) return 0;
+    if (da == null) return 1;   // 無折扣排最後
+    if (db == null) return -1;
+    const d = da - db;
+    return currentSort === 'disc_asc' ? d : -d;
+  });
+  if (!rows.length) {
+    list.innerHTML = '<div class="empty">無符合記錄</div>';
+    return;
+  }
+  list.innerHTML = rows.map(t => ticketCard(t)).join('');
+}
+
+document.getElementById('sortSelect').addEventListener('change', e => {
+  currentSort = e.target.value;
+  renderTickets(currentFilter, currentSearch);
+});
+
+function ticketCard(t) {
+  const st = t.finalStatus || 'null';
+  const badge = st === 'null'
+    ? '<span class="status-badge status-null">✈️ 即將起飛</span>'
+    : `<span class="status-badge status-${st.replace(' ', '-')}">${st}</span>`;
+  const pax = t.passengers.length
+    ? t.passengers.map(p => `<span class="pax-link" onclick="jumpToPax('${p.replace(/'/g, "\\'")}')">${p}</span>`).join('、')
+    : '—';
+
+  // 折扣% = 1 - 實付/原價
+  const origV = t.yListedHk != null ? Number(t.yListedHk) : null;
+  const paidV = t.yHk != null ? Number(t.yHk) : null;
+  const discount = (origV && paidV && origV > 0) ? Math.round((1 - paidV / origV) * 100) : null;
+
+  // 棒型圖：原價 vs 實付 vs Asia Miles 現金價
+  const orig = fmtMoney(t.yListedHk);
+  const paid = fmtMoney(t.yHk);
+  const am = fmtMoney(t.yMilesHk);
+  let barsHtml;
+  if (!orig && !paid && !am) {
+    barsHtml = '<div class="bar-null">無數據</div>';
+  } else {
+    const vals = [];
+    if (orig != null) vals.push({ label: '原價', v: Number(orig.replace(/,/g,'').replace('$','')), cls: 'b-orig' });
+    if (paid != null) vals.push({ label: '實付', v: Number(paid.replace(/,/g,'').replace('$','')), cls: 'b-paid' });
+    if (am != null) vals.push({ label: 'AM', v: Number(am.replace(/,/g,'').replace('$','')), cls: 'b-am' });
+    const maxV = Math.max(...vals.map(x => x.v), 1);
+    barsHtml = `<div class="bar-chart">` + vals.map(x => {
+      const h = Math.max(Math.round(x.v / maxV * 68), 3);
+      return `<div class="bar-col">
+        <div class="bar-val">$${Number(x.v).toLocaleString()}</div>
+        <div class="bar ${x.cls}" style="height:${h}px"></div>
+        <div class="bar-name">${x.label}</div>
+      </div>`;
+    }).join('') + `</div>`;
+  }
+  const discountHtml = discount != null
+    ? `<div class="bar-discount">折扣 ${discount}%</div>`
+    : `<div class="bar-discount none">折扣 —</div>`;
+
+  return `
+    <div class="ticket-card">
+      <div class="tc-main">
+        <div class="tc-top">
+          <span class="tc-flight">${t.flightNumber || '—'}</span>
+          ${badge}
+        </div>
+        <div class="tc-route">${t.from} → ${t.to}</div>
+        <div class="tc-grid">
+          <div>🕐 起飛：<b>${t.startTime || '—'}</b></div>
+          <div>✈️ 機型：<b>${t.planeModel || '—'}</b></div>
+          <div>👥 Capacity：<b>${t.capacity != null ? t.capacity : '—'}</b></div>
+          <div>📊 Booked：<b>${t.booked != null ? t.booked : '—'}</b></div>
+          <div>P25：<b>${t.p25 != null ? t.p25 : '—'}</b></div>
+          <div>P27：<b>${t.p27 != null ? t.p27 : '—'}</b></div>
+        </div>
+        <div class="tc-pax">乘客：<b>${pax}</b></div>
+      </div>
+      <div class="tc-bars">
+        ${barsHtml}
+        ${discountHtml}
+      </div>
+    </div>`;
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    renderTickets(currentFilter, currentSearch);
+  });
+});
+
+document.getElementById('searchBox').addEventListener('input', e => {
+  currentSearch = e.target.value;
+  renderTickets(currentFilter, currentSearch);
+});
+
+/* ===== 地圖：乘客 combobox ===== */
+function getPaxRoutes(month) {
+  /* 每位乘客搭過嘅航線（聚合 from→to），可按月份 filter */
+  const nameToId = {};
+  DATA.passengers.forEach(p => { nameToId[p.name] = p.id; });
+  const result = {}; // paxId -> { name, routes: { "from-to": count } }
+  DATA.passengers.forEach(p => {
+    result[p.id] = { name: p.name, appName: p.appName, routes: {}, flights: 0 };
+  });
+  const allTickets = [...(DATA.tickets || []), ...(DATA.upcoming || [])];
+  allTickets.forEach(t => {
+    const m = (t.startTime || '').slice(0, 7);
+    if (month && m !== month) return;
+    (t.passengers || []).forEach(pn => {
+      const id = nameToId[pn];
+      if (id && result[id]) {
+        const key = t.from + '-' + t.to;
+        result[id].routes[key] = (result[id].routes[key] || 0) + 1;
+        result[id].flights++;
+      }
+    });
+  });
+  return result;
+}
+
+function renderPaxCombo() {
+  const paxRoutes = getPaxRoutes(selectedMonth);
+  const sel = document.getElementById('paxSelect');
+  sel.innerHTML = `<option value="">（無）不顯示航線</option>` +
+    `<option value="ALL">👥 全部乘客</option>` +
+    DATA.passengers.map(p => {
+      const pr = paxRoutes[p.id];
+      const n = pr ? pr.flights : 0;
+      return `<option value="${p.id}">${p.name}（${n} 班）</option>`;
+    }).join('');
+  sel.value = selectedPax || '';
+}
+
+document.getElementById('paxSelect').addEventListener('change', e => {
+  const v = e.target.value;
+  selectedPax = (v === '' ? null : v);   // 'ALL' = 全部乘客，保留
+  refreshMapLines();
+});
+
+/* ===== 地圖：機場 combobox ===== */
+function renderAirportCombo() {
+  const sel = document.getElementById('airportSelect');
+  sel.innerHTML = `<option value="ALL">全部機場</option>` +
+    Object.keys(AIRPORTS).map(code =>
+      `<option value="${code}">${code} · ${AIRPORTS[code].city}</option>`
+    ).join('');
+  sel.value = selectedAirportCode;
+}
+
+document.getElementById('airportSelect').addEventListener('change', e => {
+  selectedAirportCode = e.target.value || 'ALL';
+  refreshMapAll();
+});
+
+/* ===== 地圖：月份 slider ===== */
+function setupMonthSlider() {
+  const months = new Set();
+  [...(DATA.tickets || []), ...(DATA.upcoming || [])].forEach(t => {
+    const m = (t.startTime || '').slice(0, 7);
+    if (m) months.add(m);
+  });
+  monthsList = [...months].sort();
+  const slider = document.getElementById('monthSlider');
+  const label = document.getElementById('monthLabel');
+  const btn = document.getElementById('monthAllBtn');
+  slider.min = 0;
+  slider.max = Math.max(monthsList.length - 1, 0);
+  // default：全部（slider 放最新月份，但唔選取）
+  slider.value = monthsList.length - 1;
+  selectedMonth = null;
+  label.textContent = '全部';
+  btn.classList.add('on');
+
+  slider.addEventListener('input', () => {
+    const m = monthsList[Number(slider.value)] || null;
+    selectedMonth = m;
+    label.textContent = m || '—';
+    btn.classList.remove('on');
+    renderPaxCombo();
+    refreshMapAll();
+  });
+  btn.addEventListener('click', () => {
+    selectedMonth = null;
+    label.textContent = '全部';
+    btn.classList.add('on');
+    renderPaxCombo();
+    refreshMapAll();
+  });
+}
+
+/* ===== 地圖：區域 dropdown ===== */
+document.getElementById('regionSelect').addEventListener('change', e => {
+  selectedRegion = e.target.value || 'ALL';
+  refreshMapAll();
+});
+
+function refreshMapAll() {
+  if (mapChart) buildMapOption(mapHasGeo);
+}
+
+/* ===== 航班乘客跳轉地圖 ===== */
+function jumpToPax(name) {
+  const p = DATA.passengers.find(x => x.name === name || (x.appName || '').includes(name));
+  if (!p) return;
+  switchTab('map');
+  selectedPax = p.id;
+  const sel = document.getElementById('paxSelect');
+  if (sel) sel.value = p.id;
+  setTimeout(() => {
+    if (mapChart) { mapChart.resize(); refreshMapLines(); }
+  }, 80);
+}
+
+/* ===== 地圖 ===== */
+function getAirportStats(month) {
+  const stats = {};
+  Object.keys(AIRPORTS).forEach(code => {
+    stats[code] = { departures: 0, arrivals: 0, flights: 0, flightList: [] };
+  });
+  const allTickets = [...(DATA.tickets || []), ...(DATA.upcoming || [])];
+  allTickets.forEach(t => {
+    const m = (t.startTime || '').slice(0, 7);
+    if (month && m !== month) return;
+    if (AIRPORTS[t.from]) {
+      stats[t.from].departures++;
+      stats[t.from].flights++;
+      stats[t.from].flightList.push({ fn: t.flightNumber, route: `${t.from}→${t.to}`, time: t.startTime, status: t.finalStatus });
+    }
+    if (AIRPORTS[t.to]) {
+      stats[t.to].arrivals++;
+      stats[t.to].flights++;
+      stats[t.to].flightList.push({ fn: t.flightNumber, route: `${t.from}→${t.to}`, time: t.startTime, status: t.finalStatus });
+    }
+  });
+  return stats;
+}
+
+function getAllRoutes(month) {
+  /* 所有乘客嘅航線聚合（from→to count），可按月份 filter */
+  const routes = {};
+  const allTickets = [...(DATA.tickets || []), ...(DATA.upcoming || [])];
+  allTickets.forEach(t => {
+    const m = (t.startTime || '').slice(0, 7);
+    if (month && m !== month) return;
+    const key = t.from + '-' + t.to;
+    routes[key] = (routes[key] || 0) + 1;
+  });
+  return routes;
+}
+
+function visibleAirportCodes() {
+  // 全部模式：HKG（base）永遠顯示；其他按區域 dropdown
+  return Object.keys(AIRPORTS).filter(code => {
+    if (code === 'HKG') return true;
+    if (selectedRegion !== 'ALL' && AIRPORTS[code].region !== selectedRegion) return false;
+    return true;
+  });
+}
+
+function renderMap() {
+  const el = document.getElementById('mapChart');
+  if (!mapChart) mapChart = echarts.init(el);
+  fetch('https://cdn.jsdelivr.net/npm/echarts@4.9.0/map/json/world.json')
+    .then(r => r.json())
+    .then(worldJson => {
+      echarts.registerMap('world', worldJson);
+      mapHasGeo = true;
+      buildMapOption(true);
+    })
+    .catch(() => {
+      mapHasGeo = false;
+      buildMapOption(false);
+    });
+}
+
+function buildMapOption(hasGeo) {
+  const airportStats = getAirportStats(selectedMonth);
+  const visCodes = visibleAirportCodes();
+  const visSet = new Set(visCodes);
+
+  // 機場 marker（固定 size，飛機圖示；揀咗嗰個高亮）
+  const scatterData = visCodes.map(code => {
+    const a = AIRPORTS[code];
+    const s = airportStats[code];
+    const isSel = code === selectedAirportCode;
+    return {
+      name: code,
+      value: [a.lng, a.lat, s.flights],
+      city: a.city,
+      airport: a.name,
+      departures: s.departures,
+      arrivals: s.arrivals,
+      flights: s.flights,
+      sel: isSel
+    };
+  });
+
+  // 航線線條：乘客 filter（null=唔顯示 / ALL=全部 / id=個別），月份 filter，兩端機場可見
+  let rawRoutes = null;
+  if (selectedPax === 'ALL') {
+    rawRoutes = getAllRoutes(selectedMonth);
+  } else if (selectedPax) {
+    const paxRoutes = getPaxRoutes(selectedMonth);
+    const pr = paxRoutes[selectedPax];
+    if (pr) rawRoutes = pr.routes;
+  }
+  let lineData = [];
+  if (rawRoutes) {
+    lineData = Object.keys(rawRoutes).map(key => {
+      const [from, to] = key.split('-');
+      return {
+        fromName: from,
+        toName: to,
+        coords: [[AIRPORTS[from].lng, AIRPORTS[from].lat], [AIRPORTS[to].lng, AIRPORTS[to].lat]],
+        count: rawRoutes[key]
+      };
+    }).filter(l => visSet.has(l.fromName) && visSet.has(l.toName));
+  }
+  // 機場 filter：揀咗機場 A → 只顯示涉及 A（去 A 或由 A 返）嘅航班
+  if (selectedAirportCode !== 'ALL') {
+    lineData = lineData.filter(l =>
+      l.fromName === selectedAirportCode || l.toName === selectedAirportCode
+    );
+  }
+
+  const option = {
+    backgroundColor: 'transparent',
+    tooltip: {
+      trigger: 'item',
+      formatter: p => {
+        if (p.seriesType === 'scatter') {
+          const tag = p.data.sel ? ' ⭐ 已選' : '';
+          return `<b>${p.name}</b>${tag} — ${p.data.city}<br>${p.data.airport}<br>航班總數：${p.data.flights} 班<br>出發：${p.data.departures} · 抵達：${p.data.arrivals}`;
+        }
+        if (p.seriesType === 'lines') {
+          let src;
+          if (selectedPax === 'ALL') src = getAllRoutes(selectedMonth);
+          else {
+            const paxRoutes = getPaxRoutes(selectedMonth);
+            src = paxRoutes[selectedPax] ? paxRoutes[selectedPax].routes : {};
+          }
+          const count = src[p.data.fromName + '-' + p.data.toName] || p.data.count;
+          return `${p.data.fromName} → ${p.data.toName}<br>${count} 班`;
+        }
+        return p.name;
+      }
+    },
+    geo: hasGeo ? {
+      map: 'world',
+      roam: true,
+      zoom: 1.8,
+      center: [100, 25],
+      itemStyle: { areaColor: '#1a2233', borderColor: '#2e3a55', borderWidth: 0.5 },
+      emphasis: { itemStyle: { areaColor: '#212c42' }, label: { show: false } },
+      label: { show: false }
+    } : null,
+    series: [
+      {
+        name: '乘客航線',
+        type: 'lines',
+        coordinateSystem: hasGeo ? 'geo' : undefined,
+        polyline: false,
+        symbol: ['none', 'arrow'],
+        symbolSize: 6,
+        effect: {
+          show: true, period: 4, trailLength: 0.3,
+          symbol: 'arrow', symbolSize: 5, color: '#7eb0ff'
+        },
+        lineStyle: { color: '#4f8cff', width: 2, opacity: 0.85, curveness: 0.15 },
+        data: lineData
+      },
+      {
+        name: '機場',
+        type: 'scatter',
+        coordinateSystem: hasGeo ? 'geo' : undefined,
+        symbol: 'path://' + PLANE_PATH,
+        symbolSize: (v, params) => (scatterData[params.dataIndex] && scatterData[params.dataIndex].sel) ? 34 : 22,
+        symbolRotate: 0,
+        itemStyle: {
+          color: params => (scatterData[params.dataIndex] && scatterData[params.dataIndex].sel) ? '#ff8c42' : '#ffc53d',
+          shadowBlur: params => (scatterData[params.dataIndex] && scatterData[params.dataIndex].sel) ? 18 : 10,
+          shadowColor: params => (scatterData[params.dataIndex] && scatterData[params.dataIndex].sel) ? 'rgba(255,140,66,0.8)' : 'rgba(255,197,61,0.6)'
+        },
+        label: {
+          show: true, formatter: '{b}', position: 'bottom',
+          color: '#e8ecf4', fontSize: 11, fontWeight: 600
+        },
+        data: scatterData
+      }
+    ]
+  };
+
+  if (!hasGeo) {
+    option.xAxis = {
+      type: 'value', min: 60, max: 200,
+      axisLabel: { color: '#8fa0b8' }, splitLine: { lineStyle: { color: '#1a2233' } }
+    };
+    option.yAxis = {
+      type: 'value', min: -60, max: 60,
+      axisLabel: { color: '#8fa0b8' }, splitLine: { lineStyle: { color: '#1a2233' } }
+    };
+  }
+
+  mapChart.setOption(option, true);
+  mapChart.off('click');
+  mapChart.on('click', p => {
+    if (p.seriesType === 'scatter' && p.data && p.data.name) {
+      showAirportDetail(p.data.name);
+    }
+  });
+  window.addEventListener('resize', () => mapChart.resize());
+}
+
+function refreshMapLines() {
+  if (!mapChart) return;
+  buildMapOption(mapHasGeo);
+}
+
+/* ===== 機場詳細面板（撳地圖 marker 顯示） ===== */
+function showAirportDetail(code) {
+  const airportStats = getAirportStats(selectedMonth);
+  const a = AIRPORTS[code];
+  const s = airportStats[code];
+  const panel = document.getElementById('airportDetail');
+  const flights = s.flightList
+    .sort((x, y) => (x.time || '').localeCompare(y.time || ''))
+    .map(f => {
+      const st = f.status ? f.status : '即將起飛';
+      const badge = `<span class="status-badge status-${String(st).replace(' ', '-')}">${st}</span>`;
+      return `<div class="adp-flight"><span><b>${f.fn}</b> ${f.route} · ${f.time || '—'}</span>${badge}</div>`;
+    }).join('') || '<div class="adp-flight">暫無航班</div>';
+
+  panel.innerHTML = `
+    <div class="adp-title">🛫 ${code} — ${a.name}</div>
+    <div class="adp-row"><span>城市</span><b>${a.city}</b></div>
+    <div class="adp-row"><span>區域</span><b>${REGION_LABEL[a.region]}</b></div>
+    <div class="adp-row"><span>座標</span><b>${a.lat.toFixed(4)}°, ${a.lng.toFixed(4)}°</b></div>
+    <div class="adp-row"><span>航班總數</span><b>${s.flights} 班</b></div>
+    <div class="adp-row"><span>出發</span><b>${s.departures} 班</b></div>
+    <div class="adp-row"><span>抵達</span><b>${s.arrivals} 班</b></div>
+    <div class="adp-flights">${flights}</div>`;
+  panel.classList.add('show');
+
+  if (mapChart) {
+    mapChart.dispatchAction({ type: 'showTip', seriesIndex: 1, name: code });
+  }
+}
+
+/* ===== Tab 切換 ===== */
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.tab-btn[data-tab="' + tab + '"]').classList.add('active');
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + tab).classList.add('active');
+  setTimeout(() => {
+    if (tab === 'map' && mapChart) mapChart.resize();
+    if (tab === 'stats') {
+      const pc = echarts.getInstanceByDom(document.getElementById('pieChart'));
+      if (pc) pc.resize();
+      const lc = echarts.getInstanceByDom(document.getElementById('lineChart'));
+      if (lc) lc.resize();
+    }
+  }, 50);
+}
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+});
+
+loadData();
+</script>
+</body>
+</html>
