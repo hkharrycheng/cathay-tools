@@ -55,8 +55,11 @@ def lark_call(url, payload, token=None, method="POST"):
     headers = {"Content-Type": "application/json", "User-Agent": UA}
     if token:
         headers["Authorization"] = "Bearer " + token
-    body = json.dumps(payload).encode("utf-8")
-    req = urllib.request.Request(url, data=body, method=method, headers=headers)
+    if method == "GET":
+        req = urllib.request.Request(url, method="GET", headers=headers)
+    else:
+        body = json.dumps(payload).encode("utf-8")
+        req = urllib.request.Request(url, data=body, method=method, headers=headers)
     with urllib.request.urlopen(req, timeout=30) as r:
         return json.load(r)
 
@@ -121,6 +124,30 @@ def main():
     errors = []
     for rid, amt in records.items():
         try:
+            # 先 GET 診斷：如果連 GET 都 404，即係 App 冇權限訪問呢個 base/table（未加入協作者）
+            try:
+                g = lark_call(
+                    "https://open.feishu.cn/open-apis/base/v3/bases/%s/tables/%s/records/%s" % (BASE_TOKEN, TABLE_ID, rid),
+                    {},
+                    token=token,
+                    method="GET",
+                )
+                print("GET %s code=%s" % (rid, g.get("code")))
+                if g.get("code") != 0:
+                    fail += 1
+                    errors.append("%s GET: %s %s（App 可能未加入 Base 協作者）" % (rid, g.get("code"), g.get("msg")))
+                    continue
+            except Exception as ge:
+                body_hint = ""
+                if hasattr(ge, "read"):
+                    try:
+                        body_hint = " body=" + ge.read().decode("utf-8", "replace")[:300]
+                    except Exception:
+                        pass
+                fail += 1
+                errors.append("%s GET fail: %s%s（App 可能未加入 Base 協作者）" % (rid, ge, body_hint))
+                print("GET ERR %s: %s%s" % (rid, ge, body_hint))
+                continue
             resp = lark_call(
                 "https://open.feishu.cn/open-apis/base/v3/bases/%s/tables/%s/records/%s" % (BASE_TOKEN, TABLE_ID, rid),
                 {"fields": {FIELD_PAID: float(amt)}},
@@ -134,7 +161,14 @@ def main():
                 errors.append("%s: %s %s" % (rid, resp.get("code"), resp.get("msg")))
         except Exception as e:
             fail += 1
-            errors.append("%s: %s" % (rid, e))
+            body_hint = ""
+            if hasattr(e, "read"):
+                try:
+                    body_hint = " body=" + e.read().decode("utf-8", "replace")[:300]
+                except Exception:
+                    pass
+            errors.append("%s: %s%s" % (rid, e, body_hint))
+            print("ERR %s: %s%s" % (rid, e, body_hint))
 
     # 寫 status
     status = {
