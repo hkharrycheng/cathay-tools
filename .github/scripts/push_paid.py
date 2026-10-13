@@ -143,6 +143,21 @@ def link_ids(v):
     return [str(v)]
 
 
+def link_texts(v):
+    """link 字段：直接攞 text_arr（關聯記錄顯示名），最可靠"""
+    if not v:
+        return []
+    if isinstance(v, list):
+        out = []
+        for item in v:
+            if isinstance(item, dict):
+                out.extend(item.get("text_arr", []) or [])
+            elif item:
+                out.append(str(item))
+        return out
+    return [str(v)] if v else []
+
+
 def ts(v):
     """datetime：毫秒 timestamp 或 ISO 字符串 -> 'YYYY-MM-DD HH:MM'（香港時區）"""
     if v is None or v == "":
@@ -180,6 +195,7 @@ def sync_cathay_json(token):
         for it in lark_list_all(token, PASSENGERS_TABLE):
             f = it.get("fields", {})
             rid = it.get("record_id", "")
+            print("RAWPAX %s fields-keys=%s DisplayName=%r" % (rid, list(f.keys()), f.get("DisplayName")))
             name = s(f.get("DisplayName"))
             p_map[rid] = name
             passengers.append({
@@ -193,8 +209,7 @@ def sync_cathay_json(token):
         for it in lark_list_all(token, TABLE_ID):
             f = it.get("fields", {})
             rid = it.get("record_id", "")
-            print("RAW %s Passengers=%r" % (rid, f.get("Passengers")))
-            pax_names = [p_map.get(pid, pid) for pid in link_ids(f.get("Passengers"))]
+            pax_names = link_texts(f.get("Passengers"))
             tickets.append({
                 "id": rid,
                 "displayName": s(f.get("Display Name")),
