@@ -1180,23 +1180,33 @@ async function pushToLark() {
     const payload = { records: edits, updatedAt: new Date().toISOString() };
     const content = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
     const apiUrl = `https://api.github.com/repos/${GH_REPO}/contents/${GH_PENDING_PATH}`;
-    // 攞現有 sha
-    let sha = null;
-    try {
-      const g = await fetch(apiUrl, { headers: ghHeaders(token) });
-      if (g.ok) { const j = await g.json(); sha = j.sha; }
-    } catch (e) {}
-    const body = {
-      message: `J09: 推送實付到飛書（${keys.length} 項）`,
-      content: content,
-      branch: 'main'
-    };
-    if (sha) body.sha = sha;
-    const resp = await fetch(apiUrl, {
-      method: 'PUT',
-      headers: ghHeaders(token),
-      body: JSON.stringify(body)
-    });
+    // 動態攞最新 sha + 撞 409 自動重試（解決 Actions 清空檔案後 SHA 衝突）
+    let resp = null;
+    for (let attempt = 1; attempt <= 4; attempt++) {
+      let sha = null;
+      try {
+        const g = await fetch(apiUrl + '?ref=main&_=' + Date.now(), { headers: ghHeaders(token) });
+        if (g.ok) { const j = await g.json(); sha = j.sha; }
+      } catch (e) {}
+      const body = {
+        message: `J09: 推送實付到飛書（${keys.length} 項）`,
+        content: content,
+        branch: 'main'
+      };
+      if (sha) body.sha = sha;
+      resp = await fetch(apiUrl, {
+        method: 'PUT',
+        headers: ghHeaders(token),
+        body: JSON.stringify(body)
+      });
+      if (resp.ok) break;
+      if (resp.status === 409 && attempt < 4) {
+        st.textContent = `提交撞到 SHA 衝突，自動重試（${attempt}/4）...`;
+        await new Promise(r => setTimeout(r, 1500));
+        continue;
+      }
+      break;
+    }
     if (!resp.ok) {
       let msg = resp.status;
       try { const j = await resp.json(); msg += ': ' + (j.message || ''); } catch (e) {}
