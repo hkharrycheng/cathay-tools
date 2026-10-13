@@ -1,16 +1,21 @@
 # J09: 讀取 data/pending-paid.json -> 換 tenant_access_token -> 更新飛書「Y HK$」
-# -> 寫 push-status.json + 清空 pending（防循環：下次觸發讀到空就 exit）
+# -> 自動重生 cathay.json（version +0.01，用飛書最新數據）-> 寫 push-status.json + 清空 pending
+# v2 (2026-10-13): 新增 sync_cathay_json —— 飛書更新後自動重生 cathay.json，HTML refresh 即時見最新數據
 import base64
 import json
 import os
+import re
 import urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 REPO = "hkharrycheng/cathay-tools"
 BRANCH = "main"
 BASE_TOKEN = "C2x4byTkEaN3Ths9FXwcagDSn5e"
 TABLE_ID = "tbl97F6lmemjat8V"
+PASSENGERS_TABLE = "tblxBC2f3i4L3Khh"
+DASHBOARD_ID = "blkEYDQV9iBTideY"
 FIELD_PAID = "Y HK$"
+HK_TZ = timezone(timedelta(hours=8))
 
 UA = "HIS-Tools-Agent"
 
@@ -62,6 +67,241 @@ def lark_call(url, payload, token=None, method="POST"):
         req = urllib.request.Request(url, data=body, method=method, headers=headers)
     with urllib.request.urlopen(req, timeout=30) as r:
         return json.load(r)
+
+
+def lark_list_all(token, table_id):
+    """bitable v1 list records 全頁（page_token 循環）"""
+    items = []
+    page_token = ""
+    while True:
+        url = "https://open.feishu.cn/open-apis/bitable/v1/apps/%s/tables/%s/records" % (BASE_TOKEN, table_id)
+        if page_token:
+            url += "?page_token=" + page_token
+        r = lark_call(url, {}, token=token, method="GET")
+        if r.get("code") != 0:
+            raise Exception("list fail %s %s" % (r.get("code"), r.get("msg")))
+        data = r.get("data", {})
+        items.extend(data.get("items", []))
+        if data.get("has_more"):
+            page_token = data.get("page_token", "")
+        else:
+            break
+    return items
+
+
+# ---- cell 轉換（處理飛書 API 默認 JSON 形態）----
+
+def s(v):
+    """text：list 只保留非 dict 元素"""
+    if v is None:
+        return ""
+    if isinstance(v, list):
+        return "".join(str(x) for x in v if not isinstance(x, dict))
+    return str(v)
+
+
+def n(v):
+    """number：int/float/含 HK$ 逗號字符串 -> float"""
+    if v is None or v == "":
+        return None
+    if isinstance(v, list):
+        if not v:
+            return None
+        v = v[0]
+    if isinstance(v, (int, float)):
+        return float(v)
+    try:
+        return float(str(v).replace(",", "").replace("HK$", "").replace("$", "").strip())
+    except Exception:
+        return None
+
+
+def opt(v):
+    """select：單選返回字符串 / 多選返回數組 -> 攞第一個"""
+    if v is None:
+        return None
+    if isinstance(v, list):
+        return str(v[0]) if v else None
+    return str(v)
+
+
+def link_ids(v):
+    """link 字段：默認 [{"record_ids":[..]}] / [{"id":..}] / ["id"] -> id 列表"""
+    if not v:
+        return []
+    if isinstance(v, list):
+        ids = []
+        for item in v:
+            if isinstance(item, dict):
+                if "record_ids" in item:
+                    ids.extend(item.get("record_ids", []) or [])
+                elif "id" in item:
+                    ids.append(item.get("id"))
+            else:
+                ids.append(str(item))
+        return ids
+    return [str(v)]
+
+
+def ts(v):
+    """datetime：毫秒 timestamp 或 ISO 字符串 -> 'YYYY-MM-DD HH:MM'（香港時區）"""
+    if v is None or v == "":
+        return None
+    if isinstance(v, (int, float)):
+        try:
+            return datetime.fromtimestamp(v / 1000, tz=HK_TZ).strftime("%Y-%m-%d %H:%M")
+        except Exception:
+            return None
+    m = re.match(r"(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2})", str(v))
+    if m:
+        return m.group(1) + " " + m.group(2)
+    return str(v)
+
+
+# ---- 重生 cathay.json ----
+
+def sync_cathay_json(token):
+    """讀飛書全部 record -> 重生 cathay.json（version +0.01）-> 上傳"""
+    try:
+        # 現有 version
+        version = 1.00
+        cur = gh_get("cathay.json")
+        if cur and cur.get("content"):
+            try:
+                old = json.loads(base64.b64decode(cur["content"]).decode("utf-8"))
+                version = float(old.get("version", "1.00"))
+            except Exception:
+                pass
+        new_version = round(version + 0.01, 2)
+
+        # 乘客
+        p_map = {}
+        passengers = []
+        for it in lark_list_all(token, PASSENGERS_TABLE):
+            f = it.get("fields", {})
+            rid = it.get("record_id", "")
+            name = s(f.get("DisplayName"))
+            p_map[rid] = name
+            passengers.append({
+                "id": rid,
+                "name": name,
+                "appName": s(f.get("Flight Load App Name")),
+            })
+
+        # 航班
+        tickets = []
+        for it in lark_list_all(token, TABLE_ID):
+            f = it.get("fields", {})
+            rid = it.get("record_id", "")
+            pax_names = [p_map.get(pid, pid) for pid in link_ids(f.get("Passengers"))]
+            tickets.append({
+                "id": rid,
+                "displayName": s(f.get("Display Name")),
+                "flightNumber": s(f.get("Flight Number")),
+                "from": s(f.get("From")),
+                "to": s(f.get("To")),
+                "startTime": ts(f.get("Start Time")),
+                "endTime": ts(f.get("End Time")),
+                "planeModel": s(f.get("Plane Model")),
+                "capacity": n(f.get("Capacity")),
+                "booked": n(f.get("Booked")),
+                "checkedIn": n(f.get("Checked-In")),
+                "bookedPercent": n(f.get("% Booked")),
+                "p25": n(f.get("P25")),
+                "p27": n(f.get("P27")),
+                "p29": n(f.get("P29")),
+                "p31": n(f.get("P31")),
+                "p33": n(f.get("P33")),
+                "noOfStaff": n(f.get("No. of Staff")),
+                "staffPercent": n(f.get("% Staff")),
+                "yHk": n(f.get("Y HK$")),
+                "yListedHk": n(f.get("Y Listed HK$")),
+                "yMilesHk": n(f.get("Y Miles HK$")),
+                "discount": n(f.get("Discount %")),
+                "asiaMilesUsed": n(f.get("Asia Miles Used")),
+                "finalStatus": opt(f.get("Final Status")),
+                "finalStatusProb": n(f.get("Final Status Prob")),
+                "rollingProb": n(f.get("Rolling Final Status Prob")),
+                "outport": s(f.get("Outport Location")),
+                "passengers": pax_names,
+            })
+
+        # 統計（與 gen_cathay_json.py 一致）
+        with_status = [t for t in tickets if t["finalStatus"] is not None]
+        accepted = [t for t in with_status if t["finalStatus"] == "Accepted"]
+
+        booked_vals = [t["bookedPercent"] for t in with_status if t["bookedPercent"] is not None]
+        staff_pct_vals = [t["staffPercent"] for t in with_status if t["staffPercent"] is not None]
+        discount_vals = [t["discount"] for t in with_status if t["discount"] is not None]
+        staff_count_vals = [t["noOfStaff"] for t in with_status if t["noOfStaff"] is not None]
+
+        avg_booked = sum(booked_vals) / len(booked_vals) if booked_vals else 0
+        avg_staff_pct = sum(staff_pct_vals) / len(staff_pct_vals) if staff_pct_vals else 0
+        avg_discount = sum(discount_vals) / len(discount_vals) if discount_vals else 0
+        avg_staff_count = sum(staff_count_vals) / len(staff_count_vals) if staff_count_vals else 0
+
+        status_dist = {}
+        for t in with_status:
+            st = t["finalStatus"]
+            status_dist[st] = status_dist.get(st, 0) + 1
+
+        rolling = sorted(
+            [{"time": t["startTime"], "prob": t["rollingProb"]} for t in tickets
+             if t["startTime"] and t["rollingProb"] is not None],
+            key=lambda x: x["time"],
+        )
+        staff_trend = sorted(
+            [{"time": t["startTime"], "staff": t["noOfStaff"]} for t in tickets
+             if t["startTime"] and t["noOfStaff"] is not None],
+            key=lambda x: x["time"],
+        )
+
+        now = datetime.now(tz=HK_TZ)
+        upcoming = []
+        for t in tickets:
+            if t["startTime"]:
+                try:
+                    if datetime.strptime(t["startTime"], "%Y-%m-%d %H:%M").replace(tzinfo=HK_TZ) > now:
+                        upcoming.append(t)
+                except Exception:
+                    pass
+        upcoming.sort(key=lambda x: x["startTime"])
+
+        result = {
+            "version": "%.2f" % new_version,
+            "lastUpdate": datetime.now(tz=HK_TZ).strftime("%Y-%m-%d %H:%M"),
+            "source": {
+                "baseToken": BASE_TOKEN,
+                "ticketsTable": TABLE_ID,
+                "passengersTable": PASSENGERS_TABLE,
+                "dashboardId": DASHBOARD_ID,
+            },
+            "stats": {
+                "noOfFlights": len(with_status),
+                "totalTickets": len(tickets),
+                "successful": len(accepted),
+                "successRate": round(len(accepted) / len(with_status), 4) if with_status else 0,
+                "avgBooked": round(avg_booked, 4),
+                "avgStaffPercent": round(avg_staff_pct, 4),
+                "avgStaffCount": round(avg_staff_count, 2),
+                "avgDiscount": round(avg_discount, 4),
+                "statusDist": [{"status": k, "count": v} for k, v in status_dist.items()],
+            },
+            "rollingProb": rolling,
+            "staffTrend": staff_trend,
+            "upcoming": upcoming,
+            "tickets": tickets,
+            "passengers": passengers,
+        }
+
+        gh_put(
+            "cathay.json",
+            json.dumps(result, ensure_ascii=False, indent=2),
+            "J09: auto sync cathay.json v%s" % new_version,
+        )
+        print("cathay.json synced v%s (tickets=%s, with_status=%s)" % (new_version, len(tickets), len(with_status)))
+    except Exception as e:
+        print("sync cathay.json FAIL:", e)
 
 
 def main():
@@ -169,6 +409,9 @@ def main():
                     pass
             errors.append("%s: %s%s" % (rid, e, body_hint))
             print("ERR %s: %s%s" % (rid, e, body_hint))
+
+    # 飛書更新完成 -> 自動重生 cathay.json（方案 A：Actions 自動 sync）
+    sync_cathay_json(token)
 
     # 寫 status
     status = {
