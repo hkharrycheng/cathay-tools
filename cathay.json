@@ -1,6 +1,6 @@
 {
-  "version": "1.09",
-  "lastUpdate": "2026-10-13 10:34",
+  "version": "1.10",
+  "lastUpdate": "2026-10-13 10:37",
   "source": {
     "baseToken": "C2x4byTkEaN3Ths9FXwcagDSn5e",
     "ticketsTable": "tbl97F6lmemjat8V",
@@ -272,10 +272,10 @@
       "p33": null,
       "noOfStaff": 18.0,
       "staffPercent": 0.0394736842105263,
-      "yHk": 510.0,
+      "yHk": 505.0,
       "yListedHk": 5427.0,
       "yMilesHk": 459.0,
-      "discount": 0.906025428413488,
+      "discount": 0.906946747742768,
       "asiaMilesUsed": 13000.0,
       "finalStatus": "Accepted",
       "finalStatusProb": 1.0,
