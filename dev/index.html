@@ -1242,10 +1242,17 @@ function pollPushStatus(submittedAt, st) {
             st.textContent = `⚠️ 完成：成功 ${j.ok} / 失敗 ${j.fail}` + (j.errors && j.errors.length ? '\n' + j.errors.slice(0, 3).join('\n') : '');
           } else {
             st.className = 'modal-status ok';
-            st.textContent = `✅ 全部成功！已更新 ${j.ok} 條記錄到飛書。`;
+            st.textContent = `✅ 全部成功！已更新 ${j.ok} 條記錄到飛書，重新載入最新數據…`;
             localStorage.setItem(PAID_EDIT_KEY, '{}');
             updateActionBar();
-            renderTickets(currentFilter, currentSearch);
+            // 重新 fetch cathay.json（Actions 已自動重生，包含新實付）
+            try {
+              const res2 = await fetch('cathay.json?v=' + Date.now());
+              if (res2.ok) {
+                DATA = await res2.json();
+                renderAll();
+              }
+            } catch (e2) {}
             setTimeout(closePushModal, 1500);
           }
           return;
