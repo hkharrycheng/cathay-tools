@@ -213,6 +213,53 @@ body {
 }
 .airport-detail-panel .adp-flight b { color: var(--text); }
 
+/* ===== 操作列 / Token / 推送 ===== */
+.action-bar { display: flex; gap: 8px; margin: 10px 0; flex-wrap: wrap; }
+.action-btn {
+  flex: 1; min-width: 110px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border);
+  background: var(--card2); color: var(--text); font-size: 13px; font-weight: 600; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.action-btn:active { transform: scale(0.97); }
+.action-btn.has-pending { border-color: #ffc53d; color: #ffc53d; }
+.action-btn.token-set { border-color: #3dd68c; color: #3dd68c; }
+.tc-paid { margin-top: 6px; font-size: 12px; color: var(--sub); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.tc-paid b { color: var(--text); }
+.edit-btn {
+  padding: 3px 10px; border-radius: 8px; border: 1px solid #4f8cff; background: rgba(79,140,255,0.12);
+  color: #7eb0ff; font-size: 11px; font-weight: 600; cursor: pointer;
+}
+.edit-btn:active { transform: scale(0.95); }
+.pending-tag { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 6px; background: rgba(255,197,61,0.15); color: #ffc53d; font-weight: 600; }
+
+/* ===== Modal ===== */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none;
+  align-items: center; justify-content: center; z-index: 999; padding: 20px;
+}
+.modal-overlay.show { display: flex; }
+.modal-box {
+  width: 100%; max-width: 360px; background: var(--card2); border: 1px solid var(--border);
+  border-radius: 16px; padding: 18px; box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+}
+.modal-box h3 { font-size: 15px; margin: 0 0 10px; color: var(--text); }
+.modal-box p { font-size: 12px; color: var(--sub); margin: 6px 0 10px; line-height: 1.5; }
+.modal-box input[type=password], .modal-box input[type=number] {
+  width: 100%; box-sizing: border-box; padding: 10px 12px; border-radius: 10px;
+  border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 14px;
+}
+.modal-box .modal-actions { display: flex; gap: 8px; margin-top: 14px; }
+.modal-btn {
+  flex: 1; padding: 10px; border-radius: 10px; border: none; font-size: 13px; font-weight: 600; cursor: pointer;
+}
+.modal-btn.primary { background: #4f8cff; color: #fff; }
+.modal-btn.secondary { background: var(--border); color: var(--text); }
+.modal-btn.danger { background: rgba(255,93,108,0.15); color: #ff5d6c; border: 1px solid #ff5d6c; }
+.modal-btn:disabled { opacity: 0.5; }
+.modal-status { font-size: 11px; margin-top: 8px; min-height: 16px; color: var(--sub); }
+.modal-status.ok { color: #3dd68c; }
+.modal-status.err { color: #ff5d6c; }
+
 /* 通用 */
 .footer { text-align: center; color: var(--sub); font-size: 11px; padding: 16px 0 8px; }
 .empty { color: var(--sub); text-align: center; padding: 24px; font-size: 13px; }
@@ -236,6 +283,10 @@ body {
 <div class="tab-panel active" id="panel-flights">
   <div class="container">
     <div class="section-title">📋 全部航班記錄</div>
+    <div class="action-bar">
+      <button class="action-btn" id="tokenBtn" onclick="openTokenModal()">🔑 設定飛書Token</button>
+      <button class="action-btn" id="pushBtn" onclick="pushToLark()">📤 推送實付到飛書</button>
+    </div>
     <div class="filter-bar">
       <button class="filter-btn active" data-filter="all">全部</button>
       <button class="filter-btn" data-filter="upcoming">✈️ 即將起飛</button>
@@ -331,6 +382,32 @@ body {
   </button>
 </nav>
 
+<!-- ===== Token 設定 Modal ===== -->
+<div class="modal-overlay" id="tokenModal" onclick="if(event.target===this)closeTokenModal()">
+  <div class="modal-box">
+    <h3>🔑 設定 GitHub Token</h3>
+    <p>輸入 GitHub Personal Access Token（XOR+Base64 加密儲存喺 localStorage，無有效期）。推送實付時，資料會先提交到 GitHub，GitHub Actions 會用你嘅飛書應用憑證（存喺 GitHub Secrets，唔入 HTML）自動更新多維表格。</p>
+    <input type="password" id="ghTokenInput" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
+    <div class="modal-status" id="tokenStatus"></div>
+    <div class="modal-actions">
+      <button class="modal-btn secondary" onclick="closeTokenModal()">取消</button>
+      <button class="modal-btn danger" id="tokenClearBtn" onclick="clearGhToken()" style="display:none">清除</button>
+      <button class="modal-btn primary" id="tokenSaveBtn" onclick="saveGhToken()">儲存</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 推送進度 Modal ===== -->
+<div class="modal-overlay" id="pushModal" onclick="if(event.target===this)closePushModal()">
+  <div class="modal-box">
+    <h3>📤 推送實付到飛書</h3>
+    <div class="modal-status" id="pushStatus"></div>
+    <div class="modal-actions">
+      <button class="modal-btn secondary" onclick="closePushModal()">關閉</button>
+    </div>
+  </div>
+</div>
+
 <script>
 let DATA = null;
 
@@ -385,6 +462,7 @@ function renderAll() {
   renderAirportCombo();
   setupMonthSlider();
   renderMap();
+  updateActionBar();
 }
 
 /* ===== 統計 Tab ===== */
@@ -550,6 +628,18 @@ function ticketCard(t) {
     ? `<div class="bar-discount">折扣 ${discount}%</div>`
     : `<div class="bar-discount none">折扣 —</div>`;
 
+  // 實付價錢：NULL 可編輯，有值顯示（pending edit 會標記）
+  const pendingEdits = getPaidEdits();
+  const pendingAmt = pendingEdits[t.id];
+  const effPaid = pendingAmt != null ? Number(pendingAmt) : paidV;
+  let paidHtml;
+  if (effPaid != null && !isNaN(effPaid)) {
+    const tag = pendingAmt != null ? ' <span class="pending-tag">待推送</span>' : '';
+    paidHtml = `<div class="tc-paid">💰 實付：<b>HK$${Number(effPaid).toLocaleString()}</b>${tag}</div>`;
+  } else {
+    paidHtml = `<div class="tc-paid">💰 實付：<b style="color:var(--sub)">未填</b> <button class="edit-btn" onclick="editPaid('${t.id.replace(/'/g, "\\'")}')">✏️ 補實付</button></div>`;
+  }
+
   return `
     <div class="ticket-card">
       <div class="tc-main">
@@ -567,6 +657,7 @@ function ticketCard(t) {
           <div>P27：<b>${t.p27 != null ? t.p27 : '—'}</b></div>
         </div>
         <div class="tc-pax">乘客：<b>${pax}</b></div>
+        ${paidHtml}
       </div>
       <div class="tc-bars">
         ${barsHtml}
@@ -962,6 +1053,212 @@ function switchTab(tab) {
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => switchTab(btn.dataset.tab));
 });
+
+/* ===== GitHub Token 加密儲存（XOR + Base64，無有效期，似 J04） ===== */
+const GH_TOKEN_KEY = 'cathayGhTokenEnc';
+const TOKEN_XOR_KEY = 'cathay-2026-his-tools';
+
+function xorEncrypt(str) {
+  let out = '';
+  for (let i = 0; i < str.length; i++) {
+    out += String.fromCharCode(str.charCodeAt(i) ^ TOKEN_XOR_KEY.charCodeAt(i % TOKEN_XOR_KEY.length));
+  }
+  return btoa(unescape(encodeURIComponent(out)));
+}
+function xorDecrypt(enc) {
+  try {
+    const str = decodeURIComponent(escape(atob(enc)));
+    let out = '';
+    for (let i = 0; i < str.length; i++) {
+      out += String.fromCharCode(str.charCodeAt(i) ^ TOKEN_XOR_KEY.charCodeAt(i % TOKEN_XOR_KEY.length));
+    }
+    return out;
+  } catch (e) { return null; }
+}
+function getGhToken() {
+  const enc = localStorage.getItem(GH_TOKEN_KEY);
+  if (!enc) return null;
+  return xorDecrypt(enc);
+}
+function openTokenModal() {
+  document.getElementById('tokenModal').classList.add('show');
+  document.getElementById('ghTokenInput').value = '';
+  const st = document.getElementById('tokenStatus');
+  const clearBtn = document.getElementById('tokenClearBtn');
+  if (getGhToken()) {
+    st.textContent = '已設定 GitHub Token（隱藏）。輸入新 Token 可覆蓋。';
+    st.className = 'modal-status ok';
+    clearBtn.style.display = 'block';
+  } else {
+    st.textContent = '';
+    st.className = 'modal-status';
+    clearBtn.style.display = 'none';
+  }
+  document.getElementById('ghTokenInput').focus();
+}
+function closeTokenModal() { document.getElementById('tokenModal').classList.remove('show'); }
+function saveGhToken() {
+  const input = document.getElementById('ghTokenInput').value.trim();
+  const st = document.getElementById('tokenStatus');
+  if (!input) { st.textContent = '⚠️ 請輸入 Token'; st.className = 'modal-status err'; return; }
+  localStorage.setItem(GH_TOKEN_KEY, xorEncrypt(input));
+  st.textContent = '✅ 已加密儲存（localStorage，無有效期）';
+  st.className = 'modal-status ok';
+  updateActionBar();
+  setTimeout(closeTokenModal, 900);
+}
+function clearGhToken() {
+  localStorage.removeItem(GH_TOKEN_KEY);
+  const st = document.getElementById('tokenStatus');
+  st.textContent = '已清除 Token';
+  st.className = 'modal-status';
+  document.getElementById('tokenClearBtn').style.display = 'none';
+  updateActionBar();
+}
+
+/* ===== 實付價錢編輯（IF NULL / 暫存 localStorage） ===== */
+const PAID_EDIT_KEY = 'cathayPaidEdits';
+function getPaidEdits() {
+  try { return JSON.parse(localStorage.getItem(PAID_EDIT_KEY)) || {}; }
+  catch (e) { return {}; }
+}
+function editPaid(recordId) {
+  const t = DATA.tickets.find(x => x.id === recordId);
+  if (!t) return;
+  const orig = t.yHk != null ? t.yHk : '';
+  const input = prompt(`輸入「${t.flightNumber} ${t.from}→${t.to}」嘅實付價錢（HKD）：`, orig);
+  if (input === null) return;
+  const v = Number(input.replace(/,/g, '').replace('HK$', '').trim());
+  if (isNaN(v) || v < 0) { alert('⚠️ 請輸入有效價錢（數字）'); return; }
+  const edits = getPaidEdits();
+  edits[recordId] = v;
+  localStorage.setItem(PAID_EDIT_KEY, JSON.stringify(edits));
+  updateActionBar();
+  renderTickets(currentFilter, currentSearch);
+}
+function clearPaidEdit(recordId) {
+  const edits = getPaidEdits();
+  delete edits[recordId];
+  localStorage.setItem(PAID_EDIT_KEY, JSON.stringify(edits));
+  updateActionBar();
+  renderTickets(currentFilter, currentSearch);
+}
+
+/* ===== 推送實付：提交到 GitHub，由 GitHub Actions 自動更新飛書 ===== */
+function updateActionBar() {
+  const hasToken = !!getGhToken();
+  document.getElementById('tokenBtn').classList.toggle('token-set', hasToken);
+  document.getElementById('tokenBtn').textContent = hasToken ? '🔑 Token 已設定' : '🔑 設定GitHub Token';
+  const pending = Object.keys(getPaidEdits());
+  document.getElementById('pushBtn').classList.toggle('has-pending', pending.length > 0);
+  document.getElementById('pushBtn').textContent = pending.length
+    ? `📤 推送實付（${pending.length}）` : '📤 推送實付到飛書';
+}
+
+/* ===== 推送實付：提交到 GitHub，由 GitHub Actions 自動更新飛書 ===== */
+const GH_REPO = 'hkharrycheng/cathay-tools';
+const GH_PENDING_PATH = 'data/pending-paid.json';
+const GH_STATUS_URL = 'https://hkharrycheng.github.io/cathay-tools/data/push-status.json';
+
+function ghHeaders(token) {
+  return { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' };
+}
+
+async function pushToLark() {
+  const token = getGhToken();
+  if (!token) { alert('⚠️ 請先按「🔑 設定GitHub Token」輸入 Token'); openTokenModal(); return; }
+  const edits = getPaidEdits();
+  const keys = Object.keys(edits);
+  if (!keys.length) { alert('⚠️ 冇待推送嘅實付價錢。請先喺航班卡按「✏️ 補實付」輸入。'); return; }
+
+  document.getElementById('pushModal').classList.add('show');
+  const st = document.getElementById('pushStatus');
+  st.className = 'modal-status';
+  st.textContent = '提交到 GitHub...';
+
+  try {
+    const payload = { records: edits, updatedAt: new Date().toISOString() };
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+    const apiUrl = `https://api.github.com/repos/${GH_REPO}/contents/${GH_PENDING_PATH}`;
+    // 動態攞最新 sha + 撞 409 自動重試（解決 Actions 清空檔案後 SHA 衝突）
+    let resp = null;
+    for (let attempt = 1; attempt <= 4; attempt++) {
+      let sha = null;
+      try {
+        const g = await fetch(apiUrl + '?ref=main&_=' + Date.now(), { headers: ghHeaders(token) });
+        if (g.ok) { const j = await g.json(); sha = j.sha; }
+      } catch (e) {}
+      const body = {
+        message: `J09: 推送實付到飛書（${keys.length} 項）`,
+        content: content,
+        branch: 'main'
+      };
+      if (sha) body.sha = sha;
+      resp = await fetch(apiUrl, {
+        method: 'PUT',
+        headers: ghHeaders(token),
+        body: JSON.stringify(body)
+      });
+      if (resp.ok) break;
+      if (resp.status === 409 && attempt < 4) {
+        st.textContent = `提交撞到 SHA 衝突，自動重試（${attempt}/4）...`;
+        await new Promise(r => setTimeout(r, 1500));
+        continue;
+      }
+      break;
+    }
+    if (!resp.ok) {
+      let msg = resp.status;
+      try { const j = await resp.json(); msg += ': ' + (j.message || ''); } catch (e) {}
+      st.className = 'modal-status err';
+      st.textContent = '❌ 提交失敗（' + msg + '）\n\n請檢查 Token 有冇 repo 寫入權限。';
+      return;
+    }
+    // 提交成功，開始 polling GitHub Actions 結果
+    const submittedAt = payload.updatedAt;
+    st.textContent = '✅ 已提交！GitHub Actions 處理中...';
+    pollPushStatus(submittedAt, st);
+  } catch (e) {
+    console.error('提交錯誤:', e);
+    st.className = 'modal-status err';
+    st.textContent = '❌ 錯誤：' + e.message;
+  }
+}
+
+function pollPushStatus(submittedAt, st) {
+  let tries = 0;
+  const timer = setInterval(async () => {
+    tries++;
+    try {
+      const res = await fetch(GH_STATUS_URL + '?v=' + Date.now());
+      if (res.ok) {
+        const j = await res.json();
+        const updatedAt = j.updatedAt || '';
+        if (updatedAt >= submittedAt) {
+          clearInterval(timer);
+          if (j.fail > 0) {
+            st.className = 'modal-status err';
+            st.textContent = `⚠️ 完成：成功 ${j.ok} / 失敗 ${j.fail}` + (j.errors && j.errors.length ? '\n' + j.errors.slice(0, 3).join('\n') : '');
+          } else {
+            st.className = 'modal-status ok';
+            st.textContent = `✅ 全部成功！已更新 ${j.ok} 條記錄到飛書。`;
+            localStorage.setItem(PAID_EDIT_KEY, '{}');
+            updateActionBar();
+            renderTickets(currentFilter, currentSearch);
+            setTimeout(closePushModal, 1500);
+          }
+          return;
+        }
+      }
+    } catch (e) {}
+    if (tries >= 24) {   // 約 2 分鐘
+      clearInterval(timer);
+      st.className = 'modal-status err';
+      st.textContent = '⏱️ 等待超時。請檢查 GitHub Actions 有冇成功執行（Actions 頁面 > Push Paid to Feishu）。';
+    }
+  }, 5000);
+}
+function closePushModal() { document.getElementById('pushModal').classList.remove('show'); }
 
 loadData();
 </script>
