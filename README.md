@@ -78,6 +78,42 @@
   更新 ECharts option
 ```
 
+### 實付推送流程（GitHub Actions Bridge，v1.03）
+
+前端唔直接呼叫飛書 API（瀏覽器 CORS 唔支援 open.feishu.cn），改為經 GitHub 中轉：
+
+```
+用戶喺航班卡按「✏️ 補實付」（只限 Y HK$ 為空嘅航班）
+        │
+        ▼
+  edits 存 localStorage（cathayPaidEdits，待推送 tag）
+        │
+        ▼
+  按「📤 推送實付」
+        │
+        ├─ 1. 讀取 localStorage 嘅 GitHub Token（XOR+Base64 加密，key='cathay-2026-his-tools'）
+        ├─ 2. 每次提交前動態 GET pending-paid.json 攞最新 sha
+        ├─ 3. PUT data/pending-paid.json（{records:{record_id:金額}, updatedAt}）
+        │      └─ 撞 409（Actions 清空緊檔案）→ 自動重試最多 4 次
+        ▼
+  GitHub Actions（.github/workflows/push-paid.yml，監控 data/pending-paid.json）
+        │
+        ├─ 1. 讀 repo secrets：FEISHU_APP_ID / FEISHU_APP_SECRET
+        ├─ 2. POST /open-apis/auth/v3/tenant_access_token/internal 換 tenant token
+        ├─ 3. GET /open-apis/bitable/v1/apps/{base}/tables/{table}/records/{rid} 診斷
+        ├─ 4. PUT 同一 URL，body={"fields":{"Y HK$": 金額}}
+        ├─ 5. 寫 data/push-status.json（updatedAt / ok / fail / errors）
+        └─ 6. 清空 data/pending-paid.json（防循環觸發）
+        │
+        ▼
+  前端 polling data/push-status.json（每 5 秒，最多 2 分鐘）
+        │
+        ├─ updatedAt ≥ 提交時間 → 顯示成功/失敗
+        └─ 成功 → 清空本地 edits + 重新 render
+```
+
+**權限要求（飛書）**：App 需開 `base:record:read` + `base:record:write` 並發布版本；App 必須加入目標 Base 做協作者（可編輯）。
+
 ---
 
 ## JSON Structure
@@ -106,6 +142,7 @@
 
 | 版本 | 日期 | 更新內容 |
 |------|------|----------|
+| v1.03 | 2026-10-13 | 實付推送功能：航班可編輯「Y HK$」實付價（IF NULL）+ 儲存加密 GitHub Token（XOR+Base64 存 localStorage）+ 推送實付經 GitHub Actions Bridge 寫入飛書多維表格 |
 | v1.02 | 2026-10-13 | 數據更新：沖舅父由八月東京 NRT 行程移至五月大阪 KIX 行程（CX596/CX506 加入沖舅父；CX526/CX509 移除沖舅父） |
 | v1.01 | 2026-10-12 | 首個 GitHub 部署。3 Tab 結構 + 航班排序 dropdown + 地圖 filter（combobox/slider/dropdown）+ 新 LOGO + 刪機場方格 + 乘客「全部乘客」選項 + 機場「涉及 A 航班」邏輯 |
 | v1.00 | 2026-10-12 | 本地 Prototype（localhost:8773 測試版） |
