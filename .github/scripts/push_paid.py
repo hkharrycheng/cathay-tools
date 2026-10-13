@@ -193,6 +193,7 @@ def sync_cathay_json(token):
         for it in lark_list_all(token, TABLE_ID):
             f = it.get("fields", {})
             rid = it.get("record_id", "")
+            print("RAW %s Passengers=%r" % (rid, f.get("Passengers")))
             pax_names = [p_map.get(pid, pid) for pid in link_ids(f.get("Passengers"))]
             tickets.append({
                 "id": rid,
