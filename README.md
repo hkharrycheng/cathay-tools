@@ -78,12 +78,12 @@
   更新 ECharts option
 ```
 
-### 實付推送流程（GitHub Actions Bridge，v1.03 → v1.04 自動 sync）
+### 實付推送流程（GitHub Actions Bridge，v1.03 → v1.05 自動 sync + 全航班可改）
 
 前端唔直接呼叫飛書 API（瀏覽器 CORS 唔支援 open.feishu.cn），改為經 GitHub 中轉：
 
 ```
-用戶喺航班卡按「✏️ 補實付」（只限 Y HK$ 為空嘅航班）
+用戶喺航班卡按「✏️ 改實付 / 補實付」（所有航班可改：有值改實付、冇值補實付）
         │
         ▼
   edits 存 localStorage（cathayPaidEdits，待推送 tag）
@@ -112,12 +112,18 @@
   前端 polling data/push-status.json（每 5 秒，最多 2 分鐘）
         │
         ├─ updatedAt ≥ 提交時間 → 顯示成功/失敗
-        └─ 成功 → 清空本地 edits + 重新 render
+        └─ 成功 → 清空本地 edits + 重新 fetch cathay.json（Actions 已重生新數據）→ render 最新畫面
 ```
 
 **權限要求（飛書）**：App 需開 `base:record:read` + `base:record:write` 並發布版本；App 必須加入目標 Base 做協作者（可編輯）。
 
 **自動 sync 機制（v1.04）**：每次推送實付後，Actions 用 tenant token 直接讀飛書 Cathay Tickets + Passengers 兩張表，重新生成 cathay.json（version 自動 +0.01）並上傳。以後修改多維表格後**唔需要人手重跑 gen_cathay_json.py** —— 任何一次實付推送都會順手 sync 埋最新數據。
+
+**v1.05 更新**：
+1. **所有航班可改實付**：唔止 NULL，已填實付嘅航班都有「✏️ 改實付」按鈕（prompt 預填現值，方便修改）
+2. **推送成功自動 reload**：polling 到成功後自動重新 fetch cathay.json（cache-busting）再 render，唔使手動 refresh
+3. **BASE_PATH 路徑邏輯**：GitHub Pages 用絕對路徑 `/cathay-tools/cathay.json`（dev/ 子目錄都能讀到根目錄最新 json），localhost 自動用相對路徑 —— 解決 dev/ GitHub Pages 下 cathay.json 404 問題
+4. **Dev 測試流程教訓**：dev/ 目錄冇 cathay.json（自動 sync 只更新根目錄嗰個），所以 dev 版必須用絕對路徑指向根目錄 json，唔可以靠相對路徑
 
 ---
 
@@ -147,6 +153,7 @@
 
 | 版本 | 日期 | 更新內容 |
 |------|------|----------|
+| v1.05 | 2026-10-13 | 所有航班可改實付（有值「改實付」/冇值「補實付」）+ 推送成功後自動 reload cathay.json + BASE_PATH 絕對路徑（修 dev/ GitHub Pages 404） |
 | v1.04 | 2026-10-13 | Actions 自動重生 cathay.json：推送實付後用 tenant token 讀飛書全部數據重算並上傳（version 自動 +0.01），HTML refresh 即時見最新，唔使再跑 J00 |
 | v1.03 | 2026-10-13 | 實付推送功能：航班可編輯「Y HK$」實付價（IF NULL）+ 儲存加密 GitHub Token（XOR+Base64 存 localStorage）+ 推送實付經 GitHub Actions Bridge 寫入飛書多維表格 |
 | v1.02 | 2026-10-13 | 數據更新：沖舅父由八月東京 NRT 行程移至五月大阪 KIX 行程（CX596/CX506 加入沖舅父；CX526/CX509 移除沖舅父） |
