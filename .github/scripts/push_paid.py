@@ -127,7 +127,7 @@ def main():
             # 先 GET 診斷：如果連 GET 都 404，即係 App 冇權限訪問呢個 base/table（未加入協作者）
             try:
                 g = lark_call(
-                    "https://open.feishu.cn/open-apis/base/v3/bases/%s/tables/%s/records/%s" % (BASE_TOKEN, TABLE_ID, rid),
+                    "https://open.feishu.cn/open-apis/bitable/v1/apps/%s/tables/%s/records/%s" % (BASE_TOKEN, TABLE_ID, rid),
                     {},
                     token=token,
                     method="GET",
@@ -149,7 +149,7 @@ def main():
                 print("GET ERR %s: %s%s" % (rid, ge, body_hint))
                 continue
             resp = lark_call(
-                "https://open.feishu.cn/open-apis/base/v3/bases/%s/tables/%s/records/%s" % (BASE_TOKEN, TABLE_ID, rid),
+                "https://open.feishu.cn/open-apis/bitable/v1/apps/%s/tables/%s/records/%s" % (BASE_TOKEN, TABLE_ID, rid),
                 {"fields": {FIELD_PAID: float(amt)}},
                 token=token,
                 method="PUT",
