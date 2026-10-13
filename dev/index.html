@@ -628,16 +628,17 @@ function ticketCard(t) {
     ? `<div class="bar-discount">折扣 ${discount}%</div>`
     : `<div class="bar-discount none">折扣 —</div>`;
 
-  // 實付價錢：NULL 可編輯，有值顯示（pending edit 會標記）
+  // 實付價錢：所有航班都可編輯（有值改實付 / 冇值補實付）
   const pendingEdits = getPaidEdits();
   const pendingAmt = pendingEdits[t.id];
   const effPaid = pendingAmt != null ? Number(pendingAmt) : paidV;
+  const editBtn = `<button class="edit-btn" onclick="editPaid('${t.id.replace(/'/g, "\\'")}')">✏️ ${effPaid != null && !isNaN(effPaid) ? '改實付' : '補實付'}</button>`;
   let paidHtml;
   if (effPaid != null && !isNaN(effPaid)) {
     const tag = pendingAmt != null ? ' <span class="pending-tag">待推送</span>' : '';
-    paidHtml = `<div class="tc-paid">💰 實付：<b>HK$${Number(effPaid).toLocaleString()}</b>${tag}</div>`;
+    paidHtml = `<div class="tc-paid">💰 實付：<b>HK$${Number(effPaid).toLocaleString()}</b>${tag} ${editBtn}</div>`;
   } else {
-    paidHtml = `<div class="tc-paid">💰 實付：<b style="color:var(--sub)">未填</b> <button class="edit-btn" onclick="editPaid('${t.id.replace(/'/g, "\\'")}')">✏️ 補實付</button></div>`;
+    paidHtml = `<div class="tc-paid">💰 實付：<b style="color:var(--sub)">未填</b> ${editBtn}</div>`;
   }
 
   return `
@@ -1116,7 +1117,7 @@ function clearGhToken() {
   updateActionBar();
 }
 
-/* ===== 實付價錢編輯（IF NULL / 暫存 localStorage） ===== */
+/* ===== 實付價錢編輯（所有航班可改 / 暫存 localStorage） ===== */
 const PAID_EDIT_KEY = 'cathayPaidEdits';
 function getPaidEdits() {
   try { return JSON.parse(localStorage.getItem(PAID_EDIT_KEY)) || {}; }
