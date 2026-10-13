@@ -92,11 +92,17 @@ def lark_list_all(token, table_id):
 # ---- cell 轉換（處理飛書 API 默認 JSON 形態）----
 
 def s(v):
-    """text：list 只保留非 dict 元素"""
+    """text：支持普通字符串 / [{'text':..}] 對象數組 / ['A','B'] 字符串數組"""
     if v is None:
         return ""
     if isinstance(v, list):
-        return "".join(str(x) for x in v if not isinstance(x, dict))
+        parts = []
+        for x in v:
+            if isinstance(x, dict):
+                parts.append(str(x.get("text", "")))
+            else:
+                parts.append(str(x))
+        return "".join(parts)
     return str(v)
 
 
