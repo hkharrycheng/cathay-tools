@@ -1,0 +1,21 @@
+name: Push Paid to Feishu
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'data/pending-paid.json'
+permissions:
+  contents: write
+jobs:
+  push-paid:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Run push script
+        env:
+          FEISHU_APP_ID: ${{ secrets.FEISHU_APP_ID }}
+          FEISHU_APP_SECRET: ${{ secrets.FEISHU_APP_SECRET }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python .github/scripts/push_paid.py
