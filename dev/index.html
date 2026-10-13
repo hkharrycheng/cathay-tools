@@ -436,9 +436,11 @@ let selectedRegion = 'ALL';    // 'ALL' 或單一區域 code
 let selectedMonth = null;      // 揀咗嘅月份（null = 全部）
 let monthsList = [];           // 排序後嘅月份 list
 
+const BASE_PATH = (location.hostname === 'localhost' || location.hostname === '127.0.0.1') ? '' : '/cathay-tools';
+
 async function loadData() {
   try {
-    const res = await fetch('cathay.json?v=' + Date.now());
+    const res = await fetch(BASE_PATH + '/cathay.json?v=' + Date.now());
     if (!res.ok) throw new Error('HTTP ' + res.status);
     DATA = await res.json();
     renderAll();
@@ -1247,7 +1249,7 @@ function pollPushStatus(submittedAt, st) {
             updateActionBar();
             // 重新 fetch cathay.json（Actions 已自動重生，包含新實付）
             try {
-              const res2 = await fetch('cathay.json?v=' + Date.now());
+              const res2 = await fetch(BASE_PATH + '/cathay.json?v=' + Date.now());
               if (res2.ok) {
                 DATA = await res2.json();
                 renderAll();
