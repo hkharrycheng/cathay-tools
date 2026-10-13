@@ -385,15 +385,14 @@ body {
 <!-- ===== Token 設定 Modal ===== -->
 <div class="modal-overlay" id="tokenModal" onclick="if(event.target===this)closeTokenModal()">
   <div class="modal-box">
-    <h3>🔑 設定飛書應用憑證</h3>
-    <p>輸入飛書開放平台應用嘅 <b>App ID</b> 同 <b>App Secret</b>（XOR+Base64 加密儲存喺 localStorage）。推送時會自動換取 tenant_access_token，過期都會自動重新換，唔使自己理。</p>
-    <input type="text" id="larkAppIdInput" placeholder="App ID（例如 cli_xxxxxxxx）" autocomplete="off" style="margin-bottom:8px">
-    <input type="password" id="larkAppSecretInput" placeholder="App Secret" autocomplete="off">
+    <h3>🔑 設定 GitHub Token</h3>
+    <p>輸入 GitHub Personal Access Token（XOR+Base64 加密儲存喺 localStorage，無有效期）。推送實付時，資料會先提交到 GitHub，GitHub Actions 會用你嘅飛書應用憑證（存喺 GitHub Secrets，唔入 HTML）自動更新多維表格。</p>
+    <input type="password" id="ghTokenInput" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
     <div class="modal-status" id="tokenStatus"></div>
     <div class="modal-actions">
       <button class="modal-btn secondary" onclick="closeTokenModal()">取消</button>
-      <button class="modal-btn danger" id="tokenClearBtn" onclick="clearAppCreds()" style="display:none">清除</button>
-      <button class="modal-btn primary" id="tokenSaveBtn" onclick="saveAppCreds()">儲存</button>
+      <button class="modal-btn danger" id="tokenClearBtn" onclick="clearGhToken()" style="display:none">清除</button>
+      <button class="modal-btn primary" id="tokenSaveBtn" onclick="saveGhToken()">儲存</button>
     </div>
   </div>
 </div>
@@ -1055,9 +1054,8 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => switchTab(btn.dataset.tab));
 });
 
-/* ===== 飛書 App 憑證加密儲存（XOR + Base64，無有效期，似 J04） ===== */
-const APP_ID_KEY = 'cathayLarkAppIdEnc';
-const APP_SECRET_KEY = 'cathayLarkAppSecretEnc';
+/* ===== GitHub Token 加密儲存（XOR + Base64，無有效期，似 J04） ===== */
+const GH_TOKEN_KEY = 'cathayGhTokenEnc';
 const TOKEN_XOR_KEY = 'cathay-2026-his-tools';
 
 function xorEncrypt(str) {
@@ -1077,24 +1075,18 @@ function xorDecrypt(enc) {
     return out;
   } catch (e) { return null; }
 }
-function getAppCreds() {
-  const idEnc = localStorage.getItem(APP_ID_KEY);
-  const secEnc = localStorage.getItem(APP_SECRET_KEY);
-  if (!idEnc || !secEnc) return null;
-  const app_id = xorDecrypt(idEnc);
-  const app_secret = xorDecrypt(secEnc);
-  if (!app_id || !app_secret) return null;
-  return { app_id, app_secret };
+function getGhToken() {
+  const enc = localStorage.getItem(GH_TOKEN_KEY);
+  if (!enc) return null;
+  return xorDecrypt(enc);
 }
 function openTokenModal() {
   document.getElementById('tokenModal').classList.add('show');
-  document.getElementById('larkAppIdInput').value = '';
-  document.getElementById('larkAppSecretInput').value = '';
+  document.getElementById('ghTokenInput').value = '';
   const st = document.getElementById('tokenStatus');
-  const creds = getAppCreds();
   const clearBtn = document.getElementById('tokenClearBtn');
-  if (creds) {
-    st.textContent = '已設定 App ID：' + creds.app_id + '（Secret 已隱藏）。輸入新值可覆蓋。';
+  if (getGhToken()) {
+    st.textContent = '已設定 GitHub Token（隱藏）。輸入新 Token 可覆蓋。';
     st.className = 'modal-status ok';
     clearBtn.style.display = 'block';
   } else {
@@ -1102,45 +1094,26 @@ function openTokenModal() {
     st.className = 'modal-status';
     clearBtn.style.display = 'none';
   }
-  document.getElementById('larkAppIdInput').focus();
+  document.getElementById('ghTokenInput').focus();
 }
 function closeTokenModal() { document.getElementById('tokenModal').classList.remove('show'); }
-function saveAppCreds() {
-  const appId = document.getElementById('larkAppIdInput').value.trim();
-  const appSecret = document.getElementById('larkAppSecretInput').value.trim();
+function saveGhToken() {
+  const input = document.getElementById('ghTokenInput').value.trim();
   const st = document.getElementById('tokenStatus');
-  if (!appId || !appSecret) { st.textContent = '⚠️ 請填晒 App ID 同 App Secret'; st.className = 'modal-status err'; return; }
-  localStorage.setItem(APP_ID_KEY, xorEncrypt(appId));
-  localStorage.setItem(APP_SECRET_KEY, xorEncrypt(appSecret));
+  if (!input) { st.textContent = '⚠️ 請輸入 Token'; st.className = 'modal-status err'; return; }
+  localStorage.setItem(GH_TOKEN_KEY, xorEncrypt(input));
   st.textContent = '✅ 已加密儲存（localStorage，無有效期）';
   st.className = 'modal-status ok';
   updateActionBar();
   setTimeout(closeTokenModal, 900);
 }
-function clearAppCreds() {
-  localStorage.removeItem(APP_ID_KEY);
-  localStorage.removeItem(APP_SECRET_KEY);
+function clearGhToken() {
+  localStorage.removeItem(GH_TOKEN_KEY);
   const st = document.getElementById('tokenStatus');
-  st.textContent = '已清除憑證';
+  st.textContent = '已清除 Token';
   st.className = 'modal-status';
   document.getElementById('tokenClearBtn').style.display = 'none';
   updateActionBar();
-}
-
-/* ===== 自動換取 tenant_access_token（過期自動重新換） ===== */
-async function getTenantToken() {
-  const creds = getAppCreds();
-  if (!creds) return null;
-  const resp = await fetch('https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ app_id: creds.app_id, app_secret: creds.app_secret })
-  });
-  const j = await resp.json();
-  if (j.code !== 0) {
-    throw new Error('換 Token 失敗（code ' + j.code + '）：' + (j.msg || ''));
-  }
-  return j.tenant_access_token;
 }
 
 /* ===== 實付價錢編輯（IF NULL / 暫存 localStorage） ===== */
@@ -1171,24 +1144,29 @@ function clearPaidEdit(recordId) {
   renderTickets(currentFilter, currentSearch);
 }
 
-/* ===== 推送實付到飛書多維表格 ===== */
-const LARK_BASE_TOKEN = 'C2x4byTkEaN3Ths9FXwcagDSn5e';
-const LARK_TABLE_ID = 'tbl97F6lmemjat8V';
-const LARK_FIELD_PAID = 'Y HK$';
-
+/* ===== 推送實付：提交到 GitHub，由 GitHub Actions 自動更新飛書 ===== */
 function updateActionBar() {
-  const hasCreds = !!getAppCreds();
-  document.getElementById('tokenBtn').classList.toggle('token-set', hasCreds);
-  document.getElementById('tokenBtn').textContent = hasCreds ? '🔑 憑證已設定' : '🔑 設定飛書憑證';
+  const hasToken = !!getGhToken();
+  document.getElementById('tokenBtn').classList.toggle('token-set', hasToken);
+  document.getElementById('tokenBtn').textContent = hasToken ? '🔑 Token 已設定' : '🔑 設定GitHub Token';
   const pending = Object.keys(getPaidEdits());
   document.getElementById('pushBtn').classList.toggle('has-pending', pending.length > 0);
   document.getElementById('pushBtn').textContent = pending.length
     ? `📤 推送實付（${pending.length}）` : '📤 推送實付到飛書';
 }
 
+/* ===== 推送實付：提交到 GitHub，由 GitHub Actions 自動更新飛書 ===== */
+const GH_REPO = 'hkharrycheng/cathay-tools';
+const GH_PENDING_PATH = 'data/pending-paid.json';
+const GH_STATUS_URL = 'https://hkharrycheng.github.io/cathay-tools/data/push-status.json';
+
+function ghHeaders(token) {
+  return { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' };
+}
+
 async function pushToLark() {
-  const creds = getAppCreds();
-  if (!creds) { alert('⚠️ 請先按「🔑 設定飛書憑證」輸入 App ID 同 App Secret'); openTokenModal(); return; }
+  const token = getGhToken();
+  if (!token) { alert('⚠️ 請先按「🔑 設定GitHub Token」輸入 Token'); openTokenModal(); return; }
   const edits = getPaidEdits();
   const keys = Object.keys(edits);
   if (!keys.length) { alert('⚠️ 冇待推送嘅實付價錢。請先喺航班卡按「✏️ 補實付」輸入。'); return; }
@@ -1196,69 +1174,79 @@ async function pushToLark() {
   document.getElementById('pushModal').classList.add('show');
   const st = document.getElementById('pushStatus');
   st.className = 'modal-status';
-  st.textContent = '換取 tenant_access_token...';
+  st.textContent = '提交到 GitHub...';
 
-  let token;
   try {
-    token = await getTenantToken();
-  } catch (e) {
-    st.className = 'modal-status err';
-    st.textContent = '❌ ' + e.message + '\n\n請檢查 App ID / App Secret 是否正確，以及應用有冇開「bitable:record」相關權限。';
-    return;
-  }
-  if (!token) {
-    st.className = 'modal-status err';
-    st.textContent = '❌ 未設定應用憑證';
-    return;
-  }
-
-  st.textContent = '推送中...（' + keys.length + ' 項）';
-  const headers = {
-    'Authorization': 'Bearer ' + token,
-    'Content-Type': 'application/json'
-  };
-  let ok = 0, fail = 0;
-  const failList = [];
-
-  for (const rid of keys) {
-    const t = DATA.tickets.find(x => x.id === rid);
-    const label = t ? (t.flightNumber + ' ' + t.from + '→' + t.to) : rid;
+    const payload = { records: edits, updatedAt: new Date().toISOString() };
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+    const apiUrl = `https://api.github.com/repos/${GH_REPO}/contents/${GH_PENDING_PATH}`;
+    // 攞現有 sha
+    let sha = null;
     try {
-      const resp = await fetch(
-        `https://open.feishu.cn/open-apis/base/v3/bases/${LARK_BASE_TOKEN}/tables/${LARK_TABLE_ID}/records/${rid}`,
-        {
-          method: 'PUT',
-          headers,
-          body: JSON.stringify({ fields: { [LARK_FIELD_PAID]: Number(edits[rid]) } })
-        }
-      );
-      if (resp.ok) {
-        ok++;
-        delete edits[rid];
-      } else {
-        let msg = resp.status;
-        try { const j = await resp.json(); msg += ': ' + (j.msg || j.message || ''); } catch (e) {}
-        fail++;
-        failList.push(label + '（' + msg + '）');
-      }
-    } catch (e) {
-      fail++;
-      failList.push(label + '（網絡錯誤）');
+      const g = await fetch(apiUrl, { headers: ghHeaders(token) });
+      if (g.ok) { const j = await g.json(); sha = j.sha; }
+    } catch (e) {}
+    const body = {
+      message: `J09: 推送實付到飛書（${keys.length} 項）`,
+      content: content,
+      branch: 'main'
+    };
+    if (sha) body.sha = sha;
+    const resp = await fetch(apiUrl, {
+      method: 'PUT',
+      headers: ghHeaders(token),
+      body: JSON.stringify(body)
+    });
+    if (!resp.ok) {
+      let msg = resp.status;
+      try { const j = await resp.json(); msg += ': ' + (j.message || ''); } catch (e) {}
+      st.className = 'modal-status err';
+      st.textContent = '❌ 提交失敗（' + msg + '）\n\n請檢查 Token 有冇 repo 寫入權限。';
+      return;
     }
-    st.textContent = `推送中... 成功 ${ok} / 失敗 ${fail}`;
-  }
-
-  localStorage.setItem(PAID_EDIT_KEY, JSON.stringify(edits));
-  if (fail === 0) {
-    st.className = 'modal-status ok';
-    st.textContent = `✅ 全部成功！已更新 ${ok} 條記錄到飛書。`;
-    setTimeout(closePushModal, 1500);
-  } else {
+    // 提交成功，開始 polling GitHub Actions 結果
+    const submittedAt = payload.updatedAt;
+    st.textContent = '✅ 已提交！GitHub Actions 處理中...';
+    pollPushStatus(submittedAt, st);
+  } catch (e) {
+    console.error('提交錯誤:', e);
     st.className = 'modal-status err';
-    st.textContent = `⚠️ 成功 ${ok} / 失敗 ${fail}\n` + failList.slice(0, 5).join('\n') + (failList.length > 5 ? `\n…仲有 ${failList.length - 5} 項` : '');
+    st.textContent = '❌ 錯誤：' + e.message;
   }
-  updateActionBar();
-  renderTickets(currentFilter, currentSearch);
+}
+
+function pollPushStatus(submittedAt, st) {
+  let tries = 0;
+  const timer = setInterval(async () => {
+    tries++;
+    try {
+      const res = await fetch(GH_STATUS_URL + '?v=' + Date.now());
+      if (res.ok) {
+        const j = await res.json();
+        const updatedAt = j.updatedAt || '';
+        if (updatedAt >= submittedAt) {
+          clearInterval(timer);
+          if (j.fail > 0) {
+            st.className = 'modal-status err';
+            st.textContent = `⚠️ 完成：成功 ${j.ok} / 失敗 ${j.fail}` + (j.errors && j.errors.length ? '\n' + j.errors.slice(0, 3).join('\n') : '');
+          } else {
+            st.className = 'modal-status ok';
+            st.textContent = `✅ 全部成功！已更新 ${j.ok} 條記錄到飛書。`;
+            localStorage.setItem(PAID_EDIT_KEY, '{}');
+            updateActionBar();
+            renderTickets(currentFilter, currentSearch);
+            setTimeout(closePushModal, 1500);
+          }
+          return;
+        }
+      }
+    } catch (e) {}
+    if (tries >= 24) {   // 約 2 分鐘
+      clearInterval(timer);
+      st.className = 'modal-status err';
+      st.textContent = '⏱️ 等待超時。請檢查 GitHub Actions 有冇成功執行（Actions 頁面 > Push Paid to Feishu）。';
+    }
+  }, 5000);
 }
 function closePushModal() { document.getElementById('pushModal').classList.remove('show'); }
 
