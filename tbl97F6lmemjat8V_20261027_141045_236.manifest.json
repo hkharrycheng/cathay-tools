@@ -1,0 +1,362 @@
+{
+  "manifest_version": "v1",
+  "format": "ndjson",
+  "base_token": "C2x4byTkEaN3Ths9FXwcagDSn5e",
+  "table_id": "tbl97F6lmemjat8V",
+  "rev": 185,
+  "timezone": "Asia/Shanghai",
+  "query_context": {
+    "field_scope": "all_fields",
+    "record_scope": "all_records"
+  },
+  "requested_limit": 10000,
+  "records_count": 20,
+  "page_count": 1,
+  "has_more": false,
+  "record_file": "D:\\OneDrive\\Harry Information System\\豆包Agents Program Backup\\Cathay\\tbl97F6lmemjat8V_20261027_141045_236.ndjson",
+  "record_file_size_bytes": 15745,
+  "manifest_file": "D:\\OneDrive\\Harry Information System\\豆包Agents Program Backup\\Cathay\\tbl97F6lmemjat8V_20261027_141045_236.manifest.json",
+  "columns": {
+    "% Booked": {
+      "field_id": "fldyWzYnfZ",
+      "field_type": "formula",
+      "physical_type": "string|null",
+      "stats": {
+        "null_count": 0,
+        "max_length": 11
+      },
+      "example": "1"
+    },
+    "% Staff": {
+      "field_id": "fldDsvQT25",
+      "field_type": "formula",
+      "physical_type": "string|null",
+      "stats": {
+        "null_count": 0,
+        "max_length": 11
+      },
+      "example": "0"
+    },
+    "Asia Miles Used": {
+      "field_id": "fldMZLKdx4",
+      "field_type": "number",
+      "physical_type": "number|null",
+      "stats": {
+        "null_count": 0,
+        "min": 13000,
+        "max": 27000,
+        "avg": 15450
+      },
+      "example": 13000
+    },
+    "Booked": {
+      "field_id": "fld8XT7MdJ",
+      "field_type": "number",
+      "physical_type": "number|null",
+      "stats": {
+        "null_count": 1,
+        "min": 147,
+        "max": 438,
+        "avg": 294.7368421052632
+      },
+      "example": 293
+    },
+    "Capacity": {
+      "field_id": "fldsMxm9yh",
+      "field_type": "number",
+      "physical_type": "number|null",
+      "stats": {
+        "null_count": 1,
+        "min": 202,
+        "max": 438,
+        "avg": 322.2105263157895
+      },
+      "example": 278
+    },
+    "Checked-In": {
+      "field_id": "fld8EFJytN",
+      "field_type": "number",
+      "physical_type": "number|null",
+      "stats": {
+        "null_count": 1,
+        "min": 134,
+        "max": 457,
+        "avg": 270.8421052631579
+      },
+      "example": 257
+    },
+    "Discount %": {
+      "field_id": "fldYuUSZUP",
+      "field_type": "formula",
+      "physical_type": "string|null",
+      "stats": {
+        "null_count": 0,
+        "max_length": 11
+      },
+      "example": "0"
+    },
+    "Display Name": {
+      "field_id": "fldQpEMLMe",
+      "field_type": "formula",
+      "physical_type": "string|null",
+      "stats": {
+        "null_count": 0,
+        "max_length": 15
+      },
+      "example": "CX596 HKG > KIX"
+    },
+    "End Time": {
+      "field_id": "fldX4xxIs8",
+      "field_type": "datetime",
+      "physical_type": "string|null",
+      "stats": {
+        "null_count": 0,
+        "min": "2026-05-16T12:55:00.000+08:00",
+        "max": "2026-12-01T17:45:00.000+08:00"
+      },
+      "example": "2026-05-16T12:55:00.000+08:00"
+    },
+    "Final Status": {
+      "field_id": "fldXrmAysV",
+      "field_type": "select",
+      "physical_type": "array<string>",
+      "stats": {
+        "empty_count": 2,
+        "max_length": 1,
+        "avg_length": 0.9
+      },
+      "example": [
+        "No Show"
+      ]
+    },
+    "Final Status Prob": {
+      "field_id": "fldqMPUPWx",
+      "field_type": "formula",
+      "physical_type": "string|null",
+      "stats": {
+        "null_count": 0,
+        "max_length": 3
+      },
+      "example": "0"
+    },
+    "Flight Number": {
+      "field_id": "fldliUsJk0",
+      "field_type": "text",
+      "physical_type": "string|null",
+      "stats": {
+        "null_count": 0,
+        "max_length": 5
+      },
+      "example": "CX596"
+    },
+    "From": {
+      "field_id": "fld49peb2H",
+      "field_type": "text",
+      "physical_type": "string|null",
+      "stats": {
+        "null_count": 0,
+        "max_length": 3
+      },
+      "example": "HKG"
+    },
+    "No. of Staff": {
+      "field_id": "fldgm8m4UJ",
+      "field_type": "formula",
+      "physical_type": "string|null",
+      "stats": {
+        "null_count": 0,
+        "max_length": 2
+      },
+      "example": "7"
+    },
+    "Original Cap Screen": {
+      "field_id": "fldJof0TM3",
+      "field_type": "attachment",
+      "physical_type": "array<struct<file_token string, size number, name string>>",
+      "stats": {
+        "empty_count": 17,
+        "max_length": 1,
+        "avg_length": 0.15
+      },
+      "example": [
+        {
+          "file_token": "Hb6Hbq4tgoDVY6x0RMmcUCHznO3",
+          "name": "CX815_20260921.jpg",
+          "size": 1049613
+        }
+      ]
+    },
+    "Outport Location": {
+      "field_id": "fldU8AAMMT",
+      "field_type": "location",
+      "physical_type": "struct<lng number, lat number, full_address string>|null",
+      "stats": {
+        "null_count": 1
+      },
+      "example": {
+        "full_address": "大阪田尻",
+        "lat": 34.4347,
+        "lng": 135.23
+      }
+    },
+    "P25": {
+      "field_id": "fld27zfy5a",
+      "field_type": "number",
+      "physical_type": "number|null",
+      "stats": {
+        "null_count": 1,
+        "min": 0,
+        "max": 20,
+        "avg": 7
+      },
+      "example": 3
+    },
+    "P27": {
+      "field_id": "fldSxGhjmL",
+      "field_type": "number",
+      "physical_type": "number|null",
+      "stats": {
+        "null_count": 2,
+        "min": 0,
+        "max": 15,
+        "avg": 5.722222222222222
+      },
+      "example": 4
+    },
+    "P29": {
+      "field_id": "fldBbDRv2j",
+      "field_type": "number",
+      "physical_type": "number|null",
+      "stats": {
+        "null_count": 7,
+        "min": 0,
+        "max": 4,
+        "avg": 1.4615384615384615
+      },
+      "example": 2
+    },
+    "P31": {
+      "field_id": "fldCl8kYLI",
+      "field_type": "number",
+      "physical_type": "number|null",
+      "stats": {
+        "null_count": 5,
+        "min": 0,
+        "max": 6,
+        "avg": 1.8666666666666667
+      },
+      "example": 4
+    },
+    "P33": {
+      "field_id": "fldwbJns6x",
+      "field_type": "number",
+      "physical_type": "number|null",
+      "stats": {
+        "null_count": 16,
+        "min": 0,
+        "max": 7,
+        "avg": 2.25
+      },
+      "example": 7
+    },
+    "Passengers": {
+      "field_id": "fld32uHwZT",
+      "field_type": "link",
+      "physical_type": "array<struct<id string>>",
+      "stats": {
+        "empty_count": 2,
+        "max_length": 4,
+        "avg_length": 2.4
+      },
+      "example": [
+        {
+          "id": "reczz28MTMrMyGig"
+        }
+      ]
+    },
+    "Plane Model": {
+      "field_id": "fldRX47hAN",
+      "field_type": "text",
+      "physical_type": "string|null",
+      "stats": {
+        "null_count": 1,
+        "max_length": 21
+      },
+      "example": "Airbus A330"
+    },
+    "Rolling Final Status Prob": {
+      "field_id": "fldm05AVxq",
+      "field_type": "formula",
+      "physical_type": "string|null",
+      "stats": {
+        "null_count": 0,
+        "max_length": 11
+      },
+      "example": "0"
+    },
+    "Start Time": {
+      "field_id": "fldyKER06g",
+      "field_type": "datetime",
+      "physical_type": "string|null",
+      "stats": {
+        "null_count": 0,
+        "min": "2026-05-16T08:10:00.000+08:00",
+        "max": "2026-12-01T11:10:00.000+08:00"
+      },
+      "example": "2026-05-16T08:10:00.000+08:00"
+    },
+    "To": {
+      "field_id": "fldXLnmFSR",
+      "field_type": "text",
+      "physical_type": "string|null",
+      "stats": {
+        "null_count": 0,
+        "max_length": 3
+      },
+      "example": "KIX"
+    },
+    "Y HK$": {
+      "field_id": "fldmPVxrwN",
+      "field_type": "number",
+      "physical_type": "number|null",
+      "stats": {
+        "null_count": 1,
+        "min": 214,
+        "max": 870,
+        "avg": 464.05263157894734
+      },
+      "example": 465
+    },
+    "Y Listed HK$": {
+      "field_id": "fldlUkgcjW",
+      "field_type": "number",
+      "physical_type": "number|null",
+      "stats": {
+        "null_count": 1,
+        "min": 1337,
+        "max": 10557,
+        "avg": 3853.1052631578946
+      },
+      "example": 3910
+    },
+    "Y Miles HK$": {
+      "field_id": "fldkWKm0aw",
+      "field_type": "number",
+      "physical_type": "number|null",
+      "stats": {
+        "null_count": 0,
+        "min": 262,
+        "max": 1742,
+        "avg": 621.25
+      },
+      "example": 459
+    },
+    "record_id": {
+      "physical_type": "string",
+      "stats": {
+        "max_length": 16
+      },
+      "example": "recvvxwlIHXpia"
+    }
+  }
+}

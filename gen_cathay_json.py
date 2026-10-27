@@ -22,7 +22,7 @@ def run_lark_cli(args):
     return result.stdout, result.stderr, result.returncode
 
 def parse_markdown_table(stdout):
-    """解析lark-cli markdown表格輸出"""
+    """解析lark-cli markdown表格輸出（legacy，CLI 已停用 markdown 後保留兼容）"""
     rows = []
     lines = stdout.strip().split('\n')
     in_table = False
@@ -42,6 +42,22 @@ def parse_markdown_table(stdout):
             break
     return rows
 
+def parse_json_matrix(stdout):
+    """解析lark-cli --format json 輸出的 raw matrix（fields + data 行列式）"""
+    data = json.loads(stdout)
+    payload = data.get('data', data)
+    fields = payload.get('fields', [])
+    records = payload.get('data', [])
+    ids = payload.get('record_id_list', [])
+    rows = []
+    for i, cells in enumerate(records):
+        row = {'_record_id': ids[i] if i < len(ids) else ''}
+        for j, name in enumerate(fields):
+            if j < len(cells):
+                row[name] = cells[j]
+        rows.append(row)
+    return rows
+
 def parse_dash_data(stdout):
     """解析dashboard-block-get-data輸出"""
     try:
@@ -55,33 +71,105 @@ def parse_dash_data(stdout):
         return None
 
 def parse_opt(value):
-    """解析select/多選值，如 ["Accepted"]"""
-    if not value or value == '':
+    """解析select/多選值，如 ["Accepted"] 或字符串"""
+    if value is None or value == '' or value == ' ':
         return None
-    try:
-        arr = json.loads(value)
-        if isinstance(arr, list) and len(arr) > 0:
-            return arr[0]
-        return value
-    except:
-        return value
+    if isinstance(value, list):
+        return value[0] if len(value) > 0 else None
+    if isinstance(value, str):
+        try:
+            arr = json.loads(value)
+            if isinstance(arr, list) and len(arr) > 0:
+                return arr[0]
+            return value
+        except:
+            return value
+    return value
 
 def parse_num(value):
     if value is None or value == '' or value == ' ':
         return None
+    if isinstance(value, (int, float)):
+        return float(value)
     try:
         return float(value)
     except:
         return None
 
 def parse_ts(value):
-    """解析datetime: 2026-05-16T08:10:00.000+08:00"""
     if not value:
         return None
-    m = re.match(r'(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2})', value)
+    if isinstance(value, (int, float)):
+        # 時間戳（秒或毫秒）
+        import datetime as _dt
+        if value > 10_000_000_000:
+            value = value / 1000
+        try:
+            return _dt.datetime.fromtimestamp(value).strftime('%Y-%m-%d %H:%M')
+        except:
+            return None
+    s = str(value)
+    m = re.match(r'(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2})', s)
     if m:
         return f"{m.group(1)} {m.group(2)}"
-    return value
+    m2 = re.match(r'(\d{4}-\d{2}-\d{2})[ ](\d{2}:\d{2})', s)
+    if m2:
+        return f"{m2.group(1)} {m2.group(2)}"
+    return s
+
+def outport_str(value):
+    """location cell（dict 或字符串）統一輸出為 JSON 字符串"""
+    if value is None or value == '' or value == ' ':
+        return ''
+    if isinstance(value, (dict, list)):
+        return json.dumps(value, ensure_ascii=False)
+    if isinstance(value, str):
+        try:
+            parsed = json.loads(value)
+            return json.dumps(parsed, ensure_ascii=False)
+        except:
+            return value
+    return str(value)
+
+def download_screenshots(row_id, attachments, shot_dir):
+    """下載 Original Cap Screen 附件到 screenshots/，返回相對 path list"""
+    if not attachments:
+        return []
+    if isinstance(attachments, str):
+        try:
+            attachments = json.loads(attachments)
+        except:
+            return []
+    if not isinstance(attachments, list):
+        return []
+    os.makedirs(shot_dir, exist_ok=True)
+    results = []
+    for i, att in enumerate(attachments):
+        if not isinstance(att, dict):
+            continue
+        ftoken = att.get('file_token', '')
+        fname = att.get('name', f'{row_id}_{i}.jpg')
+        if not ftoken:
+            continue
+        # filename: prefer original name, sanitize
+        safe_name = fname.replace(' ', '_').replace('/', '_')
+        out_path = os.path.join(shot_dir, safe_name)
+        rel_path = f"screenshots/{safe_name}"
+        # 已存在就跳過（incremental）
+        if os.path.exists(out_path) and os.path.getsize(out_path) > 0:
+            results.append(rel_path)
+            continue
+        cmd = ["lark-cli", "base", "+record-download-attachment",
+               "--base-token", BASE_TOKEN, "--table-id", TICKETS_TABLE,
+               "--record-id", row_id, "--file-token", ftoken,
+               "--output", rel_path, "--overwrite", "--as", "user"]
+        r = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8')
+        if r.returncode == 0 and os.path.exists(out_path):
+            results.append(rel_path)
+            print(f"  📷 下載截圖: {safe_name}")
+        else:
+            print(f"  ⚠️ 截圖下載失敗 {safe_name}: {r.stderr[:200]}")
+    return results
 
 def main():
     print("=== J01C 國泰員工機票 JSON 生成器 ===")
@@ -90,24 +178,34 @@ def main():
     stdout, stderr, rc = run_lark_cli([
         "base", "+record-list",
         "--base-token", BASE_TOKEN,
-        "--table-id", TICKETS_TABLE
+        "--table-id", TICKETS_TABLE,
+        "--format", "json"
     ])
     if rc != 0:
         print(f"讀取Cathay Tickets失敗: {stderr}")
         return
-    tickets_rows = parse_markdown_table(stdout)
+    try:
+        tickets_rows = parse_json_matrix(stdout)
+    except Exception as e:
+        print(f"解析Cathay Tickets失敗: {e}")
+        return
     print(f"讀取 {len(tickets_rows)} 條航班記錄")
     
     # 2. 讀取 Passengers
     stdout2, stderr2, rc2 = run_lark_cli([
         "base", "+record-list",
         "--base-token", BASE_TOKEN,
-        "--table-id", PASSENGERS_TABLE
+        "--table-id", PASSENGERS_TABLE,
+        "--format", "json"
     ])
     if rc2 != 0:
         print(f"讀取Passengers失敗: {stderr2}")
         return
-    passenger_rows = parse_markdown_table(stdout2)
+    try:
+        passenger_rows = parse_json_matrix(stdout2)
+    except Exception as e:
+        print(f"解析Passengers失敗: {e}")
+        return
     print(f"讀取 {len(passenger_rows)} 個乘客")
     
     # 3. 構建 passengers
@@ -120,6 +218,7 @@ def main():
         })
     
     # 4. 構建 tickets
+    shot_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'screenshots')
     tickets = []
     for row in tickets_rows:
         # 解析 passengers link
@@ -127,20 +226,28 @@ def main():
         raw_pax = row.get('Passengers', '')
         if raw_pax:
             try:
-                pax_list = json.loads(raw_pax)
+                if isinstance(raw_pax, list):
+                    pax_list = raw_pax
+                else:
+                    pax_list = json.loads(raw_pax)
                 pax_ids = [p['id'] for p in pax_list]
             except:
                 pass
-        
+
         pax_names = []
         for pid in pax_ids:
             for p in passengers:
                 if p['id'] == pid:
                     pax_names.append(p['name'])
                     break
-        
+
+        # 下載截圖（Original Cap Screen 附件欄）
+        row_id = row.get('_record_id', '')
+        raw_shots = row.get('Original Cap Screen', [])
+        screenshots = download_screenshots(row_id, raw_shots, shot_dir)
+
         tickets.append({
-            "id": row.get('_record_id', ''),
+            "id": row_id,
             "displayName": row.get('Display Name', ''),
             "flightNumber": row.get('Flight Number', ''),
             "from": row.get('From', ''),
@@ -167,8 +274,9 @@ def main():
             "finalStatus": parse_opt(row.get('Final Status', '')),
             "finalStatusProb": parse_num(row.get('Final Status Prob', '')),
             "rollingProb": parse_num(row.get('Rolling Final Status Prob', '')),
-            "outport": row.get('Outport Location', ''),
+            "outport": outport_str(row.get('Outport Location', '')),
             "passengers": pax_names,
+            "screenshots": screenshots,
         })
     
     # 5. Dashboard 統計（自行計算，與飛書 Dashboard 一致）

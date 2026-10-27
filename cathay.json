@@ -1,6 +1,6 @@
 {
-  "version": "1.12",
-  "lastUpdate": "2026-10-27 14:13",
+  "version": "1.00",
+  "lastUpdate": "2026-10-27 15:12",
   "source": {
     "baseToken": "C2x4byTkEaN3Ths9FXwcagDSn5e",
     "ticketsTable": "tbl97F6lmemjat8V",
@@ -220,6 +220,9 @@
       "passengers": [
         "Alice",
         "Mother"
+      ],
+      "screenshots": [
+        "screenshots/CX784_20261027.jpg"
       ]
     },
     {
@@ -253,7 +256,8 @@
       "outport": "",
       "passengers": [
         "Joe"
-      ]
+      ],
+      "screenshots": []
     }
   ],
   "tickets": [
@@ -291,7 +295,8 @@
         "Mother",
         "Father",
         "沖舅父"
-      ]
+      ],
+      "screenshots": []
     },
     {
       "id": "recvvxwlIHVeAg",
@@ -327,7 +332,8 @@
         "Mother",
         "Father",
         "沖舅父"
-      ]
+      ],
+      "screenshots": []
     },
     {
       "id": "recvvxwlIHNiK7",
@@ -362,7 +368,8 @@
         "Alice",
         "Mother",
         "Father"
-      ]
+      ],
+      "screenshots": []
     },
     {
       "id": "recvvxwlIH4Hxu",
@@ -397,7 +404,8 @@
         "Alice",
         "Mother",
         "Father"
-      ]
+      ],
+      "screenshots": []
     },
     {
       "id": "recvvxwlIHRVKZ",
@@ -428,7 +436,8 @@
       "finalStatusProb": 0.5,
       "rollingProb": 0.7,
       "outport": "{\"full_address\": \"金城镇，山东烟台莱州\", \"lat\": 37.3918, \"lng\": 120.0864}",
-      "passengers": []
+      "passengers": [],
+      "screenshots": []
     },
     {
       "id": "recvvxwlIHskSu",
@@ -464,7 +473,8 @@
         "Cici",
         "Coco",
         "Harry"
-      ]
+      ],
+      "screenshots": []
     },
     {
       "id": "recvvxwlIHGKYr",
@@ -495,7 +505,8 @@
       "finalStatusProb": 0.5,
       "rollingProb": 0.714285714,
       "outport": "{\"full_address\": \"金城镇，山东烟台莱州\", \"lat\": 37.3918, \"lng\": 120.0864}",
-      "passengers": []
+      "passengers": [],
+      "screenshots": []
     },
     {
       "id": "recvvxwlIHqnrn",
@@ -531,7 +542,8 @@
         "Coco",
         "Cici",
         "Dyna"
-      ]
+      ],
+      "screenshots": []
     },
     {
       "id": "recvvxwlIHO01l",
@@ -566,7 +578,8 @@
         "Alice",
         "Mother",
         "Father"
-      ]
+      ],
+      "screenshots": []
     },
     {
       "id": "recvvxwlIHAOWI",
@@ -602,7 +615,8 @@
         "Coco",
         "Cici",
         "Dyna"
-      ]
+      ],
+      "screenshots": []
     },
     {
       "id": "recvvxwlIHZhGn",
@@ -637,7 +651,8 @@
         "Alice",
         "Mother",
         "Father"
-      ]
+      ],
+      "screenshots": []
     },
     {
       "id": "recvvxwlIH2E3A",
@@ -673,7 +688,8 @@
         "Coco",
         "Cici",
         "Dyna"
-      ]
+      ],
+      "screenshots": []
     },
     {
       "id": "recvvxwlIHFpjQ",
@@ -706,7 +722,8 @@
       "outport": "{\"full_address\": \"不列颠哥伦比亚大温哥华Richmond\", \"lat\": 49.1967, \"lng\": -123.1816}",
       "passengers": [
         "Alice"
-      ]
+      ],
+      "screenshots": []
     },
     {
       "id": "recvvxwlIHEmcx",
@@ -740,7 +757,8 @@
       "passengers": [
         "阿軒",
         "Tansy"
-      ]
+      ],
+      "screenshots": []
     },
     {
       "id": "recvvxwlIH8a9w",
@@ -774,7 +792,8 @@
       "passengers": [
         "阿軒",
         "Tansy"
-      ]
+      ],
+      "screenshots": []
     },
     {
       "id": "recvvxwlIHWx66",
@@ -807,6 +826,9 @@
       "outport": "{\"full_address\": \"不列颠哥伦比亚大温哥华Richmond\", \"lat\": 49.1967, \"lng\": -123.1816}",
       "passengers": [
         "Alice"
+      ],
+      "screenshots": [
+        "screenshots/CX815_20260921.jpg"
       ]
     },
     {
@@ -840,7 +862,8 @@
       "outport": "{\"full_address\": \"不列颠哥伦比亚大温哥华Richmond\", \"lat\": 49.1967, \"lng\": -123.1816}",
       "passengers": [
         "Alice"
-      ]
+      ],
+      "screenshots": []
     },
     {
       "id": "recvvV5BR651Sv",
@@ -873,7 +896,8 @@
       "outport": "",
       "passengers": [
         "Joe"
-      ]
+      ],
+      "screenshots": []
     },
     {
       "id": "reczz28MTLsUcb1v",
@@ -907,6 +931,9 @@
       "passengers": [
         "Alice",
         "Mother"
+      ],
+      "screenshots": [
+        "screenshots/CX785_20261013.jpg"
       ]
     },
     {
@@ -941,6 +968,9 @@
       "passengers": [
         "Alice",
         "Mother"
+      ],
+      "screenshots": [
+        "screenshots/CX784_20261027.jpg"
       ]
     }
   ],

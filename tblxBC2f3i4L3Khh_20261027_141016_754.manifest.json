@@ -1,0 +1,58 @@
+{
+  "manifest_version": "v1",
+  "format": "ndjson",
+  "base_token": "C2x4byTkEaN3Ths9FXwcagDSn5e",
+  "table_id": "tblxBC2f3i4L3Khh",
+  "rev": 33,
+  "timezone": "Asia/Shanghai",
+  "query_context": {
+    "field_scope": "all_fields",
+    "record_scope": "all_records"
+  },
+  "requested_limit": 10000,
+  "records_count": 11,
+  "page_count": 1,
+  "has_more": false,
+  "record_file": "D:\\OneDrive\\Harry Information System\\豆包Agents Program Backup\\Cathay\\tblxBC2f3i4L3Khh_20261027_141016_754.ndjson",
+  "record_file_size_bytes": 1256,
+  "manifest_file": "D:\\OneDrive\\Harry Information System\\豆包Agents Program Backup\\Cathay\\tblxBC2f3i4L3Khh_20261027_141016_754.manifest.json",
+  "columns": {
+    "DisplayName": {
+      "field_id": "fldXOXWd5y",
+      "field_type": "formula",
+      "physical_type": "string|null",
+      "stats": {
+        "null_count": 0,
+        "max_length": 6
+      },
+      "example": "Joe"
+    },
+    "Flight Load App Name": {
+      "field_id": "fld8M74vQc",
+      "field_type": "text",
+      "physical_type": "string|null",
+      "stats": {
+        "null_count": 3,
+        "max_length": 23
+      },
+      "example": "CHENG MAN NA"
+    },
+    "Passengers": {
+      "field_id": "fldggZaFHO",
+      "field_type": "text",
+      "physical_type": "string|null",
+      "stats": {
+        "null_count": 0,
+        "max_length": 6
+      },
+      "example": "Joe"
+    },
+    "record_id": {
+      "physical_type": "string",
+      "stats": {
+        "max_length": 16
+      },
+      "example": "reczz28MTMrMyGig"
+    }
+  }
+}
