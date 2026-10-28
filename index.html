@@ -344,9 +344,12 @@ body {
 
 <div class="tab-panel active" id="panel-flights">
   <div class="container">
-    <div class="section-title">📋 全部航班記錄</div>
-    <div class="action-bar">
-      <button class="action-btn" id="pushBtn" onclick="pushToLark()">📤 推送實付到飛書</button>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+      <div class="section-title" style="margin-bottom:0">📋 全部航班記錄</div>
+      <div style="display:flex;gap:6px">
+        <button class="mini-btn" id="resetBtn" onclick="resetEdits()" style="border-color:var(--red);color:var(--red)">🗑 清除未推送</button>
+        <button class="mini-btn" id="pushBtn" onclick="pushToLark()" style="border-color:var(--green);color:var(--green)">📤 推送實付</button>
+      </div>
     </div>
     <div class="filter-bar">
       <button class="filter-btn active" data-filter="all">全部</button>
@@ -1003,9 +1006,21 @@ const J09_WORKER = 'https://j09-cathay-proxy.hkharrycheng.workers.dev';
 
 function updateActionBar() {
   const pending = Object.keys(getPaidEdits());
-  document.getElementById('pushBtn').classList.toggle('has-pending', pending.length > 0);
-  document.getElementById('pushBtn').textContent = pending.length
-    ? `📤 推送實付（${pending.length}）` : '📤 推送實付到飛書';
+  const pb = document.getElementById('pushBtn');
+  pb.classList.toggle('has-pending', pending.length > 0);
+  pb.textContent = pending.length
+    ? `📤 推送（${pending.length}）` : '📤 推送實付';
+  const rb = document.getElementById('resetBtn');
+  if (rb) rb.style.display = pending.length ? '' : 'none';
+}
+
+function resetEdits() {
+  const pending = Object.keys(getPaidEdits());
+  if (!pending.length) return;
+  if (!confirm(`確定清除 ${pending.length} 條未推送嘅實付修改？已推送嘅數值唔會受影響。`)) return;
+  localStorage.setItem(PAID_EDIT_KEY, '{}');
+  updateActionBar();
+  renderTickets(currentFilter, currentSearch);
 }
 
 async function pushToLark() {
