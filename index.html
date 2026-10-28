@@ -382,7 +382,8 @@ body {
     <div class="stats-grid" id="statsGrid"></div>
     <div class="chart-card" style="margin-top:14px">
       <h3>🏆 搭機最多龍虎榜</h3>
-      <div class="chart-box" id="topFlyersChart" style="height:320px"></div>
+      <div class="chart-box" id="topFlyersChart" style="height:280px"></div>
+      <div id="topFlyersAvatars" style="display:flex;justify-content:center;gap:18px;flex-wrap:wrap;padding:10px 0 5px"></div>
     </div>
     <div class="charts-grid">
       <div class="chart-card">
@@ -571,14 +572,24 @@ function renderTopFlyers() {
   chart.setOption({
     backgroundColor: 'transparent',
     tooltip: { trigger: 'axis', formatter: p => p[0].name + ': ' + p[0].value + ' 班' },
-    grid: { left: 50, right: 20, top: 30, bottom: 60 },
-    xAxis: { type: 'category', data: names, axisLabel: { color: '#8fa0b8', fontSize: 11, interval: 0, rotate: names.length > 6 ? 20 : 0 }, axisLine: { lineStyle: { color: '#2e3a55' } } },
-    yAxis: { type: 'value', min: -1.5, max: maxV + 1.5, minInterval: 1, axisLabel: { color: '#8fa0b8' }, splitLine: { lineStyle: { color: '#1a2233' } } },
+    grid: { left: 50, right: 20, top: 30, bottom: 20 },
+    xAxis: { type: 'category', data: names, axisLabel: { show: false }, axisLine: { lineStyle: { color: '#2e3a55' } } },
+    yAxis: { type: 'value', minInterval: 1, max: maxV + 1.5, axisLabel: { color: '#8fa0b8' }, splitLine: { lineStyle: { color: '#1a2233' } } },
     series: [
       { type: 'bar', data: values, barMaxWidth: 50, itemStyle: { borderRadius: [6, 6, 0, 0], color: { type: 'linear', x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: '#4f8cff' }, { offset: 1, color: '#2a56c9' }] } }, label: { show: true, position: 'top', color: '#e8ecf4', fontWeight: 'bold' }, z: 2 },
-      { type: 'scatter', data: data.map((d, i) => d.avatar ? [i, -0.8] : null).filter(Boolean), symbolSize: 36, symbol: (val, params) => { const d = data[params.dataIndex]; return d.avatar ? ('image://' + d.avatar) : 'none'; }, itemStyle: { borderColor: '#fff', borderWidth: 1 }, z: 3, silent: true },
     ],
   });
+  // 圓形頭像 + 名稱 below chart
+  const avBox = document.getElementById('topFlyersAvatars');
+  if (avBox) {
+    avBox.innerHTML = data.map(d => `
+      <div style="text-align:center;width:72px">
+        ${d.avatar
+          ? `<img src="${d.avatar}" style="width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid #4f8cff;box-shadow:0 2px 8px rgba(79,140,255,.3)"/>`
+          : `<div style="width:52px;height:52px;border-radius:50%;background:#2a3a55;margin:0 auto;display:flex;align-items:center;justify-content:center;color:#8fa0b8;font-size:18px;font-weight:bold">${d.name[0]}</div>`}
+        <div style="color:#8fa0b8;font-size:11px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${d.name}</div>
+      </div>`).join('');
+  }
   window.addEventListener('resize', () => chart.resize());
 }
 
