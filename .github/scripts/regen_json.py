@@ -10,7 +10,7 @@ APP_ID = os.environ['FEISHU_APP_ID']
 APP_SECRET = os.environ['FEISHU_APP_SECRET']
 BASE_TOKEN = os.environ['BASE_TOKEN']
 TICKETS_TABLE = os.environ['TICKETS_TABLE']
-PASSENGERS_TABLE = os.environ.get('PASSENGERS_TABLE', '')
+PASSENGERS_TABLE = os.environ.get('PASSENGERS_TABLE', 'tbleF9mFy3Kfyo77')
 
 def get_token():
     r = requests.post('https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal',
@@ -65,14 +65,23 @@ if PASSENGERS_TABLE:
         pax_raw = list_records(token, PASSENGERS_TABLE)
         for p in pax_raw:
             f = p.get('fields', {})
-            name = opt(f.get('Name')) or opt(f.get('乘客')) or ''
-            pax_map[p['record_id']] = name
+            name = f.get('DisplayName')
+            if isinstance(name, list): name = name[0].get('text') if name else ''
+            pax_map[p['record_id']] = name or p['record_id']
     except Exception as e:
         print(f'WARN passengers: {e}')
 
 tickets = []
 for rec in raw:
     f = rec.get('fields', {})
+    # Resolve passenger names from link field
+    pax_links = f.get('Passengers', [])
+    pax_names = []
+    if isinstance(pax_links, list):
+        for pl in pax_links:
+            pid = pl if isinstance(pl, str) else (pl.get('id') or pl.get('record_id'))
+            if pid and pid in pax_map:
+                pax_names.append(pax_map[pid])
     t = {
         'id': rec['record_id'],
         'displayName': opt(f.get('Display Name')) or '',
@@ -101,7 +110,7 @@ for rec in raw:
         'finalStatus': opt(f.get('Final Status')),
         'finalStatusProb': num(f.get('Final Status Prob')),
         'rollingProb': num(f.get('Rolling Final Status Prob')),
-        'passengers': [],
+        'passengers': pax_names,
         'screenshots': [],
     }
     tickets.append(t)

@@ -13,7 +13,7 @@ from datetime import datetime
 
 BASE_TOKEN = "C2x4byTkEaN3Ths9FXwcagDSn5e"
 TICKETS_TABLE = "tbl97F6lmemjat8V"
-PASSENGERS_TABLE = "tblxBC2f3i4L3Khh"
+PASSENGERS_TABLE = "tbleF9mFy3Kfyo77"
 DASHBOARD_ID = "blkEYDQV9iBTideY"
 
 def run_lark_cli(args):

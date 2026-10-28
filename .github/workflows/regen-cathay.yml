@@ -25,7 +25,7 @@ jobs:
           FEISHU_APP_SECRET: ${{ secrets.FEISHU_APP_SECRET }}
           BASE_TOKEN: C2x4byTkEaN3Ths9FXwcagDSn5e
           TICKETS_TABLE: tbl97F6lmemjat8V
-          PASSENGERS_TABLE: tblxBC2f3i4L3Khh
+          PASSENGERS_TABLE: tbleF9mFy3Kfyo77
         run: python .github/scripts/regen_json.py
       - name: Commit updated cathay.json
         run: |
