@@ -153,6 +153,8 @@
 
 | 版本 | 日期 | 更新內容 |
 |------|------|----------|
+| v1.18 | 2026-10-28 | 國泰員工機票使用統計（龍虎榜）：只計有 Flight Load App Name 嘅成員；圓形頭像對齊 bar 底部 + 名稱；頭像直接從飛書成員表 Profile Pict 下載（唔再 hardcode mapping）；修復 hidden tab chart resize；航班卡片恢復乘客頭像 |
+| v1.17 | 2026-10-28 | Cloudflare Worker `/api/refresh` endpoint：push 實付後自動 dispatch GitHub Actions regen-cathay.yml；HTML 加 🔄 Refresh 按鈕；Reset 按鈕清空未推送數據；推送按鈕縮細放航班列表行右邊 |
 | v1.05 | 2026-10-13 | 所有航班可改實付（有值「改實付」/冇值「補實付」）+ 推送成功後自動 reload cathay.json + BASE_PATH 絕對路徑（修 dev/ GitHub Pages 404） |
 | v1.04 | 2026-10-13 | Actions 自動重生 cathay.json：推送實付後用 tenant token 讀飛書全部數據重算並上傳（version 自動 +0.01），HTML refresh 即時見最新，唔使再跑 J00 |
 | v1.03 | 2026-10-13 | 實付推送功能：航班可編輯「Y HK$」實付價（IF NULL）+ 儲存加密 GitHub Token（XOR+Base64 存 localStorage）+ 推送實付經 GitHub Actions Bridge 寫入飛書多維表格 |
