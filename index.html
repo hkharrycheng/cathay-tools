@@ -340,7 +340,7 @@ body {
       國泰員工機票
     </h1>
     <div class="meta">
-      <div><span class="version" id="version">v1.16</span> &nbsp;|&nbsp; 更新：<span id="lastUpdate">-</span></div>
+      <div><span class="version" id="version">v1.17</span> &nbsp;|&nbsp; 更新：<span id="lastUpdate">-</span></div>
     </div>
   </div>
 </div>
@@ -350,6 +350,7 @@ body {
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px">
       <div class="section-title" style="margin-bottom:0">📋 全部航班記錄</div>
       <div style="display:flex;gap:6px">
+        <button class="mini-btn" onclick="manualRefresh()" style="border-color:var(--blue,#1677ff);color:var(--blue,#1677ff)">🔄 Refresh</button>
         <button class="mini-btn" id="resetBtn" onclick="resetEdits()" style="border-color:var(--red);color:var(--red)">🗑 清除未推送</button>
         <button class="mini-btn" id="pushBtn" onclick="pushToLark()" style="border-color:var(--green);color:var(--green)">📤 推送實付</button>
       </div>
@@ -1023,6 +1024,20 @@ function resetEdits() {
   localStorage.setItem(PAID_EDIT_KEY, '{}');
   updateActionBar();
   renderTickets(currentFilter, currentSearch);
+}
+
+async function manualRefresh() {
+  try {
+    const r = await fetch(J09_WORKER + '/api/refresh', { method: 'POST' });
+    const j = await r.json();
+    if (j.dispatched) {
+      alert('✅ 已觸發 GitHub Actions 重新生成 cathay.json\n約 1-2 分鐘後請按 F5 重新整理頁面。');
+    } else {
+      alert('⚠️ 觸發失敗: ' + (j.error || JSON.stringify(j)));
+    }
+  } catch (e) {
+    alert('❌ Refresh 失敗: ' + e.message);
+  }
 }
 
 async function pushToLark() {

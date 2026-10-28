@@ -1,0 +1,59 @@
+{
+  "manifest_version": "v1",
+  "format": "ndjson",
+  "base_token": "C2x4byTkEaN3Ths9FXwcagDSn5e",
+  "table_id": "tblmChO2X4bTs1IF",
+  "rev": 18,
+  "timezone": "Asia/Shanghai",
+  "query_context": {
+    "record_scope": "selected_record_ids",
+    "requested_record_count": 1
+  },
+  "records_count": 1,
+  "page_count": 1,
+  "has_more": false,
+  "record_file": "D:\\OneDrive\\Harry Information System\\豆包Agents Program Backup\\Cathay\\tblmChO2X4bTs1IF_20261027_171246_595.ndjson",
+  "record_file_size_bytes": 10741,
+  "manifest_file": "D:\\OneDrive\\Harry Information System\\豆包Agents Program Backup\\Cathay\\tblmChO2X4bTs1IF_20261027_171246_595.manifest.json",
+  "columns": {
+    "JOB_ID": {
+      "field_id": "fldIOMCxsH",
+      "field_type": "text",
+      "physical_type": "string|null",
+      "stats": {
+        "null_count": 0,
+        "max_length": 3
+      },
+      "example": "J01"
+    },
+    "Parameters": {
+      "field_id": "fldmpJn4mn",
+      "field_type": "text",
+      "physical_type": "string|null",
+      "stats": {
+        "null_count": 0,
+        "max_length": 1002
+      },
+      "example": "本 JOB 只在本 CHAT 有效；每次 CALL J01 時嚴格根據 SYS_JOB 表 J01 記錄最新要求執行導入。\n\n## 目標資源\n- Bitable base_token: C2x4byTkEaN3Ths9FXwcagDSn5e\n- Catha",
+      "example_truncated": true
+    },
+    "record_id": {
+      "physical_type": "string",
+      "stats": {
+        "max_length": 16
+      },
+      "example": "reczz28MT4DS5PyD"
+    },
+    "工作詳細": {
+      "field_id": "fldNKY7ekr",
+      "field_type": "text",
+      "physical_type": "string|null",
+      "stats": {
+        "null_count": 0,
+        "max_length": 5532
+      },
+      "example": "﻿﻿﻿定時國泰機票分析 - Cathay Tickets 導入工作（本 CHAT 內有效，CALL J01 即按本表最新要求執行）\n\n## 輸入\n用戶上傳國泰 Flight Load Apps 截圖（每張一班航班），Agent 檢查訊息並寫入飛書多維表格 ",
+      "example_truncated": true
+    }
+  }
+}

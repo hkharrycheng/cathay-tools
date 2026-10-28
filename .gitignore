@@ -1,0 +1,5 @@
+*.ndjson
+*.manifest.json
+.wrangler/
+versions/
+data/

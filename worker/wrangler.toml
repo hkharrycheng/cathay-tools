@@ -1,0 +1,9 @@
+name = "j09-cathay-proxy"
+main = "j09-cathay-proxy.js"
+compatibility_date = "2024-11-01"
+
+[vars]
+BASE_TOKEN = "C2x4byTkEaN3Ths9FXwcagDSn5e"
+TICKETS_TABLE = "tbl97F6lmemjat8V"
+Y_HK_FIELD = "Y HK$"
+CORS_ORIGIN = "https://hkharrycheng.github.io"
