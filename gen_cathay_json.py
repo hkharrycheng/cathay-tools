@@ -199,13 +199,14 @@ def main():
         "--format", "json"
     ])
     if rc2 != 0:
-        print(f"讀取Passengers失敗: {stderr2}")
-        return
-    try:
-        passenger_rows = parse_json_matrix(stdout2)
-    except Exception as e:
-        print(f"解析Passengers失敗: {e}")
-        return
+        print(f"⚠️ 讀取Passengers失敗（繼續用空list）: {stderr2[:200]}")
+        passenger_rows = []
+    else:
+        try:
+            passenger_rows = parse_json_matrix(stdout2)
+        except Exception as e:
+            print(f"⚠️ 解析Passengers失敗（繼續用空list）: {e}")
+            passenger_rows = []
     print(f"讀取 {len(passenger_rows)} 個乘客")
     
     # 3. 構建 passengers
