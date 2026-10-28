@@ -212,10 +212,15 @@ def main():
     # 3. 構建 passengers
     passengers = []
     for row in passenger_rows:
+        pname = row.get('DisplayName', '')
+        avatar_file = f'pax-avatars/{pname}.jpg'
+        avatar_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), avatar_file)
+        avatar_url = avatar_file if os.path.exists(avatar_path) else ''
         passengers.append({
             "id": row.get('_record_id', ''),
-            "name": row.get('DisplayName', ''),
+            "name": pname,
             "appName": row.get('Flight Load App Name', ''),
+            "avatar": avatar_url,
         })
     
     # 4. 構建 tickets
@@ -325,7 +330,18 @@ def main():
             except:
                 pass
     upcoming.sort(key=lambda x: x['startTime'])
-    
+
+    # Top Flyers 龍虎榜（按乘客搭機次數）
+    pax_flight_count = {}
+    pax_avatar_map = {p['name']: p.get('avatar', '') for p in passengers}
+    for t in tickets:
+        for pname in t.get('passengers', []):
+            pax_flight_count[pname] = pax_flight_count.get(pname, 0) + 1
+    top_flyers = sorted(
+        [{"name": n, "flights": c, "avatar": pax_avatar_map.get(n, '')} for n, c in pax_flight_count.items()],
+        key=lambda x: -x['flights']
+    )[:15]
+
     # 6. 構建最終 JSON
     result = {
         "version": "1.00",
@@ -351,7 +367,8 @@ def main():
         "staffTrend": staff_trend,
         "upcoming": upcoming,
         "tickets": tickets,
-        "passengers": passengers
+        "passengers": passengers,
+        "topFlyers": top_flyers
     }
     
     # 7. 寫入文件

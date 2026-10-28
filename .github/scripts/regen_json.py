@@ -119,6 +119,16 @@ with_status = [t for t in tickets if t['finalStatus'] is not None]
 accepted = [t for t in with_status if t['finalStatus'] == 'Accepted']
 upcoming = [t for t in tickets if t['startTime'] and t['startTime'] > datetime.now().strftime('%Y-%m-%d %H:%M')]
 
+# Top Flyers leaderboard
+pax_count = {}
+for t in tickets:
+    for pn in t.get('passengers', []):
+        pax_count[pn] = pax_count.get(pn, 0) + 1
+top_flyers = sorted(
+    [{'name': n, 'flights': c, 'avatar': f'pax-avatars/{n}.jpg'} for n, c in pax_count.items()],
+    key=lambda x: -x['flights']
+)[:15]
+
 result = {
     'version': '1.00',
     'lastUpdate': datetime.now().strftime('%Y-%m-%d %H:%M'),
@@ -131,6 +141,7 @@ result = {
     },
     'tickets': tickets,
     'upcoming': upcoming,
+    'topFlyers': top_flyers,
 }
 
 with open('cathay.json', 'w', encoding='utf-8') as fp:
