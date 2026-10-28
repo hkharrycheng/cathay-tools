@@ -1,6 +1,6 @@
 {
   "version": "1.00",
-  "lastUpdate": "2026-10-28 14:21",
+  "lastUpdate": "2026-10-28 15:24",
   "source": {
     "baseToken": "C2x4byTkEaN3Ths9FXwcagDSn5e",
     "ticketsTable": "tbl97F6lmemjat8V",
@@ -958,31 +958,31 @@
       "id": "reczz28SNcQOFyJI",
       "name": "我",
       "appName": "CHENG TSZ KIN",
-      "avatar": ""
+      "avatar": "pax-avatars/我.jpg"
     },
     {
       "id": "reczz28SNcQOFNrL",
       "name": "老婆",
       "appName": "CHENG MAN NA",
-      "avatar": ""
+      "avatar": "pax-avatars/老婆.jpg"
     },
     {
       "id": "reczz28SNcQODk81",
       "name": "姐姐",
       "appName": "CHENG YUE WING",
-      "avatar": ""
+      "avatar": "pax-avatars/姐姐.jpg"
     },
     {
       "id": "reczz28SNcQOCTPk",
       "name": "妹妹",
       "appName": "CHENG YUE CHING",
-      "avatar": ""
+      "avatar": "pax-avatars/妹妹.jpg"
     },
     {
       "id": "reczz28SNcQOFrb7",
       "name": "沖舅父",
       "appName": "LAM KUEN CHUNG MCCARTHY",
-      "avatar": ""
+      "avatar": "pax-avatars/沖舅父.jpg"
     },
     {
       "id": "reczz28SNcQOESQ3",
@@ -994,7 +994,7 @@
       "id": "reczz28SNcQOEOV5",
       "name": "鄭家瑩",
       "appName": "CHENG KA YING ALICE",
-      "avatar": ""
+      "avatar": "pax-avatars/鄭家瑩.jpg"
     },
     {
       "id": "reczz28SNcQOFeF2",
@@ -1006,13 +1006,13 @@
       "id": "reczz28SNcQOEOWn",
       "name": "林瑞敏",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/林瑞敏.jpg"
     },
     {
       "id": "reczz28SNcQOFphi",
       "name": "大舅父",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/大舅父.jpg"
     },
     {
       "id": "reczz28SNcQOCFls",
@@ -1024,7 +1024,7 @@
       "id": "reczz28SNcQODpxP",
       "name": "James Leung",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/James Leung.jpg"
     },
     {
       "id": "reczz28SNcQOCHXG",
@@ -1036,13 +1036,13 @@
       "id": "reczz28SNcQOCP9L",
       "name": "Indigo Huang",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/Indigo Huang.jpg"
     },
     {
       "id": "reczz28SNcQOD6lt",
       "name": "Kloe Tang",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/Kloe Tang.jpg"
     },
     {
       "id": "reczz28SNcQOFHGE",
@@ -1054,43 +1054,43 @@
       "id": "reczz28SNcQOFR0n",
       "name": "鄭堅豪",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/鄭堅豪.jpg"
     },
     {
       "id": "reczz28SNcQOG1ZI",
       "name": "鄭堅華",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/鄭堅華.jpg"
     },
     {
       "id": "reczz28SNcQODNyb",
       "name": "鄭曼童",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/鄭曼童.jpg"
     },
     {
       "id": "reczz28SNcQOC1wE",
       "name": "鄭麗華",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/鄭麗華.jpg"
     },
     {
       "id": "reczz28SNcQOG2Gx",
       "name": "外婆",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/外婆.jpg"
     },
     {
       "id": "reczz28SNcQOEFCN",
       "name": "Tansy Lee",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/Tansy Lee.jpg"
     },
     {
       "id": "reczz28SNcQOFFI3",
       "name": "阿軒",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/阿軒.jpg"
     },
     {
       "id": "reczz28SNcQODDNA",
@@ -1102,49 +1102,49 @@
       "id": "reczz28SNcQODzm0",
       "name": "林家裕",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/林家裕.jpg"
     },
     {
       "id": "reczz28SNcQOBzYD",
       "name": "Wendy Chan",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/Wendy Chan.jpg"
     },
     {
       "id": "reczz28SNcQOFdUp",
       "name": "朱朱",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/朱朱.jpg"
     },
     {
       "id": "reczz28SNcQOFUqH",
       "name": "二叔",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/二叔.jpg"
     },
     {
       "id": "reczz28SNcQOC2Q2",
       "name": "日軍",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/日軍.jpg"
     },
     {
       "id": "reczz28SNcQODe5o",
       "name": "Tina Ng",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/Tina Ng.jpg"
     },
     {
       "id": "reczz28SNcQODvQ6",
       "name": "姑媽",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/姑媽.jpg"
     },
     {
       "id": "reczz28SNcQOEfQg",
       "name": "利哥",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/利哥.jpg"
     },
     {
       "id": "reczz28SNcQODzh8",
@@ -1156,13 +1156,13 @@
       "id": "reczz28SNcQOCcNI",
       "name": "三叔",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/三叔.jpg"
     },
     {
       "id": "reczz28SNcQOCrEJ",
       "name": "羅志傑",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/羅志傑.jpg"
     },
     {
       "id": "reczz28SNcQOC8Z2",
@@ -1174,127 +1174,127 @@
       "id": "reczz28SNcQODDE9",
       "name": "小白雲",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/小白雲.jpg"
     },
     {
       "id": "reczz28SNcQOErAY",
       "name": "傑拉托尼",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/傑拉托尼.jpg"
     },
     {
       "id": "reczz28SNcQOEYOw",
       "name": "King Sir",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/King Sir.jpg"
     },
     {
       "id": "reczz28SNcQOElai",
       "name": "Jason",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/Jason.jpg"
     },
     {
       "id": "reczz28SNcQOEKYu",
       "name": "Stanley",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/Stanley.jpg"
     },
     {
       "id": "reczz28SNcQODVuh",
       "name": "Ethan",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/Ethan.jpg"
     },
     {
       "id": "reczz28SNcQOFQsD",
       "name": "Mary",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/Mary.jpg"
     },
     {
       "id": "reczz28SNcQODP94",
       "name": "Barry",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/Barry.jpg"
     },
     {
       "id": "reczz28SNcQOFHD0",
       "name": "Man",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/Man.jpg"
     },
     {
       "id": "reczz28SNcQOFxAO",
       "name": "Benson",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/Benson.jpg"
     },
     {
       "id": "reczz28SNcQOG2S8",
       "name": "Noelle",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/Noelle.jpg"
     },
     {
       "id": "reczz28SNcQOFVkL",
       "name": "Tristan",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/Tristan.jpg"
     },
     {
       "id": "reczz28SNcQOF4DF",
       "name": "Peary",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/Peary.jpg"
     },
     {
       "id": "reczz28SNcQOCtdq",
       "name": "Alfred",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/Alfred.jpg"
     },
     {
       "id": "reczz28SNcQOE1Py",
       "name": "Sandy",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/Sandy.jpg"
     },
     {
       "id": "reczz28SNcQODnVn",
       "name": "Alan",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/Alan.jpg"
     },
     {
       "id": "reczz28SNcQOD0Uj",
       "name": "Michael",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/Michael.jpg"
     },
     {
       "id": "reczz28SNcQOEk0f",
       "name": "Gigi",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/Gigi.jpg"
     },
     {
       "id": "reczz28SNcQOEqgt",
       "name": "Jonathan",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/Jonathan.jpg"
     },
     {
       "id": "reczz28SNcQOG5dJ",
       "name": "Corey",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/Corey.jpg"
     },
     {
       "id": "reczz28SNcQOFLJk",
       "name": "細叔",
       "appName": null,
-      "avatar": ""
+      "avatar": "pax-avatars/細叔.jpg"
     },
     {
       "id": "reczz28SNcQOENqU",
@@ -1337,7 +1337,7 @@
     {
       "name": "鄭家瑩",
       "flights": 11,
-      "avatar": "pax-avatars/Alice.jpg"
+      "avatar": "pax-avatars/鄭家瑩.jpg"
     },
     {
       "name": "Mother",
@@ -1352,27 +1352,27 @@
     {
       "name": "老婆",
       "flights": 4,
-      "avatar": "pax-avatars/Alice.jpg"
+      "avatar": "pax-avatars/老婆.jpg"
     },
     {
       "name": "姐姐",
       "flights": 4,
-      "avatar": "pax-avatars/Dyna.jpg"
+      "avatar": "pax-avatars/姐姐.jpg"
     },
     {
       "name": "妹妹",
       "flights": 4,
-      "avatar": "pax-avatars/Joe.jpg"
+      "avatar": "pax-avatars/妹妹.jpg"
     },
     {
       "name": "我",
       "flights": 4,
-      "avatar": "pax-avatars/Harry.jpg"
+      "avatar": "pax-avatars/我.jpg"
     },
     {
       "name": "沖舅父",
       "flights": 2,
-      "avatar": "pax-avatars/ChungUncle.jpg"
+      "avatar": "pax-avatars/沖舅父.jpg"
     }
   ]
 }

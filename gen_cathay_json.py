@@ -209,15 +209,37 @@ def main():
             passenger_rows = []
     print(f"讀取 {len(passenger_rows)} 個乘客")
     
-    # 3. 構建 passengers
+    # 3. 構建 passengers（下載 Profile Pict）
+    avatar_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'pax-avatars')
+    os.makedirs(avatar_dir, exist_ok=True)
     passengers = []
     for row in passenger_rows:
         pname = row.get('DisplayName', '')
+        rec_id = row.get('_record_id', '')
         avatar_file = f'pax-avatars/{pname}.jpg'
         avatar_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), avatar_file)
+        # 如果冇呢個 avatar，從飛書下載 Profile Pict
+        if not os.path.exists(avatar_path) and rec_id:
+            raw_pict = row.get('Profile Pict', [])
+            if raw_pict:
+                try:
+                    if isinstance(raw_pict, str):
+                        raw_pict = json.loads(raw_pict)
+                    if isinstance(raw_pict, list) and raw_pict:
+                        ftoken = raw_pict[0].get('file_token', '')
+                        if ftoken:
+                            cmd = ["lark-cli", "base", "+record-download-attachment",
+                                   "--base-token", BASE_TOKEN, "--table-id", PASSENGERS_TABLE,
+                                   "--record-id", rec_id, "--file-token", ftoken,
+                                   "--output", avatar_file, "--overwrite", "--as", "user"]
+                            r = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8')
+                            if r.returncode == 0 and os.path.exists(avatar_path):
+                                print(f"  📷 下載頭像: {pname}.jpg")
+                except Exception as e:
+                    print(f"  ⚠️ 頭像下載失敗 {pname}: {e}")
         avatar_url = avatar_file if os.path.exists(avatar_path) else ''
         passengers.append({
-            "id": row.get('_record_id', ''),
+            "id": rec_id,
             "name": pname,
             "appName": row.get('Flight Load App Name', ''),
             "avatar": avatar_url,
@@ -332,19 +354,8 @@ def main():
     upcoming.sort(key=lambda x: x['startTime'])
 
     # Top Flyers 龍虎榜（只計有 Flight Load App Name 的成員）
-    AVATAR_NAME_MAP = {
-        'Father': 'Father', 'Mother': 'Mother', '我': 'Harry',
-        '老婆': 'Alice', '姐姐': 'Dyna', '妹妹': 'Joe',
-        '沖舅父': 'ChungUncle', '鄭家瑩': 'Alice',
-    }
     staff_names = {p['name'] for p in passengers if p.get('appName')}
-    pax_avatar_map = {}
-    for p in passengers:
-        pname = p['name']
-        eng = AVATAR_NAME_MAP.get(pname, pname)
-        avatar_file = f'pax-avatars/{eng}.jpg'
-        avatar_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), avatar_file)
-        pax_avatar_map[pname] = avatar_file if os.path.exists(avatar_path) else ''
+    pax_avatar_map = {p['name']: p.get('avatar', '') for p in passengers}
     pax_flight_count = {}
     for t in tickets:
         for pname in t.get('passengers', []):
