@@ -667,7 +667,7 @@ function ticketCard(t) {
   let paidHtml;
   if (effPaid != null && !isNaN(effPaid)) {
     const tag = pendingAmt != null ? ' <span class="pending-tag">待推送</span>' : '';
-    paidHtml = `<div class="tc-paid">💰 實付：<b>HK$${Number(effPaid).toLocaleString()}</b>${tag}</div>`;
+    paidHtml = `<div class="tc-paid">💰 實付：<b>HK$${Number(effPaid).toLocaleString()}</b>${tag} <button class="edit-btn" onclick="editPaid('${t.id.replace(/'/g, "\\'")}')">✏️ 修改</button></div>`;
   } else {
     paidHtml = `<div class="tc-paid">💰 實付：<b style="color:var(--sub)">未填</b> <button class="edit-btn" onclick="editPaid('${t.id.replace(/'/g, "\\'")}')">✏️ 補實付</button></div>`;
   }
