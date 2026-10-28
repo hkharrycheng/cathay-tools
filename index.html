@@ -977,6 +977,8 @@ function switchTab(tab) {
       if (pc) pc.resize();
       const lc = echarts.getInstanceByDom(document.getElementById('lineChart'));
       if (lc) lc.resize();
+      const tf = echarts.getInstanceByDom(document.getElementById('topFlyersChart'));
+      if (tf) tf.resize();
     }
   }, 50);
 }
