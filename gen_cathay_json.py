@@ -332,8 +332,19 @@ def main():
     upcoming.sort(key=lambda x: x['startTime'])
 
     # Top Flyers 龍虎榜（只計有 Flight Load App Name 的成員）
+    AVATAR_NAME_MAP = {
+        'Father': 'Father', 'Mother': 'Mother', '我': 'Harry',
+        '老婆': 'Alice', '姐姐': 'Dyna', '妹妹': 'Joe',
+        '沖舅父': 'ChungUncle', '鄭家瑩': 'Alice',
+    }
     staff_names = {p['name'] for p in passengers if p.get('appName')}
-    pax_avatar_map = {p['name']: p.get('avatar', '') for p in passengers}
+    pax_avatar_map = {}
+    for p in passengers:
+        pname = p['name']
+        eng = AVATAR_NAME_MAP.get(pname, pname)
+        avatar_file = f'pax-avatars/{eng}.jpg'
+        avatar_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), avatar_file)
+        pax_avatar_map[pname] = avatar_file if os.path.exists(avatar_path) else ''
     pax_flight_count = {}
     for t in tickets:
         for pname in t.get('passengers', []):

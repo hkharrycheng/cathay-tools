@@ -571,12 +571,12 @@ function renderTopFlyers() {
   chart.setOption({
     backgroundColor: 'transparent',
     tooltip: { trigger: 'axis', formatter: p => p[0].name + ': ' + p[0].value + ' 班' },
-    grid: { left: 50, right: 20, top: 50, bottom: 40 },
+    grid: { left: 50, right: 20, top: 30, bottom: 60 },
     xAxis: { type: 'category', data: names, axisLabel: { color: '#8fa0b8', fontSize: 11, interval: 0, rotate: names.length > 6 ? 20 : 0 }, axisLine: { lineStyle: { color: '#2e3a55' } } },
-    yAxis: { type: 'value', minInterval: 1, max: maxV + 1.5, axisLabel: { color: '#8fa0b8' }, splitLine: { lineStyle: { color: '#1a2233' } } },
+    yAxis: { type: 'value', min: -1.5, max: maxV + 1.5, minInterval: 1, axisLabel: { color: '#8fa0b8' }, splitLine: { lineStyle: { color: '#1a2233' } } },
     series: [
       { type: 'bar', data: values, barMaxWidth: 50, itemStyle: { borderRadius: [6, 6, 0, 0], color: { type: 'linear', x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: '#4f8cff' }, { offset: 1, color: '#2a56c9' }] } }, label: { show: true, position: 'top', color: '#e8ecf4', fontWeight: 'bold' }, z: 2 },
-      { type: 'scatter', data: data.map((d, i) => d.avatar ? [i, d.flights + 0.9] : null).filter(Boolean), symbolSize: 40, symbol: (val, params) => { const d = data[params.dataIndex]; return d.avatar ? ('image://' + d.avatar) : 'none'; }, itemStyle: { borderColor: '#fff', borderWidth: 1 }, z: 3, silent: true }
+      { type: 'scatter', data: data.map((d, i) => d.avatar ? [i, -0.8] : null).filter(Boolean), symbolSize: 36, symbol: (val, params) => { const d = data[params.dataIndex]; return d.avatar ? ('image://' + d.avatar) : 'none'; }, itemStyle: { borderColor: '#fff', borderWidth: 1 }, z: 3, silent: true },
     ],
   });
   window.addEventListener('resize', () => chart.resize());

@@ -1,6 +1,6 @@
 {
   "version": "1.00",
-  "lastUpdate": "2026-10-28 13:01",
+  "lastUpdate": "2026-10-28 14:21",
   "source": {
     "baseToken": "C2x4byTkEaN3Ths9FXwcagDSn5e",
     "ticketsTable": "tbl97F6lmemjat8V",
@@ -1337,7 +1337,7 @@
     {
       "name": "鄭家瑩",
       "flights": 11,
-      "avatar": ""
+      "avatar": "pax-avatars/Alice.jpg"
     },
     {
       "name": "Mother",
@@ -1352,27 +1352,27 @@
     {
       "name": "老婆",
       "flights": 4,
-      "avatar": ""
+      "avatar": "pax-avatars/Alice.jpg"
     },
     {
       "name": "姐姐",
       "flights": 4,
-      "avatar": ""
+      "avatar": "pax-avatars/Dyna.jpg"
     },
     {
       "name": "妹妹",
       "flights": 4,
-      "avatar": ""
+      "avatar": "pax-avatars/Joe.jpg"
     },
     {
       "name": "我",
       "flights": 4,
-      "avatar": ""
+      "avatar": "pax-avatars/Harry.jpg"
     },
     {
       "name": "沖舅父",
       "flights": 2,
-      "avatar": ""
+      "avatar": "pax-avatars/ChungUncle.jpg"
     }
   ]
 }
