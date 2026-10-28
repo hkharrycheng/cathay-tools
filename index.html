@@ -381,9 +381,9 @@ body {
   <div class="container">
     <div class="stats-grid" id="statsGrid"></div>
     <div class="chart-card" style="margin-top:14px">
-      <h3>🏆 搭機最多龍虎榜</h3>
+      <h3>✈️ 國泰員工機票使用統計</h3>
       <div class="chart-box" id="topFlyersChart" style="height:280px"></div>
-      <div id="topFlyersAvatars" style="display:flex;justify-content:center;gap:18px;flex-wrap:wrap;padding:10px 0 5px"></div>
+      <div id="topFlyersAvatars" style="display:flex;justify-content:space-around;align-items:flex-start;padding:10px 20px 5px 50px"></div>
     </div>
     <div class="charts-grid">
       <div class="chart-card">
@@ -583,11 +583,11 @@ function renderTopFlyers() {
   const avBox = document.getElementById('topFlyersAvatars');
   if (avBox) {
     avBox.innerHTML = data.map(d => `
-      <div style="text-align:center;width:72px">
+      <div style="text-align:center;flex:0 0 auto">
         ${d.avatar
           ? `<img src="${d.avatar}" style="width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid #4f8cff;box-shadow:0 2px 8px rgba(79,140,255,.3)"/>`
           : `<div style="width:52px;height:52px;border-radius:50%;background:#2a3a55;margin:0 auto;display:flex;align-items:center;justify-content:center;color:#8fa0b8;font-size:18px;font-weight:bold">${d.name[0]}</div>`}
-        <div style="color:#8fa0b8;font-size:11px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${d.name}</div>
+        <div style="color:#8fa0b8;font-size:11px;margin-top:4px;white-space:nowrap">${d.name}</div>
       </div>`).join('');
   }
   window.addEventListener('resize', () => chart.resize());
