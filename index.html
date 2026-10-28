@@ -646,7 +646,8 @@ function ticketCard(t) {
     : `<span class="status-badge status-${st.replace(' ', '-')}">${st}</span>`;
   const pax = t.passengers.length
     ? t.passengers.map(p => {
-        const av = (DATA.paxAvatars && DATA.paxAvatars[p]) ? 'pax-avatars/' + DATA.paxAvatars[p] : '';
+        const paxObj = (DATA.passengers || []).find(x => x.name === p);
+        const av = paxObj && paxObj.avatar ? paxObj.avatar : '';
         const avHtml = av ? `<img class="pax-avatar" src="${av}" onerror="this.style.display='none'" alt="">` : '';
         return `<span class="pax-chip">${avHtml}<span class="pax-link" onclick="jumpToPax('${p.replace(/'/g, "\\'")}')">${p}</span></span>`;
       }).join(' ')
