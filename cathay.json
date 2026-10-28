@@ -1,6 +1,6 @@
 {
   "version": "1.00",
-  "lastUpdate": "2026-10-28 12:44",
+  "lastUpdate": "2026-10-28 13:01",
   "source": {
     "baseToken": "C2x4byTkEaN3Ths9FXwcagDSn5e",
     "ticketsTable": "tbl97F6lmemjat8V",
@@ -1373,21 +1373,6 @@
       "name": "沖舅父",
       "flights": 2,
       "avatar": ""
-    },
-    {
-      "name": "阿軒",
-      "flights": 2,
-      "avatar": ""
-    },
-    {
-      "name": "Tansy Lee",
-      "flights": 2,
-      "avatar": ""
-    },
-    {
-      "name": "Joe",
-      "flights": 1,
-      "avatar": "pax-avatars/Joe.jpg"
     }
   ]
 }

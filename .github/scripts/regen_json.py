@@ -60,6 +60,7 @@ raw = list_records(token, TICKETS_TABLE)
 print(f'Read {len(raw)} tickets')
 
 pax_map = {}
+staff_names = set()
 if PASSENGERS_TABLE:
     try:
         pax_raw = list_records(token, PASSENGERS_TABLE)
@@ -68,6 +69,9 @@ if PASSENGERS_TABLE:
             name = f.get('DisplayName')
             if isinstance(name, list): name = name[0].get('text') if name else ''
             pax_map[p['record_id']] = name or p['record_id']
+            app_name = f.get('Flight Load App Name')
+            if app_name:
+                staff_names.add(name or p['record_id'])
     except Exception as e:
         print(f'WARN passengers: {e}')
 
@@ -119,11 +123,12 @@ with_status = [t for t in tickets if t['finalStatus'] is not None]
 accepted = [t for t in with_status if t['finalStatus'] == 'Accepted']
 upcoming = [t for t in tickets if t['startTime'] and t['startTime'] > datetime.now().strftime('%Y-%m-%d %H:%M')]
 
-# Top Flyers leaderboard
+# Top Flyers leaderboard (only staff with Flight Load App Name)
 pax_count = {}
 for t in tickets:
     for pn in t.get('passengers', []):
-        pax_count[pn] = pax_count.get(pn, 0) + 1
+        if pn in staff_names:
+            pax_count[pn] = pax_count.get(pn, 0) + 1
 top_flyers = sorted(
     [{'name': n, 'flights': c, 'avatar': f'pax-avatars/{n}.jpg'} for n, c in pax_count.items()],
     key=lambda x: -x['flights']

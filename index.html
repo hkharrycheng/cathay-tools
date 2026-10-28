@@ -576,7 +576,7 @@ function renderTopFlyers() {
     yAxis: { type: 'value', minInterval: 1, max: maxV + 1.5, axisLabel: { color: '#8fa0b8' }, splitLine: { lineStyle: { color: '#1a2233' } } },
     series: [
       { type: 'bar', data: values, barMaxWidth: 50, itemStyle: { borderRadius: [6, 6, 0, 0], color: { type: 'linear', x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: '#4f8cff' }, { offset: 1, color: '#2a56c9' }] } }, label: { show: true, position: 'top', color: '#e8ecf4', fontWeight: 'bold' }, z: 2 },
-      { type: 'scatter', data: data.map((d, i) => [i, d.flights + 0.9]), symbolSize: 40, symbol: (val, params) => { const d = data[params.dataIndex]; return d.avatar || 'image://'; }, itemStyle: { borderColor: '#fff', borderWidth: 1 }, z: 3, silent: true }
+      { type: 'scatter', data: data.map((d, i) => d.avatar ? [i, d.flights + 0.9] : null).filter(Boolean), symbolSize: 40, symbol: (val, params) => { const d = data[params.dataIndex]; return d.avatar ? ('image://' + d.avatar) : 'none'; }, itemStyle: { borderColor: '#fff', borderWidth: 1 }, z: 3, silent: true }
     ],
   });
   window.addEventListener('resize', () => chart.resize());
