@@ -1,6 +1,6 @@
 {
-  "version": "1.00",
-  "lastUpdate": "2026-10-28 15:24",
+  "version": "1.01",
+  "lastUpdate": "2026-11-06 17:55",
   "source": {
     "baseToken": "C2x4byTkEaN3Ths9FXwcagDSn5e",
     "ticketsTable": "tbl97F6lmemjat8V",
@@ -9,7 +9,7 @@
   },
   "stats": {
     "noOfFlights": 19,
-    "totalTickets": 20,
+    "totalTickets": 21,
     "successful": 14,
     "successRate": 0.7368,
     "avgBooked": 0.9173,
@@ -187,11 +187,51 @@
       "staff": 16.0
     },
     {
+      "time": "2026-11-06 18:25",
+      "staff": 10.0
+    },
+    {
       "time": "2026-12-01 11:10",
       "staff": 0.0
     }
   ],
   "upcoming": [
+    {
+      "id": "reczz28WLjAxoZow",
+      "displayName": "CX603 HKG > KTM",
+      "flightNumber": "CX603",
+      "from": "HKG",
+      "to": "KTM",
+      "startTime": "2026-11-06 18:25",
+      "endTime": "2026-11-06 21:30",
+      "planeModel": "Airbus A330-300 (33P)",
+      "capacity": 317.0,
+      "booked": 311.0,
+      "checkedIn": 305.0,
+      "bookedPercent": 0.981072555,
+      "p25": 1.0,
+      "p27": 3.0,
+      "p29": 0.0,
+      "p31": 2.0,
+      "p33": 4.0,
+      "noOfStaff": 10.0,
+      "staffPercent": 0.03058104,
+      "yHk": null,
+      "yListedHk": 5805.0,
+      "yMilesHk": 459.0,
+      "discount": 1.0,
+      "asiaMilesUsed": 13000.0,
+      "finalStatus": null,
+      "finalStatusProb": null,
+      "rollingProb": null,
+      "outport": "{\"full_address\": \"BagmatiKathmandu\", \"lat\": 27.6966, \"lng\": 85.3591}",
+      "passengers": [
+        "鄭家瑩"
+      ],
+      "screenshots": [
+        "screenshots/cx603_flight_load.jpg"
+      ]
+    },
     {
       "id": "recvvV5BR651Sv",
       "displayName": "CX162 SYD > HKG",
@@ -939,6 +979,42 @@
       "screenshots": [
         "screenshots/cap_1027b.jpg"
       ]
+    },
+    {
+      "id": "reczz28WLjAxoZow",
+      "displayName": "CX603 HKG > KTM",
+      "flightNumber": "CX603",
+      "from": "HKG",
+      "to": "KTM",
+      "startTime": "2026-11-06 18:25",
+      "endTime": "2026-11-06 21:30",
+      "planeModel": "Airbus A330-300 (33P)",
+      "capacity": 317.0,
+      "booked": 311.0,
+      "checkedIn": 305.0,
+      "bookedPercent": 0.981072555,
+      "p25": 1.0,
+      "p27": 3.0,
+      "p29": 0.0,
+      "p31": 2.0,
+      "p33": 4.0,
+      "noOfStaff": 10.0,
+      "staffPercent": 0.03058104,
+      "yHk": null,
+      "yListedHk": 5805.0,
+      "yMilesHk": 459.0,
+      "discount": 1.0,
+      "asiaMilesUsed": 13000.0,
+      "finalStatus": null,
+      "finalStatusProb": null,
+      "rollingProb": null,
+      "outport": "{\"full_address\": \"BagmatiKathmandu\", \"lat\": 27.6966, \"lng\": 85.3591}",
+      "passengers": [
+        "鄭家瑩"
+      ],
+      "screenshots": [
+        "screenshots/cx603_flight_load.jpg"
+      ]
     }
   ],
   "passengers": [
@@ -1336,7 +1412,7 @@
   "topFlyers": [
     {
       "name": "鄭家瑩",
-      "flights": 11,
+      "flights": 12,
       "avatar": "pax-avatars/鄭家瑩.jpg"
     },
     {
