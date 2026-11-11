@@ -6,7 +6,9 @@ J09 行程 JSON 共用建構器（v1.21）
 - 支援「行程總表」多行程、活動性質、圖片詳細、小紅書連結
 """
 import re
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
+
+HKT = timezone(timedelta(hours=8))
 
 SLOT_START = {"上午": 9, "中午": 12, "下午": 14, "傍晚": 17, "晚上": 19, "全天": 8}
 SLOT_ORDER = {"上午": 0, "中午": 1, "下午": 2, "傍晚": 3, "晚上": 4, "全天": 5}
@@ -36,7 +38,7 @@ def date_of(v):
     if v is None or v == "":
         return None
     if isinstance(v, (int, float)):
-        return datetime.fromtimestamp(v / 1000).strftime("%Y-%m-%d")
+        return datetime.fromtimestamp(v / 1000, HKT).strftime("%Y-%m-%d")
     s = str(v)
     return s[:10] if re.match(r"^\d{4}-\d{2}-\d{2}", s) else None
 
