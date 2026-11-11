@@ -23,14 +23,19 @@ jobs:
         env:
           FEISHU_APP_ID: ${{ secrets.FEISHU_APP_ID }}
           FEISHU_APP_SECRET: ${{ secrets.FEISHU_APP_SECRET }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPO: ${{ github.repository }}
           BASE_TOKEN: C2x4byTkEaN3Ths9FXwcagDSn5e
           TICKETS_TABLE: tbl97F6lmemjat8V
           PASSENGERS_TABLE: tbleF9mFy3Kfyo77
+          TRIPS_TABLE: tblW8jSdaVe6uF31
+          PLAN_TABLE: tblCISrHCFswpWjv
+          REQ_TABLE: tblsRYPi1RrCfokq
         run: python .github/scripts/regen_json.py
-      - name: Commit updated cathay.json
+      - name: Commit updated JSON
         run: |
           git config user.name "cathay-bot"
           git config user.email "cathay-bot@users.noreply.github.com"
-          git add cathay.json
-          git diff --staged --quiet || git commit -m "auto: regenerate cathay.json [skip ci]"
+          git add cathay.json itinerary.json
+          git diff --staged --quiet || git commit -m "auto: regenerate cathay.json + itinerary.json [skip ci]"
           git push
