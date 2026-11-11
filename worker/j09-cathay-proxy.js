@@ -118,6 +118,90 @@ export default {
       });
     }
 
+    if (url.pathname === '/api/plan-status' && req.method === 'POST') {
+      let body;
+      try { body = await req.json(); } catch (e) {
+        return new Response(JSON.stringify({ ok: false, error: 'bad json' }), { status: 400, headers: { ...CORS, 'Content-Type': 'application/json' } });
+      }
+      const records = body.records || {};
+      const ids = Object.keys(records);
+      if (!ids.length) return new Response(JSON.stringify({ ok: false, error: 'empty records' }), { status: 400, headers: { ...CORS, 'Content-Type': 'application/json' } });
+
+      let token;
+      try { token = await getFeishuToken(env); }
+      catch (e) { return new Response(JSON.stringify({ ok: false, error: 'auth failed: ' + e.message }), { status: 500, headers: { ...CORS, 'Content-Type': 'application/json' } }); }
+
+      const allowed = ['Completed', 'Pending'];
+      const planTable = env.PLAN_TABLE || 'tblQEnksbXxP2Wa8';
+      const statusField = env.PLAN_STATUS_FIELD || '\u72c0\u614b';
+
+      let ok = 0, fail = 0;
+      const errors = [];
+      for (const rid of ids) {
+        const v = String(records[rid]);
+        if (allowed.indexOf(v) < 0) { fail++; errors.push(rid + ': bad status ' + v); continue; }
+        try {
+          const r = await fetch(
+            `https://open.feishu.cn/open-apis/bitable/v1/apps/${env.BASE_TOKEN}/tables/${planTable}/records/${rid}`,
+            {
+              method: 'PUT',
+              headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+              body: JSON.stringify({ fields: { [statusField]: v } }),
+            });
+          const j = await r.json();
+          if (j.code === 0) ok++;
+          else { fail++; errors.push(rid + ': ' + (j.msg || j.code)); }
+        } catch (e) { fail++; errors.push(rid + ': ' + e.message); }
+      }
+      return new Response(JSON.stringify({ ok, fail, errors: errors.slice(0, 10), updatedAt: new Date().toISOString() }), {
+        headers: { ...CORS, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // v1.20: 行程改天數 / 時間 → 寫回「計劃行程」表（天數 + 時間 兩欄）
+    if (url.pathname === '/api/plan-edit' && req.method === 'POST') {
+      let body;
+      try { body = await req.json(); } catch (e) {
+        return new Response(JSON.stringify({ ok: false, error: 'bad json' }), { status: 400, headers: { ...CORS, 'Content-Type': 'application/json' } });
+      }
+      const records = body.records || {};
+      const ids = Object.keys(records);
+      if (!ids.length) return new Response(JSON.stringify({ ok: false, error: 'empty records' }), { status: 400, headers: { ...CORS, 'Content-Type': 'application/json' } });
+
+      let token;
+      try { token = await getFeishuToken(env); }
+      catch (e) { return new Response(JSON.stringify({ ok: false, error: 'auth failed: ' + e.message }), { status: 500, headers: { ...CORS, 'Content-Type': 'application/json' } }); }
+
+      const planTable = env.PLAN_TABLE || 'tblQEnksbXxP2Wa8';
+      const dayField = env.PLAN_DAY_FIELD || '\u5929\u6578';
+      const timeField = env.PLAN_TIME_FIELD || '\u6642\u9593';
+
+      let ok = 0, fail = 0;
+      const errors = [];
+      for (const rid of ids) {
+        const rec = records[rid] || {};
+        const day = String(rec.day || '');
+        const time = String(rec.time || '');
+        if (!/^\u7b2c[1-9]\u5929$/.test(day)) { fail++; errors.push(rid + ': bad day ' + day); continue; }
+        if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(time)) { fail++; errors.push(rid + ': bad time ' + time); continue; }
+        try {
+          const r = await fetch(
+            `https://open.feishu.cn/open-apis/bitable/v1/apps/${env.BASE_TOKEN}/tables/${planTable}/records/${rid}`,
+            {
+              method: 'PUT',
+              headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+              body: JSON.stringify({ fields: { [dayField]: day, [timeField]: time } }),
+            });
+          const j = await r.json();
+          if (j.code === 0) ok++;
+          else { fail++; errors.push(rid + ': ' + (j.msg || j.code)); }
+        } catch (e) { fail++; errors.push(rid + ': ' + e.message); }
+      }
+      return new Response(JSON.stringify({ ok, fail, errors: errors.slice(0, 10), updatedAt: new Date().toISOString() }), {
+        headers: { ...CORS, 'Content-Type': 'application/json' },
+      });
+    }
+
     return new Response('not found', { status: 404, headers: CORS });
   },
 };
