@@ -295,7 +295,7 @@ def build_itinerary(plan_rows, trip_rows, req_rows, base_token, version,
 
     result = {
         "version": version,
-        "lastUpdate": datetime.now().strftime("%Y-%m-%d %H:%M"),
+        "lastUpdate": datetime.now(HKT).strftime("%Y-%m-%d %H:%M"),
         "source": {"baseToken": base_token, "tripsTable": trips_table,
                    "planTable": plan_table, "reqTable": req_table},
         "defaultTripId": default_trip["id"],
