@@ -152,3 +152,156 @@ result = {
 with open('cathay.json', 'w', encoding='utf-8') as fp:
     json.dump(result, fp, ensure_ascii=False, indent=2)
 print(f'Wrote cathay.json: {len(tickets)} tickets, {len(with_status)} with status')
+
+# ===== itinerary.json (設計行程 / 設計行程圖) =====
+PLAN_TABLE = os.environ.get('PLAN_TABLE', 'tblQEnksbXxP2Wa8')
+REQ_TABLE = os.environ.get('REQ_TABLE', 'tblsRYPi1RrCfokq')
+SLOT_START = {'上午': 9, '中午': 12, '下午': 14, '傍晚': 17, '晚上': 19, '全天': 8}
+SLOT_ORDER = {'上午': 0, '中午': 1, '下午': 2, '傍晚': 3, '晚上': 4, '全天': 5}
+
+
+def flat_text(v):
+    if v is None: return ''
+    if isinstance(v, list):
+        return ' '.join(flat_text(x) for x in v).strip()
+    if isinstance(v, dict):
+        return flat_text(v.get('text') or v.get('name') or '')
+    return str(v).strip()
+
+
+def day_str(v):
+    if v is None: return None
+    if isinstance(v, (int, float)):
+        return datetime.fromtimestamp(v/1000).strftime('%Y-%m-%d')
+    return str(v)[:10]
+
+
+def slot_by_clock(hh, mm):
+    t = hh * 60 + mm
+    if t < 12 * 60:
+        return '上午'
+    if t < 13 * 60:
+        return '中午'
+    if t < 17 * 60:
+        return '下午'
+    if t < 19 * 60:
+        return '傍晚'
+    return '晚上'
+
+
+def parse_time(v):
+    """時間欄可以是 HH:MM（精確）或時段字；回傳 (hh, mm, slot, overnight)"""
+    s = flat_text(v)
+    overnight = '及第2天上午' in s
+    m = re.search(r"(\d{1,2})[:：](\d{2})", s)
+    if m:
+        hh = min(max(int(m.group(1)), 0), 23)
+        mm = min(max(int(m.group(2)), 0), 59)
+        return hh, mm, slot_by_clock(hh, mm), overnight
+    base = s.split('及第2天上午')[0] if overnight else s
+    return SLOT_START.get(base, 9), 0, base, overnight
+
+
+def place_of(v):
+    if not isinstance(v, dict): return None
+    lat, lng = v.get('lat'), v.get('lng')
+    if lat is None and isinstance(v.get('location'), str):
+        parts = v['location'].split(',')
+        if len(parts) == 2:
+            try:
+                lng, lat = float(parts[0]), float(parts[1])
+            except Exception:
+                lat, lng = None, None
+    if lat is None or lng is None: return None
+    addr = v.get('full_address') or v.get('address') or v.get('name') or ''
+    return {'name': addr, 'lat': float(lat), 'lng': float(lng), 'address': addr}
+
+
+try:
+    plan_raw = list_records(token, PLAN_TABLE)
+    req_raw = list_records(token, REQ_TABLE)
+    print(f'Read {len(plan_raw)} plan items, {len(req_raw)} requirements')
+
+    items = []
+    for idx, rec in enumerate(plan_raw):
+        f = rec.get('fields', {})
+        d = day_str(f.get('計劃日期'))
+        if not d: continue
+        hh, mm, base_slot, overnight = parse_time(f.get('時間'))
+        items.append({
+            'id': rec['record_id'],
+            'idx': idx,
+            'day': opt(f.get('天數')) or '',
+            'date': d,
+            'slot': base_slot,
+            'start': f'{d} {hh:02d}:{mm:02d}',
+            'overnight': overnight,
+            'order': SLOT_ORDER.get(base_slot, 99),
+            'activity': flat_text(f.get('活動')),
+            'plan': flat_text(f.get('行程')),
+            'note': flat_text(f.get('備註')),
+            'stay': flat_text(f.get('建议停留时长')),
+            'budget': num(f.get('消費預算 (HKD)')),
+            'taxiMin': num(f.get('打車估計時間 (分鐘)')),
+            'distKm': num(f.get('距離上一景點 (KM)')),
+            'xhs': flat_text(f.get('小紅書參考連結')),
+            'aiTip': flat_text(f.get('AI旅程建議')),
+            'place': place_of(f.get('景點')),
+            'status': opt(f.get('狀態')) or 'Pending',
+        })
+    items.sort(key=lambda x: (x['start'], x['order'], x['idx']))
+
+    meta = {}
+    for rec in req_raw:
+        f = rec.get('fields', {})
+        label = flat_text(f.get('文本'))
+        detail = flat_text(f.get('詳細'))
+        if label and detail: meta[label] = detail
+
+    dates = sorted({i['date'] for i in items})
+    day_labels = []
+    for i in items:
+        if i['day'] and i['day'] not in day_labels: day_labels.append(i['day'])
+    day_labels.sort(key=lambda s: int(''.join(ch for ch in s if ch.isdigit()) or 0))
+
+    days = []
+    for label in day_labels:
+        d_items = [i for i in items if i['day'] == label]
+        if not d_items: continue
+        days.append({'label': label, 'date': d_items[0]['date'], 'items': d_items,
+                     'completed': sum(1 for i in d_items if i['status'] == 'Completed'), 'total': len(d_items)})
+
+    trip = {
+        'name': (f'{dates[0]} → {dates[-1]}' if dates else ''),
+        'start': dates[0] if dates else None,
+        'end': dates[-1] if dates else None,
+        'days': len(day_labels),
+        'dayLabels': day_labels,
+        'party': meta.get('團友', ''),
+        'partyBg': meta.get('團友背景', ''),
+        'food': meta.get('食物偏好', ''),
+        'climate': meta.get('氣溫', ''),
+        'mode': meta.get('運行模式', ''),
+        'span': meta.get('大約時間', ''),
+        'category': meta.get('行程類別', ''),
+        'content': meta.get('行程內容', ''),
+        'meta': meta,
+        'tips': [],
+    }
+
+    itin = {
+        'version': '1.00',
+        'lastUpdate': datetime.now().strftime('%Y-%m-%d %H:%M'),
+        'source': {'baseToken': BASE_TOKEN, 'planTable': PLAN_TABLE, 'reqTable': REQ_TABLE},
+        'trip': trip,
+        'nextId': next((i['id'] for i in items if i['status'] != 'Completed'), None),
+        'itemsCount': len(items),
+        'completedCount': sum(1 for i in items if i['status'] == 'Completed'),
+        'days': days,
+        'items': items,
+    }
+    with open('itinerary.json', 'w', encoding='utf-8') as fp:
+        json.dump(itin, fp, ensure_ascii=False, indent=2)
+    print(f'Wrote itinerary.json: {len(items)} items, {len(days)} days')
+except Exception as e:
+    print(f'WARN itinerary: {e}')
