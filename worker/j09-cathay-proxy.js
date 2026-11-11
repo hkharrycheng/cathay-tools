@@ -24,6 +24,57 @@ const CORS = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
+// ---- raw snapshot: 用 Worker 的 FEISHU_PAT 抓四張表，寫入 repo 供 Actions 離線重生 ----
+function b64utf8(str) {
+  const bytes = new TextEncoder().encode(str);
+  let bin = '';
+  for (let i = 0; i < bytes.length; i += 8192) {
+    bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 8192));
+  }
+  return btoa(bin);
+}
+
+async function listRecords(env, token, tableId) {
+  const out = [];
+  let pageToken = '';
+  for (let guard = 0; guard < 40; guard++) {
+    let u = `https://open.feishu.cn/open-apis/bitable/v1/apps/${env.BASE_TOKEN}/tables/${tableId}/records?page_size=100`;
+    if (pageToken) u += '&page_token=' + encodeURIComponent(pageToken);
+    const r = await fetch(u, {
+      headers: { 'Authorization': 'Bearer ' + token, 'User-Agent': 'j09-cathay-proxy' },
+    });
+    const j = await r.json();
+    if (j.code !== 0) throw new Error('list ' + tableId + ': ' + (j.msg || j.code));
+    out.push(...((j.data && j.data.items) || []));
+    if (j.data && j.data.has_more) pageToken = j.data.page_token; else break;
+  }
+  return out;
+}
+
+async function ghPutFile(env, path, text, message) {
+  const base = `https://api.github.com/repos/${env.GITHUB_REPO}/contents/${path}`;
+  const headers = {
+    'Authorization': 'Bearer ' + env.GITHUB_TOKEN,
+    'Accept': 'application/vnd.github+json',
+    'Content-Type': 'application/json',
+    'User-Agent': 'j09-cathay-proxy',
+  };
+  let sha = null;
+  const g = await fetch(base + '?ref=main', { headers });
+  if (g.ok) sha = (await g.json()).sha;
+  else if (g.status !== 404) return { ok: false, status: g.status, path };
+  const body = { message, branch: 'main', content: b64utf8(text) };
+  if (sha) body.sha = sha;
+  const p = await fetch(base, { method: 'PUT', headers, body: JSON.stringify(body) });
+  if (!p.ok) {
+    let d = '';
+    try { d = (await p.text()).slice(0, 200); } catch (e) { d = ''; }
+    return { ok: false, status: p.status, detail: d, path };
+  }
+  const j = await p.json();
+  return { ok: true, path, sha: j.content && j.content.sha };
+}
+
 async function dispatchRegen(env) {
   if (!env.GITHUB_TOKEN || !env.GITHUB_REPO) return { skipped: 'no github config' };
   try {
@@ -33,17 +84,20 @@ async function dispatchRegen(env) {
         'Authorization': 'Bearer ' + env.GITHUB_TOKEN,
         'Accept': 'application/vnd.github+json',
         'Content-Type': 'application/json',
+        'User-Agent': 'j09-cathay-proxy',
       },
       body: JSON.stringify({ ref: 'main' }),
     });
-    return { dispatched: r.ok, status: r.status };
+    if (r.ok) return { dispatched: true, status: r.status };
+    let detail = '';
+    try { detail = (await r.text()).slice(0, 200); } catch (e) { detail = ''; }
+    return { dispatched: false, status: r.status, detail: detail };
   } catch (e) {
     return { dispatched: false, error: e.message };
   }
 }
 
 async function getFeishuToken(env) {
-  // Preferred: Personal Access Token (like J14)
   if (env.FEISHU_PAT) return env.FEISHU_PAT;
   // Fallback: app_id + app_secret → tenant_access_token
   if (env.FEISHU_APP_ID && env.FEISHU_APP_SECRET) {
@@ -71,8 +125,43 @@ export default {
     }
 
     if (url.pathname === '/api/refresh' && req.method === 'POST') {
+      // 1) 抓飛書四張表做 raw 快照；2) 推 repo；3) 觸發 Actions 用快照重生 JSON
+      if (!env.GITHUB_TOKEN || !env.GITHUB_REPO) {
+        return new Response(JSON.stringify({ ok: false, error: 'Worker 未設定 GITHUB_TOKEN／GITHUB_REPO' }), { status: 500, headers: { ...CORS, 'Content-Type': 'application/json' } });
+      }
+      let token;
+      try { token = await getFeishuToken(env); }
+      catch (e) { return new Response(JSON.stringify({ ok: false, error: '飛書認證失敗：' + e.message }), { status: 500, headers: { ...CORS, 'Content-Type': 'application/json' } }); }
+
+      const tables = {
+        [env.TICKETS_TABLE || 'tbl97F6lmemjat8V']: 'tickets',
+        [env.PASSENGERS_TABLE || 'tbleF9mFy3Kfyo77']: 'passengers',
+        [env.PLAN_TABLE || 'tblQEnksbXxP2Wa8']: 'plan',
+        [env.REQ_TABLE || 'tblsRYPi1RrCfokq']: 'req',
+      };
+      const snap = { generatedAt: new Date().toISOString(), baseToken: env.BASE_TOKEN, tables: {} };
+      const counts = {};
+      try {
+        for (const tid of Object.keys(tables)) {
+          snap.tables[tid] = await listRecords(env, token, tid);
+          counts[tables[tid]] = snap.tables[tid].length;
+        }
+      } catch (e) {
+        return new Response(JSON.stringify({ ok: false, error: '讀飛書失敗：' + e.message }), { status: 500, headers: { ...CORS, 'Content-Type': 'application/json' } });
+      }
+
+      const put = await ghPutFile(env, 'data/feishu_raw.json', JSON.stringify(snap), 'chore: refresh feishu raw snapshot for regen');
+      if (!put.ok) {
+        return new Response(JSON.stringify({ ok: false, error: '寫入 raw 快照失敗（HTTP ' + put.status + '）', put }), { status: 500, headers: { ...CORS, 'Content-Type': 'application/json' } });
+      }
+
       const d = await dispatchRegen(env);
-      return new Response(JSON.stringify({ ok: true, ...d }), {
+      const failed = d.skipped || !d.dispatched;
+      let err = null;
+      if (d.skipped) err = 'Worker 未設定 GITHUB_TOKEN／GITHUB_REPO';
+      else if (!d.dispatched) err = 'GitHub dispatch 失敗（HTTP ' + (d.status || '?') + '）' + (d.detail || d.error ? '：' + (d.detail || d.error) : '');
+      return new Response(JSON.stringify({ ok: !failed, error: err, counts, put, ...d }), {
+        status: failed ? 500 : 200,
         headers: { ...CORS, 'Content-Type': 'application/json' },
       });
     }
