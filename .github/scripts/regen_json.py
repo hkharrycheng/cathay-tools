@@ -309,6 +309,15 @@ try:
             'place': place_of(f.get('景點')),
             'status': opt(f.get('狀態')) or 'Pending',
         })
+    # 「天數」是權威分組；計劃日期可能未同步（前端只改天數/時間），故日期按天數推算
+    base_date = None
+    if items:
+        base_date = min(datetime.strptime(i['date'], '%Y-%m-%d') for i in items)
+        for i in items:
+            n = int(''.join(ch for ch in i['day'] if ch.isdigit()) or 0)
+            if n >= 1:
+                i['date'] = (base_date + timedelta(days=n - 1)).strftime('%Y-%m-%d')
+                i['start'] = f"{i['date']} {i['start'][11:16]}"
     items.sort(key=lambda x: (x['start'], x['order'], x['idx']))
 
     meta = {}
