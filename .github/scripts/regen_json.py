@@ -60,6 +60,19 @@ def load_raw_snapshot():
 
 
 RAW = load_raw_snapshot()
+
+# 上一版 cathay.json：保留 version 與截圖路徑（截圖檔名無規律，唔可以靠規則重建）
+PREV = {}
+if os.path.exists('cathay.json'):
+    try:
+        with open('cathay.json', encoding='utf-8') as fp:
+            PREV = json.load(fp)
+    except Exception as e:
+        print(f'WARN prev cathay.json unreadable: {e}')
+PREV_SHOTS = {t.get('id'): (t.get('screenshots') or [])
+              for t in (PREV.get('tickets') or []) if t.get('id')}
+PREV_VER = PREV.get('version') or '1.00'
+VERSION = PREV_VER if PREV_VER >= '1.02' else '1.02'
 if RAW:
     print(f'Raw snapshot loaded, generatedAt={RAW.get("generatedAt")}')
 else:
@@ -121,17 +134,19 @@ print(f'Read {len(raw)} tickets')
 
 pax_map = {}
 staff_names = set()
+pax_list = []
 if PASSENGERS_TABLE:
     try:
         pax_raw = list_records(token, PASSENGERS_TABLE)
         for p in pax_raw:
             f = p.get('fields', {})
-            name = f.get('DisplayName')
-            if isinstance(name, list): name = name[0].get('text') if name else ''
-            pax_map[p['record_id']] = name or p['record_id']
-            app_name = f.get('Flight Load App Name')
+            name = opt(f.get('DisplayName')) or p['record_id']
+            pax_map[p['record_id']] = name
+            app_name = opt(f.get('Flight Load App Name')) or ''
+            pax_list.append({'id': p['record_id'], 'name': name,
+                             'appName': app_name, 'avatar': f'pax-avatars/{name}.jpg'})
             if app_name:
-                staff_names.add(name or p['record_id'])
+                staff_names.add(name)
     except Exception as e:
         print(f'WARN passengers: {e}')
 
@@ -174,8 +189,10 @@ for rec in raw:
         'finalStatus': opt(f.get('Final Status')),
         'finalStatusProb': num(f.get('Final Status Prob')),
         'rollingProb': num(f.get('Rolling Final Status Prob')),
+        'outport': (json.dumps(f.get('Outport Location'), ensure_ascii=False)
+                    if isinstance(f.get('Outport Location'), dict) else (f.get('Outport Location') or None)),
         'passengers': pax_names,
-        'screenshots': [],
+        'screenshots': PREV_SHOTS.get(rec['record_id'], []),
     }
     tickets.append(t)
 
@@ -194,18 +211,44 @@ top_flyers = sorted(
     key=lambda x: -x['flights']
 )[:15]
 
+def mean_of(key):
+    vals = [t[key] for t in tickets if t.get(key) is not None]
+    return round(sum(vals) / len(vals), 4) if vals else None
+
+
+status_counts = {}
+for t in with_status:
+    status_counts[t['finalStatus']] = status_counts.get(t['finalStatus'], 0) + 1
+status_dist = [{'status': s, 'count': c} for s, c in
+               sorted(status_counts.items(), key=lambda kv: (-kv[1], kv[0]))]
+
+by_time = sorted([t for t in tickets if t['startTime']], key=lambda t: t['startTime'])
+rolling_series = [{'time': t['startTime'], 'prob': t['rollingProb']}
+                  for t in by_time if t['rollingProb'] is not None]
+staff_trend = [{'time': t['startTime'], 'staff': t['noOfStaff']}
+               for t in by_time if t['noOfStaff'] is not None]
+
 result = {
-    'version': '1.00',
+    'version': VERSION,
     'lastUpdate': datetime.now().strftime('%Y-%m-%d %H:%M'),
-    'source': {'baseToken': BASE_TOKEN, 'ticketsTable': TICKETS_TABLE},
+    'source': {'baseToken': BASE_TOKEN, 'ticketsTable': TICKETS_TABLE,
+               'passengersTable': PASSENGERS_TABLE},
     'stats': {
         'noOfFlights': len(with_status),
         'totalTickets': len(tickets),
         'successful': len(accepted),
         'successRate': round(len(accepted)/len(with_status), 4) if with_status else 0,
+        'avgBooked': mean_of('bookedPercent'),
+        'avgStaffPercent': mean_of('staffPercent'),
+        'avgStaffCount': mean_of('noOfStaff'),
+        'avgDiscount': mean_of('discount'),
+        'statusDist': status_dist,
     },
+    'rollingProb': rolling_series,
+    'staffTrend': staff_trend,
     'tickets': tickets,
     'upcoming': upcoming,
+    'passengers': pax_list,
     'topFlyers': top_flyers,
 }
 
