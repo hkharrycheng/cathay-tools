@@ -4,7 +4,9 @@
 GitHub Actions: regenerate cathay.json from Feishu Bitable (no lark-cli needed)
 """
 import os, json, re, requests
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
+
+HKT = timezone(timedelta(hours=8))  # 飛書時間戳按香港時間解讀，避免差一日
 
 APP_ID = os.environ.get('FEISHU_APP_ID')
 APP_SECRET = os.environ.get('FEISHU_APP_SECRET')
@@ -110,7 +112,7 @@ def num(v):
 def ts(v):
     if v is None: return None
     if isinstance(v, (int, float)):
-        return datetime.fromtimestamp(v/1000).strftime('%Y-%m-%d %H:%M')
+        return datetime.fromtimestamp(v/1000, HKT).strftime('%Y-%m-%d %H:%M')
     return str(v)
 
 token = None if RAW else get_token()
@@ -230,7 +232,7 @@ def flat_text(v):
 def day_str(v):
     if v is None: return None
     if isinstance(v, (int, float)):
-        return datetime.fromtimestamp(v/1000).strftime('%Y-%m-%d')
+        return datetime.fromtimestamp(v/1000, HKT).strftime('%Y-%m-%d')
     return str(v)[:10]
 
 
@@ -375,6 +377,9 @@ def git_push_outputs():
     try:
         subprocess.run(['git', 'config', 'user.name', 'cathay-bot'], check=True)
         subprocess.run(['git', 'config', 'user.email', 'cathay-bot@users.noreply.github.com'], check=True)
+        # 先追平遠端（worker 剛剛推過 raw 快照），否則 push 會被拒
+        subprocess.run(['git', 'fetch', 'origin', 'main'], check=False)
+        subprocess.run(['git', 'merge', '--no-edit', 'origin/main'], check=False)
         subprocess.run(['git', 'add'] + files, check=True)
         r = subprocess.run(['git', 'diff', '--staged', '--quiet'])
         if r.returncode == 0:
