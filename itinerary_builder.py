@@ -217,9 +217,17 @@ def build_itinerary(plan_rows, trip_rows, req_rows, base_token, version,
         f = adapt(row)
         rid = f.get("_rid") or f.get("record_id")
         start = date_of(f.get("開始日期"))
-        ids = [x.get("id") for x in (f.get("計劃行程") or []) if isinstance(x, dict) and x.get("id")]
+        ids = []
+        for x in (f.get("計劃行程") or []):
+            if isinstance(x, dict):
+                if x.get("id"):
+                    ids.append(x["id"])
+                elif x.get("record_ids"):
+                    ids.extend(x["record_ids"])
         city = txt(f.get("城市"))
         label_text = txt(f.get("文本"))
+        if label_text in ("範本", "模板", "template", "Template"):
+            label_text = ""
         sub = [r for r in plan_rows if (adapt(r).get("_rid") or adapt(r).get("record_id")) in ids] if ids else []
         plan_ids.update(ids)
         items = enforce_edges(build_trip_items(sub, start, rid))
