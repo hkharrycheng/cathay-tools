@@ -1,6 +1,6 @@
 {
   "version": "1.05",
-  "lastUpdate": "2026-11-11 22:48",
+  "lastUpdate": "2026-11-11 14:48",
   "source": {
     "baseToken": "C2x4byTkEaN3Ths9FXwcagDSn5e",
     "tripsTable": "tblW8jSdaVe6uF31",
@@ -76,7 +76,7 @@
           "items": [
             {
               "id": "reczz28YOv1Yg6K2",
-              "idx": 0,
+              "idx": 44,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第1天",
               "date": "2016-03-31",
@@ -92,18 +92,13 @@
               "stay": "1小时35分钟",
               "xhs": "",
               "images": [],
-              "place": {
-                "name": "三亚凤凰国际机场，海南三亚天涯鹿城大道",
-                "lat": 18.30341,
-                "lng": 109.414038,
-                "address": "三亚凤凰国际机场，海南三亚天涯鹿城大道"
-              },
+              "place": null,
               "status": "Completed",
               "statusRaw": "已完成"
             },
             {
               "id": "reczz28YOv1YgDIs",
-              "idx": 1,
+              "idx": 45,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第1天",
               "date": "2016-03-31",
@@ -133,7 +128,7 @@
           "items": [
             {
               "id": "reczz28YOv1YhUi0",
-              "idx": 2,
+              "idx": 42,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第2天",
               "date": "2016-04-01",
@@ -155,7 +150,7 @@
             },
             {
               "id": "reczz28YOv1YhdwG",
-              "idx": 3,
+              "idx": 43,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第2天",
               "date": "2016-04-01",
@@ -171,12 +166,7 @@
               "stay": "2小时",
               "xhs": "",
               "images": [],
-              "place": {
-                "name": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号",
-                "lat": 18.244658,
-                "lng": 109.627941,
-                "address": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号"
-              },
+              "place": null,
               "status": "Completed",
               "statusRaw": "已完成"
             }
@@ -190,7 +180,7 @@
           "items": [
             {
               "id": "reczz28YOv1YfH7k",
-              "idx": 4,
+              "idx": 36,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第3天",
               "date": "2016-04-02",
@@ -212,7 +202,7 @@
             },
             {
               "id": "reczz28YOv1YiY5L",
-              "idx": 5,
+              "idx": 37,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第3天",
               "date": "2016-04-02",
@@ -228,18 +218,13 @@
               "stay": "2小时",
               "xhs": "",
               "images": [],
-              "place": {
-                "name": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号",
-                "lat": 18.244658,
-                "lng": 109.627941,
-                "address": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号"
-              },
+              "place": null,
               "status": "Completed",
               "statusRaw": "已完成"
             },
             {
               "id": "reczz28YOv1YfWrV",
-              "idx": 6,
+              "idx": 38,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第3天",
               "date": "2016-04-02",
@@ -261,7 +246,7 @@
             },
             {
               "id": "reczz28YOv1Yha3j",
-              "idx": 7,
+              "idx": 39,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第3天",
               "date": "2016-04-02",
@@ -277,18 +262,13 @@
               "stay": "1小时15分钟",
               "xhs": "",
               "images": [],
-              "place": {
-                "name": "三亚首地广场，海南三亚吉阳凤凰路与新风路交汇处(美丽之冠对面)",
-                "lat": 18.254373,
-                "lng": 109.521603,
-                "address": "三亚首地广场，海南三亚吉阳凤凰路与新风路交汇处(美丽之冠对面)"
-              },
+              "place": null,
               "status": "Completed",
               "statusRaw": "已完成"
             },
             {
               "id": "reczz28YOv1YhqXv",
-              "idx": 8,
+              "idx": 40,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第3天",
               "date": "2016-04-02",
@@ -304,18 +284,13 @@
               "stay": "1小时",
               "xhs": "",
               "images": [],
-              "place": {
-                "name": "天涯镇，海南三亚天涯",
-                "lat": 18.249883,
-                "lng": 109.504543,
-                "address": "天涯镇，海南三亚天涯"
-              },
+              "place": null,
               "status": "Completed",
               "statusRaw": "已完成"
             },
             {
               "id": "reczz28YOv1YgZXL",
-              "idx": 9,
+              "idx": 41,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第3天",
               "date": "2016-04-02",
@@ -345,7 +320,7 @@
           "items": [
             {
               "id": "reczz28YOv1Yhbml",
-              "idx": 10,
+              "idx": 29,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第4天",
               "date": "2016-04-03",
@@ -361,18 +336,13 @@
               "stay": "30分钟",
               "xhs": "",
               "images": [],
-              "place": {
-                "name": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号",
-                "lat": 18.244658,
-                "lng": 109.627941,
-                "address": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号"
-              },
+              "place": null,
               "status": "Completed",
               "statusRaw": "已完成"
             },
             {
               "id": "reczz28YOv1YgVY8",
-              "idx": 11,
+              "idx": 30,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第4天",
               "date": "2016-04-03",
@@ -394,7 +364,7 @@
             },
             {
               "id": "reczz28YOv1YgRQV",
-              "idx": 12,
+              "idx": 31,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第4天",
               "date": "2016-04-03",
@@ -410,18 +380,13 @@
               "stay": "8小时30分钟",
               "xhs": "",
               "images": [],
-              "place": {
-                "name": "南湾猴岛生态旅游区，海南陵水望海大道1号",
-                "lat": 18.410168,
-                "lng": 109.970813,
-                "address": "南湾猴岛生态旅游区，海南陵水望海大道1号"
-              },
+              "place": null,
               "status": "Completed",
               "statusRaw": "已完成"
             },
             {
               "id": "reczz28YOv1YiKTY",
-              "idx": 13,
+              "idx": 32,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第4天",
               "date": "2016-04-03",
@@ -443,7 +408,7 @@
             },
             {
               "id": "reczz28YOv1YfnbB",
-              "idx": 14,
+              "idx": 33,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第4天",
               "date": "2016-04-03",
@@ -459,18 +424,13 @@
               "stay": "1小时30分钟",
               "xhs": "",
               "images": [],
-              "place": {
-                "name": "第一市场水果摊32号(第一农贸市场店)，海南三亚天涯第一市场水果摊32号真空包装店",
-                "lat": 18.238729,
-                "lng": 109.508407,
-                "address": "第一市场水果摊32号(第一农贸市场店)，海南三亚天涯第一市场水果摊32号真空包装店"
-              },
+              "place": null,
               "status": "Completed",
               "statusRaw": "已完成"
             },
             {
               "id": "reczz28YOv1YfsU4",
-              "idx": 15,
+              "idx": 34,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第4天",
               "date": "2016-04-03",
@@ -486,18 +446,13 @@
               "stay": "1小时",
               "xhs": "",
               "images": [],
-              "place": {
-                "name": "启航公寓，海南三亚天涯新民街129号",
-                "lat": 18.237561,
-                "lng": 109.508709,
-                "address": "启航公寓，海南三亚天涯新民街129号"
-              },
+              "place": null,
               "status": "Completed",
               "statusRaw": "已完成"
             },
             {
               "id": "reczz28YOv1YgtU4",
-              "idx": 16,
+              "idx": 35,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第4天",
               "date": "2016-04-03",
@@ -527,7 +482,7 @@
           "items": [
             {
               "id": "reczz28YOv1Yfxyf",
-              "idx": 17,
+              "idx": 24,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第5天",
               "date": "2016-04-04",
@@ -543,18 +498,13 @@
               "stay": "1小时",
               "xhs": "",
               "images": [],
-              "place": {
-                "name": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号",
-                "lat": 18.244658,
-                "lng": 109.627941,
-                "address": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号"
-              },
+              "place": null,
               "status": "Completed",
               "statusRaw": "已完成"
             },
             {
               "id": "reczz28YOv1Yg6SI",
-              "idx": 18,
+              "idx": 25,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第5天",
               "date": "2016-04-04",
@@ -576,7 +526,7 @@
             },
             {
               "id": "reczz28YOv1YjMu9",
-              "idx": 19,
+              "idx": 26,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第5天",
               "date": "2016-04-04",
@@ -592,18 +542,13 @@
               "stay": "8小时",
               "xhs": "",
               "images": [],
-              "place": {
-                "name": "蜈支洲岛，海南三亚海棠林旺镇",
-                "lat": 18.310576,
-                "lng": 109.766551,
-                "address": "蜈支洲岛，海南三亚海棠林旺镇"
-              },
+              "place": null,
               "status": "Completed",
               "statusRaw": "已完成"
             },
             {
               "id": "reczz28YOv1YinMh",
-              "idx": 20,
+              "idx": 27,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第5天",
               "date": "2016-04-04",
@@ -625,7 +570,7 @@
             },
             {
               "id": "reczz28YOv1Yj2Yl",
-              "idx": 21,
+              "idx": 28,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第5天",
               "date": "2016-04-04",
@@ -641,12 +586,7 @@
               "stay": "1小时",
               "xhs": "",
               "images": [],
-              "place": {
-                "name": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号",
-                "lat": 18.244658,
-                "lng": 109.627941,
-                "address": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号"
-              },
+              "place": null,
               "status": "Completed",
               "statusRaw": "已完成"
             }
@@ -660,7 +600,7 @@
           "items": [
             {
               "id": "reczz28YOv1YhzHD",
-              "idx": 22,
+              "idx": 13,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第6天",
               "date": "2016-04-05",
@@ -676,18 +616,13 @@
               "stay": "45分钟",
               "xhs": "",
               "images": [],
-              "place": {
-                "name": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号",
-                "lat": 18.244658,
-                "lng": 109.627941,
-                "address": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号"
-              },
+              "place": null,
               "status": "Completed",
               "statusRaw": "已完成"
             },
             {
               "id": "reczz28YOv1Yhu4y",
-              "idx": 23,
+              "idx": 14,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第6天",
               "date": "2016-04-05",
@@ -709,7 +644,7 @@
             },
             {
               "id": "reczz28YOv1Yg7xz",
-              "idx": 24,
+              "idx": 15,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第6天",
               "date": "2016-04-05",
@@ -725,18 +660,13 @@
               "stay": "3小时",
               "xhs": "",
               "images": [],
-              "place": {
-                "name": "鹿回头风景区，海南三亚天涯大东海鹿岭路鹿回头公园",
-                "lat": 18.225565,
-                "lng": 109.502089,
-                "address": "鹿回头风景区，海南三亚天涯大东海鹿岭路鹿回头公园"
-              },
+              "place": null,
               "status": "Completed",
               "statusRaw": "已完成"
             },
             {
               "id": "reczz28YOv1YfRlU",
-              "idx": 25,
+              "idx": 16,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第6天",
               "date": "2016-04-05",
@@ -752,18 +682,13 @@
               "stay": "1小时",
               "xhs": "",
               "images": [],
-              "place": {
-                "name": "天涯镇，海南三亚天涯",
-                "lat": 18.238777,
-                "lng": 109.509445,
-                "address": "天涯镇，海南三亚天涯"
-              },
+              "place": null,
               "status": "Completed",
               "statusRaw": "已完成"
             },
             {
               "id": "reczz28YOv1Yhzhz",
-              "idx": 26,
+              "idx": 17,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第6天",
               "date": "2016-04-05",
@@ -785,7 +710,7 @@
             },
             {
               "id": "reczz28YOv1YfzBa",
-              "idx": 27,
+              "idx": 18,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第6天",
               "date": "2016-04-05",
@@ -801,18 +726,13 @@
               "stay": "1小时30分钟",
               "xhs": "",
               "images": [],
-              "place": {
-                "name": "天涯海角游览区，海南三亚天涯天涯镇马岭山麓",
-                "lat": 18.294961,
-                "lng": 109.348173,
-                "address": "天涯海角游览区，海南三亚天涯天涯镇马岭山麓"
-              },
+              "place": null,
               "status": "Completed",
               "statusRaw": "已完成"
             },
             {
               "id": "reczz28YOv1Yh2bX",
-              "idx": 28,
+              "idx": 19,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第6天",
               "date": "2016-04-05",
@@ -834,7 +754,7 @@
             },
             {
               "id": "reczz28YOv1YjISo",
-              "idx": 29,
+              "idx": 20,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第6天",
               "date": "2016-04-05",
@@ -856,7 +776,7 @@
             },
             {
               "id": "reczz28YOv1Yh5vR",
-              "idx": 30,
+              "idx": 21,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第6天",
               "date": "2016-04-05",
@@ -872,18 +792,13 @@
               "stay": "1小时",
               "xhs": "",
               "images": [],
-              "place": {
-                "name": "三亚青春里广场，海南三亚天涯迎宾路9号",
-                "lat": 18.260884,
-                "lng": 109.495288,
-                "address": "三亚青春里广场，海南三亚天涯迎宾路9号"
-              },
+              "place": null,
               "status": "Completed",
               "statusRaw": "已完成"
             },
             {
               "id": "reczz28YOv1Yi0qM",
-              "idx": 31,
+              "idx": 22,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第6天",
               "date": "2016-04-05",
@@ -899,18 +814,13 @@
               "stay": "2小时",
               "xhs": "",
               "images": [],
-              "place": {
-                "name": "启航公寓，海南三亚天涯新民街129号",
-                "lat": 18.237561,
-                "lng": 109.508709,
-                "address": "启航公寓，海南三亚天涯新民街129号"
-              },
+              "place": null,
               "status": "Completed",
               "statusRaw": "已完成"
             },
             {
               "id": "reczz28YOv1YiTQA",
-              "idx": 32,
+              "idx": 23,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第6天",
               "date": "2016-04-05",
@@ -940,7 +850,7 @@
           "items": [
             {
               "id": "reczz28YOv1Yffps",
-              "idx": 33,
+              "idx": 7,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第7天",
               "date": "2016-04-06",
@@ -956,18 +866,13 @@
               "stay": "1小时",
               "xhs": "",
               "images": [],
-              "place": {
-                "name": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号",
-                "lat": 18.244658,
-                "lng": 109.627941,
-                "address": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号"
-              },
+              "place": null,
               "status": "Completed",
               "statusRaw": "已完成"
             },
             {
               "id": "reczz28YOv1YiT0e",
-              "idx": 34,
+              "idx": 8,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第7天",
               "date": "2016-04-06",
@@ -989,7 +894,7 @@
             },
             {
               "id": "reczz28YOv1YjDI8",
-              "idx": 35,
+              "idx": 9,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第7天",
               "date": "2016-04-06",
@@ -1005,18 +910,13 @@
               "stay": "4小时",
               "xhs": "",
               "images": [],
-              "place": {
-                "name": "亚龙湾热带天堂森林公园，海南三亚吉阳亚龙湾国家旅游度假区內12号",
-                "lat": 18.249193,
-                "lng": 109.624503,
-                "address": "亚龙湾热带天堂森林公园，海南三亚吉阳亚龙湾国家旅游度假区內12号"
-              },
+              "place": null,
               "status": "Completed",
               "statusRaw": "已完成"
             },
             {
               "id": "reczz28YOv1YiWlt",
-              "idx": 36,
+              "idx": 10,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第7天",
               "date": "2016-04-06",
@@ -1038,7 +938,7 @@
             },
             {
               "id": "reczz28YOv1YhHj3",
-              "idx": 37,
+              "idx": 11,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第7天",
               "date": "2016-04-06",
@@ -1054,18 +954,13 @@
               "stay": "3小时30分钟",
               "xhs": "",
               "images": [],
-              "place": {
-                "name": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号",
-                "lat": 18.244658,
-                "lng": 109.627941,
-                "address": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号"
-              },
+              "place": null,
               "status": "Completed",
               "statusRaw": "已完成"
             },
             {
               "id": "reczz28YOv1Yhihg",
-              "idx": 38,
+              "idx": 12,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第7天",
               "date": "2016-04-06",
@@ -1081,12 +976,7 @@
               "stay": "1小时",
               "xhs": "",
               "images": [],
-              "place": {
-                "name": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号",
-                "lat": 18.244658,
-                "lng": 109.627941,
-                "address": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号"
-              },
+              "place": null,
               "status": "Completed",
               "statusRaw": "已完成"
             }
@@ -1100,7 +990,7 @@
           "items": [
             {
               "id": "reczz28YOv1YhPpI",
-              "idx": 39,
+              "idx": 0,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第8天",
               "date": "2016-04-07",
@@ -1116,18 +1006,13 @@
               "stay": "1小时",
               "xhs": "",
               "images": [],
-              "place": {
-                "name": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号",
-                "lat": 18.244658,
-                "lng": 109.627941,
-                "address": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号"
-              },
+              "place": null,
               "status": "Completed",
               "statusRaw": "已完成"
             },
             {
               "id": "reczz28YOv1YfrOx",
-              "idx": 40,
+              "idx": 1,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第8天",
               "date": "2016-04-07",
@@ -1143,18 +1028,13 @@
               "stay": "1小时30分钟",
               "xhs": "",
               "images": [],
-              "place": {
-                "name": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号",
-                "lat": 18.244658,
-                "lng": 109.627941,
-                "address": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号"
-              },
+              "place": null,
               "status": "Completed",
               "statusRaw": "已完成"
             },
             {
               "id": "reczz28YOv1Yfm4p",
-              "idx": 41,
+              "idx": 2,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第8天",
               "date": "2016-04-07",
@@ -1176,7 +1056,7 @@
             },
             {
               "id": "reczz28YOv1YgkDN",
-              "idx": 42,
+              "idx": 3,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第8天",
               "date": "2016-04-07",
@@ -1198,7 +1078,7 @@
             },
             {
               "id": "reczz28YOv1YiZve",
-              "idx": 43,
+              "idx": 4,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第8天",
               "date": "2016-04-07",
@@ -1214,18 +1094,13 @@
               "stay": "1小时30分钟",
               "xhs": "",
               "images": [],
-              "place": {
-                "name": "三亚凤凰国际机场，海南三亚天涯鹿城大道",
-                "lat": 18.30341,
-                "lng": 109.414038,
-                "address": "三亚凤凰国际机场，海南三亚天涯鹿城大道"
-              },
+              "place": null,
               "status": "Completed",
               "statusRaw": "已完成"
             },
             {
               "id": "reczz28YOv1YjG7w",
-              "idx": 44,
+              "idx": 5,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第8天",
               "date": "2016-04-07",
@@ -1241,18 +1116,13 @@
               "stay": "2小时",
               "xhs": "",
               "images": [],
-              "place": {
-                "name": "三亚凤凰国际机场，海南三亚天涯鹿城大道",
-                "lat": 18.30341,
-                "lng": 109.414038,
-                "address": "三亚凤凰国际机场，海南三亚天涯鹿城大道"
-              },
+              "place": null,
               "status": "Completed",
               "statusRaw": "已完成"
             },
             {
               "id": "reczz28YOv1Yh5pB",
-              "idx": 45,
+              "idx": 6,
               "tripId": "reczz28YP3AuAP6c",
               "day": "第8天",
               "date": "2016-04-07",
@@ -1268,12 +1138,7 @@
               "stay": "1小时45分钟",
               "xhs": "",
               "images": [],
-              "place": {
-                "name": "三亚凤凰国际机场，海南三亚天涯鹿城大道",
-                "lat": 18.30341,
-                "lng": 109.414038,
-                "address": "三亚凤凰国际机场，海南三亚天涯鹿城大道"
-              },
+              "place": null,
               "status": "Completed",
               "statusRaw": "已完成"
             }
@@ -1285,7 +1150,7 @@
       "items": [
         {
           "id": "reczz28YOv1Yg6K2",
-          "idx": 0,
+          "idx": 44,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第1天",
           "date": "2016-03-31",
@@ -1301,18 +1166,13 @@
           "stay": "1小时35分钟",
           "xhs": "",
           "images": [],
-          "place": {
-            "name": "三亚凤凰国际机场，海南三亚天涯鹿城大道",
-            "lat": 18.30341,
-            "lng": 109.414038,
-            "address": "三亚凤凰国际机场，海南三亚天涯鹿城大道"
-          },
+          "place": null,
           "status": "Completed",
           "statusRaw": "已完成"
         },
         {
           "id": "reczz28YOv1YgDIs",
-          "idx": 1,
+          "idx": 45,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第1天",
           "date": "2016-03-31",
@@ -1334,7 +1194,7 @@
         },
         {
           "id": "reczz28YOv1YhUi0",
-          "idx": 2,
+          "idx": 42,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第2天",
           "date": "2016-04-01",
@@ -1356,7 +1216,7 @@
         },
         {
           "id": "reczz28YOv1YhdwG",
-          "idx": 3,
+          "idx": 43,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第2天",
           "date": "2016-04-01",
@@ -1372,18 +1232,13 @@
           "stay": "2小时",
           "xhs": "",
           "images": [],
-          "place": {
-            "name": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号",
-            "lat": 18.244658,
-            "lng": 109.627941,
-            "address": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号"
-          },
+          "place": null,
           "status": "Completed",
           "statusRaw": "已完成"
         },
         {
           "id": "reczz28YOv1YfH7k",
-          "idx": 4,
+          "idx": 36,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第3天",
           "date": "2016-04-02",
@@ -1405,7 +1260,7 @@
         },
         {
           "id": "reczz28YOv1YiY5L",
-          "idx": 5,
+          "idx": 37,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第3天",
           "date": "2016-04-02",
@@ -1421,18 +1276,13 @@
           "stay": "2小时",
           "xhs": "",
           "images": [],
-          "place": {
-            "name": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号",
-            "lat": 18.244658,
-            "lng": 109.627941,
-            "address": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号"
-          },
+          "place": null,
           "status": "Completed",
           "statusRaw": "已完成"
         },
         {
           "id": "reczz28YOv1YfWrV",
-          "idx": 6,
+          "idx": 38,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第3天",
           "date": "2016-04-02",
@@ -1454,7 +1304,7 @@
         },
         {
           "id": "reczz28YOv1Yha3j",
-          "idx": 7,
+          "idx": 39,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第3天",
           "date": "2016-04-02",
@@ -1470,18 +1320,13 @@
           "stay": "1小时15分钟",
           "xhs": "",
           "images": [],
-          "place": {
-            "name": "三亚首地广场，海南三亚吉阳凤凰路与新风路交汇处(美丽之冠对面)",
-            "lat": 18.254373,
-            "lng": 109.521603,
-            "address": "三亚首地广场，海南三亚吉阳凤凰路与新风路交汇处(美丽之冠对面)"
-          },
+          "place": null,
           "status": "Completed",
           "statusRaw": "已完成"
         },
         {
           "id": "reczz28YOv1YhqXv",
-          "idx": 8,
+          "idx": 40,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第3天",
           "date": "2016-04-02",
@@ -1497,18 +1342,13 @@
           "stay": "1小时",
           "xhs": "",
           "images": [],
-          "place": {
-            "name": "天涯镇，海南三亚天涯",
-            "lat": 18.249883,
-            "lng": 109.504543,
-            "address": "天涯镇，海南三亚天涯"
-          },
+          "place": null,
           "status": "Completed",
           "statusRaw": "已完成"
         },
         {
           "id": "reczz28YOv1YgZXL",
-          "idx": 9,
+          "idx": 41,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第3天",
           "date": "2016-04-02",
@@ -1530,7 +1370,7 @@
         },
         {
           "id": "reczz28YOv1Yhbml",
-          "idx": 10,
+          "idx": 29,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第4天",
           "date": "2016-04-03",
@@ -1546,18 +1386,13 @@
           "stay": "30分钟",
           "xhs": "",
           "images": [],
-          "place": {
-            "name": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号",
-            "lat": 18.244658,
-            "lng": 109.627941,
-            "address": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号"
-          },
+          "place": null,
           "status": "Completed",
           "statusRaw": "已完成"
         },
         {
           "id": "reczz28YOv1YgVY8",
-          "idx": 11,
+          "idx": 30,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第4天",
           "date": "2016-04-03",
@@ -1579,7 +1414,7 @@
         },
         {
           "id": "reczz28YOv1YgRQV",
-          "idx": 12,
+          "idx": 31,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第4天",
           "date": "2016-04-03",
@@ -1595,18 +1430,13 @@
           "stay": "8小时30分钟",
           "xhs": "",
           "images": [],
-          "place": {
-            "name": "南湾猴岛生态旅游区，海南陵水望海大道1号",
-            "lat": 18.410168,
-            "lng": 109.970813,
-            "address": "南湾猴岛生态旅游区，海南陵水望海大道1号"
-          },
+          "place": null,
           "status": "Completed",
           "statusRaw": "已完成"
         },
         {
           "id": "reczz28YOv1YiKTY",
-          "idx": 13,
+          "idx": 32,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第4天",
           "date": "2016-04-03",
@@ -1628,7 +1458,7 @@
         },
         {
           "id": "reczz28YOv1YfnbB",
-          "idx": 14,
+          "idx": 33,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第4天",
           "date": "2016-04-03",
@@ -1644,18 +1474,13 @@
           "stay": "1小时30分钟",
           "xhs": "",
           "images": [],
-          "place": {
-            "name": "第一市场水果摊32号(第一农贸市场店)，海南三亚天涯第一市场水果摊32号真空包装店",
-            "lat": 18.238729,
-            "lng": 109.508407,
-            "address": "第一市场水果摊32号(第一农贸市场店)，海南三亚天涯第一市场水果摊32号真空包装店"
-          },
+          "place": null,
           "status": "Completed",
           "statusRaw": "已完成"
         },
         {
           "id": "reczz28YOv1YfsU4",
-          "idx": 15,
+          "idx": 34,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第4天",
           "date": "2016-04-03",
@@ -1671,18 +1496,13 @@
           "stay": "1小时",
           "xhs": "",
           "images": [],
-          "place": {
-            "name": "启航公寓，海南三亚天涯新民街129号",
-            "lat": 18.237561,
-            "lng": 109.508709,
-            "address": "启航公寓，海南三亚天涯新民街129号"
-          },
+          "place": null,
           "status": "Completed",
           "statusRaw": "已完成"
         },
         {
           "id": "reczz28YOv1YgtU4",
-          "idx": 16,
+          "idx": 35,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第4天",
           "date": "2016-04-03",
@@ -1704,7 +1524,7 @@
         },
         {
           "id": "reczz28YOv1Yfxyf",
-          "idx": 17,
+          "idx": 24,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第5天",
           "date": "2016-04-04",
@@ -1720,18 +1540,13 @@
           "stay": "1小时",
           "xhs": "",
           "images": [],
-          "place": {
-            "name": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号",
-            "lat": 18.244658,
-            "lng": 109.627941,
-            "address": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号"
-          },
+          "place": null,
           "status": "Completed",
           "statusRaw": "已完成"
         },
         {
           "id": "reczz28YOv1Yg6SI",
-          "idx": 18,
+          "idx": 25,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第5天",
           "date": "2016-04-04",
@@ -1753,7 +1568,7 @@
         },
         {
           "id": "reczz28YOv1YjMu9",
-          "idx": 19,
+          "idx": 26,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第5天",
           "date": "2016-04-04",
@@ -1769,18 +1584,13 @@
           "stay": "8小时",
           "xhs": "",
           "images": [],
-          "place": {
-            "name": "蜈支洲岛，海南三亚海棠林旺镇",
-            "lat": 18.310576,
-            "lng": 109.766551,
-            "address": "蜈支洲岛，海南三亚海棠林旺镇"
-          },
+          "place": null,
           "status": "Completed",
           "statusRaw": "已完成"
         },
         {
           "id": "reczz28YOv1YinMh",
-          "idx": 20,
+          "idx": 27,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第5天",
           "date": "2016-04-04",
@@ -1802,7 +1612,7 @@
         },
         {
           "id": "reczz28YOv1Yj2Yl",
-          "idx": 21,
+          "idx": 28,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第5天",
           "date": "2016-04-04",
@@ -1818,18 +1628,13 @@
           "stay": "1小时",
           "xhs": "",
           "images": [],
-          "place": {
-            "name": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号",
-            "lat": 18.244658,
-            "lng": 109.627941,
-            "address": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号"
-          },
+          "place": null,
           "status": "Completed",
           "statusRaw": "已完成"
         },
         {
           "id": "reczz28YOv1YhzHD",
-          "idx": 22,
+          "idx": 13,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第6天",
           "date": "2016-04-05",
@@ -1845,18 +1650,13 @@
           "stay": "45分钟",
           "xhs": "",
           "images": [],
-          "place": {
-            "name": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号",
-            "lat": 18.244658,
-            "lng": 109.627941,
-            "address": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号"
-          },
+          "place": null,
           "status": "Completed",
           "statusRaw": "已完成"
         },
         {
           "id": "reczz28YOv1Yhu4y",
-          "idx": 23,
+          "idx": 14,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第6天",
           "date": "2016-04-05",
@@ -1878,7 +1678,7 @@
         },
         {
           "id": "reczz28YOv1Yg7xz",
-          "idx": 24,
+          "idx": 15,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第6天",
           "date": "2016-04-05",
@@ -1894,18 +1694,13 @@
           "stay": "3小时",
           "xhs": "",
           "images": [],
-          "place": {
-            "name": "鹿回头风景区，海南三亚天涯大东海鹿岭路鹿回头公园",
-            "lat": 18.225565,
-            "lng": 109.502089,
-            "address": "鹿回头风景区，海南三亚天涯大东海鹿岭路鹿回头公园"
-          },
+          "place": null,
           "status": "Completed",
           "statusRaw": "已完成"
         },
         {
           "id": "reczz28YOv1YfRlU",
-          "idx": 25,
+          "idx": 16,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第6天",
           "date": "2016-04-05",
@@ -1921,18 +1716,13 @@
           "stay": "1小时",
           "xhs": "",
           "images": [],
-          "place": {
-            "name": "天涯镇，海南三亚天涯",
-            "lat": 18.238777,
-            "lng": 109.509445,
-            "address": "天涯镇，海南三亚天涯"
-          },
+          "place": null,
           "status": "Completed",
           "statusRaw": "已完成"
         },
         {
           "id": "reczz28YOv1Yhzhz",
-          "idx": 26,
+          "idx": 17,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第6天",
           "date": "2016-04-05",
@@ -1954,7 +1744,7 @@
         },
         {
           "id": "reczz28YOv1YfzBa",
-          "idx": 27,
+          "idx": 18,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第6天",
           "date": "2016-04-05",
@@ -1970,18 +1760,13 @@
           "stay": "1小时30分钟",
           "xhs": "",
           "images": [],
-          "place": {
-            "name": "天涯海角游览区，海南三亚天涯天涯镇马岭山麓",
-            "lat": 18.294961,
-            "lng": 109.348173,
-            "address": "天涯海角游览区，海南三亚天涯天涯镇马岭山麓"
-          },
+          "place": null,
           "status": "Completed",
           "statusRaw": "已完成"
         },
         {
           "id": "reczz28YOv1Yh2bX",
-          "idx": 28,
+          "idx": 19,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第6天",
           "date": "2016-04-05",
@@ -2003,7 +1788,7 @@
         },
         {
           "id": "reczz28YOv1YjISo",
-          "idx": 29,
+          "idx": 20,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第6天",
           "date": "2016-04-05",
@@ -2025,7 +1810,7 @@
         },
         {
           "id": "reczz28YOv1Yh5vR",
-          "idx": 30,
+          "idx": 21,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第6天",
           "date": "2016-04-05",
@@ -2041,18 +1826,13 @@
           "stay": "1小时",
           "xhs": "",
           "images": [],
-          "place": {
-            "name": "三亚青春里广场，海南三亚天涯迎宾路9号",
-            "lat": 18.260884,
-            "lng": 109.495288,
-            "address": "三亚青春里广场，海南三亚天涯迎宾路9号"
-          },
+          "place": null,
           "status": "Completed",
           "statusRaw": "已完成"
         },
         {
           "id": "reczz28YOv1Yi0qM",
-          "idx": 31,
+          "idx": 22,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第6天",
           "date": "2016-04-05",
@@ -2068,18 +1848,13 @@
           "stay": "2小时",
           "xhs": "",
           "images": [],
-          "place": {
-            "name": "启航公寓，海南三亚天涯新民街129号",
-            "lat": 18.237561,
-            "lng": 109.508709,
-            "address": "启航公寓，海南三亚天涯新民街129号"
-          },
+          "place": null,
           "status": "Completed",
           "statusRaw": "已完成"
         },
         {
           "id": "reczz28YOv1YiTQA",
-          "idx": 32,
+          "idx": 23,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第6天",
           "date": "2016-04-05",
@@ -2101,7 +1876,7 @@
         },
         {
           "id": "reczz28YOv1Yffps",
-          "idx": 33,
+          "idx": 7,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第7天",
           "date": "2016-04-06",
@@ -2117,18 +1892,13 @@
           "stay": "1小时",
           "xhs": "",
           "images": [],
-          "place": {
-            "name": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号",
-            "lat": 18.244658,
-            "lng": 109.627941,
-            "address": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号"
-          },
+          "place": null,
           "status": "Completed",
           "statusRaw": "已完成"
         },
         {
           "id": "reczz28YOv1YiT0e",
-          "idx": 34,
+          "idx": 8,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第7天",
           "date": "2016-04-06",
@@ -2150,7 +1920,7 @@
         },
         {
           "id": "reczz28YOv1YjDI8",
-          "idx": 35,
+          "idx": 9,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第7天",
           "date": "2016-04-06",
@@ -2166,18 +1936,13 @@
           "stay": "4小时",
           "xhs": "",
           "images": [],
-          "place": {
-            "name": "亚龙湾热带天堂森林公园，海南三亚吉阳亚龙湾国家旅游度假区內12号",
-            "lat": 18.249193,
-            "lng": 109.624503,
-            "address": "亚龙湾热带天堂森林公园，海南三亚吉阳亚龙湾国家旅游度假区內12号"
-          },
+          "place": null,
           "status": "Completed",
           "statusRaw": "已完成"
         },
         {
           "id": "reczz28YOv1YiWlt",
-          "idx": 36,
+          "idx": 10,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第7天",
           "date": "2016-04-06",
@@ -2199,7 +1964,7 @@
         },
         {
           "id": "reczz28YOv1YhHj3",
-          "idx": 37,
+          "idx": 11,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第7天",
           "date": "2016-04-06",
@@ -2215,18 +1980,13 @@
           "stay": "3小时30分钟",
           "xhs": "",
           "images": [],
-          "place": {
-            "name": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号",
-            "lat": 18.244658,
-            "lng": 109.627941,
-            "address": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号"
-          },
+          "place": null,
           "status": "Completed",
           "statusRaw": "已完成"
         },
         {
           "id": "reczz28YOv1Yhihg",
-          "idx": 38,
+          "idx": 12,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第7天",
           "date": "2016-04-06",
@@ -2242,18 +2002,13 @@
           "stay": "1小时",
           "xhs": "",
           "images": [],
-          "place": {
-            "name": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号",
-            "lat": 18.244658,
-            "lng": 109.627941,
-            "address": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号"
-          },
+          "place": null,
           "status": "Completed",
           "statusRaw": "已完成"
         },
         {
           "id": "reczz28YOv1YhPpI",
-          "idx": 39,
+          "idx": 0,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第8天",
           "date": "2016-04-07",
@@ -2269,18 +2024,13 @@
           "stay": "1小时",
           "xhs": "",
           "images": [],
-          "place": {
-            "name": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号",
-            "lat": 18.244658,
-            "lng": 109.627941,
-            "address": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号"
-          },
+          "place": null,
           "status": "Completed",
           "statusRaw": "已完成"
         },
         {
           "id": "reczz28YOv1YfrOx",
-          "idx": 40,
+          "idx": 1,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第8天",
           "date": "2016-04-07",
@@ -2296,18 +2046,13 @@
           "stay": "1小时30分钟",
           "xhs": "",
           "images": [],
-          "place": {
-            "name": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号",
-            "lat": 18.244658,
-            "lng": 109.627941,
-            "address": "亚龙湾国家旅游度假区，海南三亚吉阳亚龙湾路100号"
-          },
+          "place": null,
           "status": "Completed",
           "statusRaw": "已完成"
         },
         {
           "id": "reczz28YOv1Yfm4p",
-          "idx": 41,
+          "idx": 2,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第8天",
           "date": "2016-04-07",
@@ -2329,7 +2074,7 @@
         },
         {
           "id": "reczz28YOv1YgkDN",
-          "idx": 42,
+          "idx": 3,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第8天",
           "date": "2016-04-07",
@@ -2351,7 +2096,7 @@
         },
         {
           "id": "reczz28YOv1YiZve",
-          "idx": 43,
+          "idx": 4,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第8天",
           "date": "2016-04-07",
@@ -2367,18 +2112,13 @@
           "stay": "1小时30分钟",
           "xhs": "",
           "images": [],
-          "place": {
-            "name": "三亚凤凰国际机场，海南三亚天涯鹿城大道",
-            "lat": 18.30341,
-            "lng": 109.414038,
-            "address": "三亚凤凰国际机场，海南三亚天涯鹿城大道"
-          },
+          "place": null,
           "status": "Completed",
           "statusRaw": "已完成"
         },
         {
           "id": "reczz28YOv1YjG7w",
-          "idx": 44,
+          "idx": 5,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第8天",
           "date": "2016-04-07",
@@ -2394,18 +2134,13 @@
           "stay": "2小时",
           "xhs": "",
           "images": [],
-          "place": {
-            "name": "三亚凤凰国际机场，海南三亚天涯鹿城大道",
-            "lat": 18.30341,
-            "lng": 109.414038,
-            "address": "三亚凤凰国际机场，海南三亚天涯鹿城大道"
-          },
+          "place": null,
           "status": "Completed",
           "statusRaw": "已完成"
         },
         {
           "id": "reczz28YOv1Yh5pB",
-          "idx": 45,
+          "idx": 6,
           "tripId": "reczz28YP3AuAP6c",
           "day": "第8天",
           "date": "2016-04-07",
@@ -2421,12 +2156,7 @@
           "stay": "1小时45分钟",
           "xhs": "",
           "images": [],
-          "place": {
-            "name": "三亚凤凰国际机场，海南三亚天涯鹿城大道",
-            "lat": 18.30341,
-            "lng": 109.414038,
-            "address": "三亚凤凰国际机场，海南三亚天涯鹿城大道"
-          },
+          "place": null,
           "status": "Completed",
           "statusRaw": "已完成"
         }
@@ -2501,7 +2231,7 @@
           "items": [
             {
               "id": "reczz28Y1dTstpBa",
-              "idx": 0,
+              "idx": 20,
               "tripId": "reczz28YOFlIwmJn",
               "day": "第1天",
               "date": "2026-09-19",
@@ -2517,18 +2247,13 @@
               "stay": "约3.5小时",
               "xhs": "",
               "images": [],
-              "place": {
-                "name": "北京首都国际机场，北京朝阳首都机场路",
-                "lat": 40.08032,
-                "lng": 116.602789,
-                "address": "北京首都国际机场，北京朝阳首都机场路"
-              },
+              "place": null,
               "status": "Completed",
               "statusRaw": "已完成"
             },
             {
               "id": "reczz28Y1dTsvIjK",
-              "idx": 3,
+              "idx": 21,
               "tripId": "reczz28YOFlIwmJn",
               "day": "第1天",
               "date": "2026-09-19",
@@ -2544,18 +2269,13 @@
               "stay": "约3小时",
               "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京王府井美食攻略",
               "images": [],
-              "place": {
-                "name": "王府井步行街，北京东城王府井大街255号王府井百货东侧",
-                "lat": 39.91337,
-                "lng": 116.412441,
-                "address": "王府井步行街，北京东城王府井大街255号王府井百货东侧"
-              },
+              "place": null,
               "status": "Completed",
               "statusRaw": "已完成"
             },
             {
               "id": "reczz28Y1dTsvWFa",
-              "idx": 4,
+              "idx": 22,
               "tripId": "reczz28YOFlIwmJn",
               "day": "第1天",
               "date": "2026-09-19",
@@ -2584,8 +2304,30 @@
           "date": "2026-09-20",
           "items": [
             {
+              "id": "reczz28Y1dZRt3jS",
+              "idx": 16,
+              "tripId": "reczz28YOFlIwmJn",
+              "day": "第2天",
+              "date": "2026-09-20",
+              "slot": "上午",
+              "start": "2026-09-20 09:00",
+              "overnight": false,
+              "minutes": 540,
+              "order": 0,
+              "nature": "歷史古蹟",
+              "activity": "故宫博物院",
+              "plan": "从午门进、神武门出，参观三大殿、后宫六院、御花园",
+              "note": "需提前7天网上预约门票，建议租电子讲解器",
+              "stay": "约4-5小时",
+              "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京故宫亲子游攻略",
+              "images": [],
+              "place": null,
+              "status": "Pending",
+              "statusRaw": "等待中"
+            },
+            {
               "id": "reczz28Y1dTsvani",
-              "idx": 1,
+              "idx": 23,
               "tripId": "reczz28YOFlIwmJn",
               "day": "第2天",
               "date": "2026-09-20",
@@ -2606,35 +2348,8 @@
               "statusRaw": "等待中"
             },
             {
-              "id": "reczz28Y1dZRt3jS",
-              "idx": 5,
-              "tripId": "reczz28YOFlIwmJn",
-              "day": "第2天",
-              "date": "2026-09-20",
-              "slot": "上午",
-              "start": "2026-09-20 09:00",
-              "overnight": false,
-              "minutes": 540,
-              "order": 0,
-              "nature": "歷史古蹟",
-              "activity": "故宫博物院",
-              "plan": "从午门进、神武门出，参观三大殿、后宫六院、御花园",
-              "note": "需提前7天网上预约门票，建议租电子讲解器",
-              "stay": "约4-5小时",
-              "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京故宫亲子游攻略",
-              "images": [],
-              "place": {
-                "name": "故宫博物院，北京东城景山前街4号",
-                "lat": 39.917909,
-                "lng": 116.397029,
-                "address": "故宫博物院，北京东城景山前街4号"
-              },
-              "status": "Pending",
-              "statusRaw": "等待中"
-            },
-            {
               "id": "reczz28Y1dTst1de",
-              "idx": 2,
+              "idx": 24,
               "tripId": "reczz28YOFlIwmJn",
               "day": "第2天",
               "date": "2026-09-20",
@@ -2650,18 +2365,13 @@
               "stay": "约1小时",
               "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京天安门广场亲子攻略",
               "images": [],
-              "place": {
-                "name": "天安门广场，北京东城西长安街与广场西侧路交叉口东南50米",
-                "lat": 39.903237,
-                "lng": 116.397652,
-                "address": "天安门广场，北京东城西长安街与广场西侧路交叉口东南50米"
-              },
+              "place": null,
               "status": "Pending",
               "statusRaw": "等待中"
             },
             {
               "id": "reczz28Y1dZRueN7",
-              "idx": 6,
+              "idx": 17,
               "tripId": "reczz28YOFlIwmJn",
               "day": "第2天",
               "date": "2026-09-20",
@@ -2677,18 +2387,13 @@
               "stay": "约1小时",
               "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京景山公园故宫全景",
               "images": [],
-              "place": {
-                "name": "景山公园，北京西城景山西街44号",
-                "lat": 39.925916,
-                "lng": 116.396555,
-                "address": "景山公园，北京西城景山西街44号"
-              },
+              "place": null,
               "status": "Pending",
               "statusRaw": "等待中"
             },
             {
               "id": "reczz28Y1dZRwCMm",
-              "idx": 7,
+              "idx": 18,
               "tripId": "reczz28YOFlIwmJn",
               "day": "第2天",
               "date": "2026-09-20",
@@ -2704,18 +2409,13 @@
               "stay": "约2小时",
               "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京南锣鼓巷美食",
               "images": [],
-              "place": {
-                "name": "北京东城南锣鼓巷与地安门东大街交叉口北侧(地铁8号线南锣鼓巷地铁站E西北口步行400米）",
-                "lat": 39.937182,
-                "lng": 116.402394,
-                "address": "北京东城南锣鼓巷与地安门东大街交叉口北侧(地铁8号线南锣鼓巷地铁站E西北口步行400米）"
-              },
+              "place": null,
               "status": "Pending",
               "statusRaw": "等待中"
             },
             {
               "id": "reczz28Y1dZRwKRe",
-              "idx": 8,
+              "idx": 19,
               "tripId": "reczz28YOFlIwmJn",
               "day": "第2天",
               "date": "2026-09-20",
@@ -2745,7 +2445,7 @@
           "items": [
             {
               "id": "reczz28Y1dZRvCgJ",
-              "idx": 9,
+              "idx": 13,
               "tripId": "reczz28YOFlIwmJn",
               "day": "第3天",
               "date": "2026-09-21",
@@ -2761,18 +2461,13 @@
               "stay": "约4-5小时",
               "xhs": "https://www.xiaohongshu.com/search_result?keyword=八达岭长城亲子游",
               "images": [],
-              "place": {
-                "name": "八达岭长城，北京延庆G6京藏高速58号出口",
-                "lat": 40.356141,
-                "lng": 116.016769,
-                "address": "八达岭长城，北京延庆G6京藏高速58号出口"
-              },
+              "place": null,
               "status": "Pending",
               "statusRaw": "等待中"
             },
             {
               "id": "reczz28Y1dZRtGwG",
-              "idx": 10,
+              "idx": 14,
               "tripId": "reczz28YOFlIwmJn",
               "day": "第3天",
               "date": "2026-09-21",
@@ -2788,18 +2483,13 @@
               "stay": "约2小时",
               "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京鸟巢水立方夜景",
               "images": [],
-              "place": {
-                "name": "奥林匹克公园中心区，北京朝阳科荟路33号",
-                "lat": 40.000013,
-                "lng": 116.39318,
-                "address": "奥林匹克公园中心区，北京朝阳科荟路33号"
-              },
+              "place": null,
               "status": "Pending",
               "statusRaw": "等待中"
             },
             {
               "id": "reczz28Y1dZRunPU",
-              "idx": 11,
+              "idx": 15,
               "tripId": "reczz28YOFlIwmJn",
               "day": "第3天",
               "date": "2026-09-21",
@@ -2829,7 +2519,7 @@
           "items": [
             {
               "id": "reczz28Y1dZRuz5X",
-              "idx": 12,
+              "idx": 11,
               "tripId": "reczz28YOFlIwmJn",
               "day": "第4天",
               "date": "2026-09-22",
@@ -2845,18 +2535,13 @@
               "stay": "约8-10小时",
               "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京环球影城圣诞攻略",
               "images": [],
-              "place": {
-                "name": "临河里街道，北京通州",
-                "lat": 39.877975,
-                "lng": 116.677175,
-                "address": "临河里街道，北京通州"
-              },
+              "place": null,
               "status": "Pending",
               "statusRaw": "等待中"
             },
             {
               "id": "reczz28Y1dZRvVYR",
-              "idx": 13,
+              "idx": 12,
               "tripId": "reczz28YOFlIwmJn",
               "day": "第4天",
               "date": "2026-09-22",
@@ -2886,7 +2571,7 @@
           "items": [
             {
               "id": "reczz28Y1dZRub6a",
-              "idx": 14,
+              "idx": 8,
               "tripId": "reczz28YOFlIwmJn",
               "day": "第5天",
               "date": "2026-09-23",
@@ -2902,18 +2587,13 @@
               "stay": "约3-4小时",
               "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京中国科技馆亲子",
               "images": [],
-              "place": {
-                "name": "奥林匹克公园中心区，北京朝阳科荟路33号",
-                "lat": 40.000013,
-                "lng": 116.39318,
-                "address": "奥林匹克公园中心区，北京朝阳科荟路33号"
-              },
+              "place": null,
               "status": "Pending",
               "statusRaw": "等待中"
             },
             {
               "id": "reczz28Y1dZRv01H",
-              "idx": 15,
+              "idx": 9,
               "tripId": "reczz28YOFlIwmJn",
               "day": "第5天",
               "date": "2026-09-23",
@@ -2929,18 +2609,13 @@
               "stay": "约2小时",
               "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京蓝色港湾圣诞",
               "images": [],
-              "place": {
-                "name": "亮马河国际风情水岸，北京朝阳麦子店街道公园16号蓝色港湾",
-                "lat": 39.949203,
-                "lng": 116.478825,
-                "address": "亮马河国际风情水岸，北京朝阳麦子店街道公园16号蓝色港湾"
-              },
+              "place": null,
               "status": "Pending",
               "statusRaw": "等待中"
             },
             {
               "id": "reczz28Y1dZRuycS",
-              "idx": 16,
+              "idx": 10,
               "tripId": "reczz28YOFlIwmJn",
               "day": "第5天",
               "date": "2026-09-23",
@@ -2970,7 +2645,7 @@
           "items": [
             {
               "id": "reczz28Y1dZRwLUO",
-              "idx": 17,
+              "idx": 4,
               "tripId": "reczz28YOFlIwmJn",
               "day": "第6天",
               "date": "2026-09-24",
@@ -2986,18 +2661,13 @@
               "stay": "约3-4小时",
               "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京颐和园亲子游",
               "images": [],
-              "place": {
-                "name": "颐和园，北京海淀新建宫门路19号",
-                "lat": 39.999608,
-                "lng": 116.275184,
-                "address": "颐和园，北京海淀新建宫门路19号"
-              },
+              "place": null,
               "status": "Pending",
               "statusRaw": "等待中"
             },
             {
               "id": "reczz28Y1dZRuoxN",
-              "idx": 18,
+              "idx": 5,
               "tripId": "reczz28YOFlIwmJn",
               "day": "第6天",
               "date": "2026-09-24",
@@ -3013,18 +2683,13 @@
               "stay": "约2小时",
               "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京圆明园遗址公园",
               "images": [],
-              "place": {
-                "name": "圆明园遗址公园，北京海淀清华西路28号",
-                "lat": 40.006534,
-                "lng": 116.303333,
-                "address": "圆明园遗址公园，北京海淀清华西路28号"
-              },
+              "place": null,
               "status": "Pending",
               "statusRaw": "等待中"
             },
             {
               "id": "reczz28Y1dZRt6Gx",
-              "idx": 19,
+              "idx": 6,
               "tripId": "reczz28YOFlIwmJn",
               "day": "第6天",
               "date": "2026-09-24",
@@ -3040,18 +2705,13 @@
               "stay": "约1小时",
               "xhs": "https://www.xiaohongshu.com/search_result?keyword=清华大学参观攻略",
               "images": [],
-              "place": {
-                "name": "清华大学，北京海淀双清路30号",
-                "lat": 40.003192,
-                "lng": 116.32693,
-                "address": "清华大学，北京海淀双清路30号"
-              },
+              "place": null,
               "status": "Pending",
               "statusRaw": "等待中"
             },
             {
               "id": "reczz28Y1dZRsMyT",
-              "idx": 20,
+              "idx": 7,
               "tripId": "reczz28YOFlIwmJn",
               "day": "第6天",
               "date": "2026-09-24",
@@ -3081,7 +2741,7 @@
           "items": [
             {
               "id": "reczz28Y1dZRswQI",
-              "idx": 21,
+              "idx": 0,
               "tripId": "reczz28YOFlIwmJn",
               "day": "第7天",
               "date": "2026-09-25",
@@ -3097,18 +2757,13 @@
               "stay": "约2-3小时",
               "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京自然博物馆恐龙",
               "images": [],
-              "place": {
-                "name": "国家自然博物馆，北京东城天桥南大街126号",
-                "lat": 39.883198,
-                "lng": 116.399827,
-                "address": "国家自然博物馆，北京东城天桥南大街126号"
-              },
+              "place": null,
               "status": "Pending",
               "statusRaw": "等待中"
             },
             {
               "id": "reczz28Y1dZRsFce",
-              "idx": 22,
+              "idx": 1,
               "tripId": "reczz28YOFlIwmJn",
               "day": "第7天",
               "date": "2026-09-25",
@@ -3124,18 +2779,13 @@
               "stay": "约2小时",
               "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京前门大街伴手礼",
               "images": [],
-              "place": {
-                "name": "大栅栏街道，北京西城",
-                "lat": 39.897549,
-                "lng": 116.398022,
-                "address": "大栅栏街道，北京西城"
-              },
+              "place": null,
               "status": "Pending",
               "statusRaw": "等待中"
             },
             {
               "id": "reczz28Y1dZRvQeu",
-              "idx": 23,
+              "idx": 2,
               "tripId": "reczz28YOFlIwmJn",
               "day": "第7天",
               "date": "2026-09-25",
@@ -3157,7 +2807,7 @@
             },
             {
               "id": "reczz28Y1dZRsbI1",
-              "idx": 24,
+              "idx": 3,
               "tripId": "reczz28YOFlIwmJn",
               "day": "第7天",
               "date": "2026-09-25",
@@ -3173,12 +2823,7 @@
               "stay": "约3小时",
               "xhs": "",
               "images": [],
-              "place": {
-                "name": "北京首都国际机场，北京朝阳首都机场路",
-                "lat": 40.08032,
-                "lng": 116.602789,
-                "address": "北京首都国际机场，北京朝阳首都机场路"
-              },
+              "place": null,
               "status": "Pending",
               "statusRaw": "等待中"
             }
@@ -3190,7 +2835,7 @@
       "items": [
         {
           "id": "reczz28Y1dTstpBa",
-          "idx": 0,
+          "idx": 20,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第1天",
           "date": "2026-09-19",
@@ -3206,18 +2851,13 @@
           "stay": "约3.5小时",
           "xhs": "",
           "images": [],
-          "place": {
-            "name": "北京首都国际机场，北京朝阳首都机场路",
-            "lat": 40.08032,
-            "lng": 116.602789,
-            "address": "北京首都国际机场，北京朝阳首都机场路"
-          },
+          "place": null,
           "status": "Completed",
           "statusRaw": "已完成"
         },
         {
           "id": "reczz28Y1dTsvIjK",
-          "idx": 3,
+          "idx": 21,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第1天",
           "date": "2026-09-19",
@@ -3233,18 +2873,13 @@
           "stay": "约3小时",
           "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京王府井美食攻略",
           "images": [],
-          "place": {
-            "name": "王府井步行街，北京东城王府井大街255号王府井百货东侧",
-            "lat": 39.91337,
-            "lng": 116.412441,
-            "address": "王府井步行街，北京东城王府井大街255号王府井百货东侧"
-          },
+          "place": null,
           "status": "Completed",
           "statusRaw": "已完成"
         },
         {
           "id": "reczz28Y1dTsvWFa",
-          "idx": 4,
+          "idx": 22,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第1天",
           "date": "2026-09-19",
@@ -3265,8 +2900,30 @@
           "statusRaw": "等待中"
         },
         {
+          "id": "reczz28Y1dZRt3jS",
+          "idx": 16,
+          "tripId": "reczz28YOFlIwmJn",
+          "day": "第2天",
+          "date": "2026-09-20",
+          "slot": "上午",
+          "start": "2026-09-20 09:00",
+          "overnight": false,
+          "minutes": 540,
+          "order": 0,
+          "nature": "歷史古蹟",
+          "activity": "故宫博物院",
+          "plan": "从午门进、神武门出，参观三大殿、后宫六院、御花园",
+          "note": "需提前7天网上预约门票，建议租电子讲解器",
+          "stay": "约4-5小时",
+          "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京故宫亲子游攻略",
+          "images": [],
+          "place": null,
+          "status": "Pending",
+          "statusRaw": "等待中"
+        },
+        {
           "id": "reczz28Y1dTsvani",
-          "idx": 1,
+          "idx": 23,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第2天",
           "date": "2026-09-20",
@@ -3287,35 +2944,8 @@
           "statusRaw": "等待中"
         },
         {
-          "id": "reczz28Y1dZRt3jS",
-          "idx": 5,
-          "tripId": "reczz28YOFlIwmJn",
-          "day": "第2天",
-          "date": "2026-09-20",
-          "slot": "上午",
-          "start": "2026-09-20 09:00",
-          "overnight": false,
-          "minutes": 540,
-          "order": 0,
-          "nature": "歷史古蹟",
-          "activity": "故宫博物院",
-          "plan": "从午门进、神武门出，参观三大殿、后宫六院、御花园",
-          "note": "需提前7天网上预约门票，建议租电子讲解器",
-          "stay": "约4-5小时",
-          "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京故宫亲子游攻略",
-          "images": [],
-          "place": {
-            "name": "故宫博物院，北京东城景山前街4号",
-            "lat": 39.917909,
-            "lng": 116.397029,
-            "address": "故宫博物院，北京东城景山前街4号"
-          },
-          "status": "Pending",
-          "statusRaw": "等待中"
-        },
-        {
           "id": "reczz28Y1dTst1de",
-          "idx": 2,
+          "idx": 24,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第2天",
           "date": "2026-09-20",
@@ -3331,18 +2961,13 @@
           "stay": "约1小时",
           "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京天安门广场亲子攻略",
           "images": [],
-          "place": {
-            "name": "天安门广场，北京东城西长安街与广场西侧路交叉口东南50米",
-            "lat": 39.903237,
-            "lng": 116.397652,
-            "address": "天安门广场，北京东城西长安街与广场西侧路交叉口东南50米"
-          },
+          "place": null,
           "status": "Pending",
           "statusRaw": "等待中"
         },
         {
           "id": "reczz28Y1dZRueN7",
-          "idx": 6,
+          "idx": 17,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第2天",
           "date": "2026-09-20",
@@ -3358,18 +2983,13 @@
           "stay": "约1小时",
           "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京景山公园故宫全景",
           "images": [],
-          "place": {
-            "name": "景山公园，北京西城景山西街44号",
-            "lat": 39.925916,
-            "lng": 116.396555,
-            "address": "景山公园，北京西城景山西街44号"
-          },
+          "place": null,
           "status": "Pending",
           "statusRaw": "等待中"
         },
         {
           "id": "reczz28Y1dZRwCMm",
-          "idx": 7,
+          "idx": 18,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第2天",
           "date": "2026-09-20",
@@ -3385,18 +3005,13 @@
           "stay": "约2小时",
           "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京南锣鼓巷美食",
           "images": [],
-          "place": {
-            "name": "北京东城南锣鼓巷与地安门东大街交叉口北侧(地铁8号线南锣鼓巷地铁站E西北口步行400米）",
-            "lat": 39.937182,
-            "lng": 116.402394,
-            "address": "北京东城南锣鼓巷与地安门东大街交叉口北侧(地铁8号线南锣鼓巷地铁站E西北口步行400米）"
-          },
+          "place": null,
           "status": "Pending",
           "statusRaw": "等待中"
         },
         {
           "id": "reczz28Y1dZRwKRe",
-          "idx": 8,
+          "idx": 19,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第2天",
           "date": "2026-09-20",
@@ -3418,7 +3033,7 @@
         },
         {
           "id": "reczz28Y1dZRvCgJ",
-          "idx": 9,
+          "idx": 13,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第3天",
           "date": "2026-09-21",
@@ -3434,18 +3049,13 @@
           "stay": "约4-5小时",
           "xhs": "https://www.xiaohongshu.com/search_result?keyword=八达岭长城亲子游",
           "images": [],
-          "place": {
-            "name": "八达岭长城，北京延庆G6京藏高速58号出口",
-            "lat": 40.356141,
-            "lng": 116.016769,
-            "address": "八达岭长城，北京延庆G6京藏高速58号出口"
-          },
+          "place": null,
           "status": "Pending",
           "statusRaw": "等待中"
         },
         {
           "id": "reczz28Y1dZRtGwG",
-          "idx": 10,
+          "idx": 14,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第3天",
           "date": "2026-09-21",
@@ -3461,18 +3071,13 @@
           "stay": "约2小时",
           "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京鸟巢水立方夜景",
           "images": [],
-          "place": {
-            "name": "奥林匹克公园中心区，北京朝阳科荟路33号",
-            "lat": 40.000013,
-            "lng": 116.39318,
-            "address": "奥林匹克公园中心区，北京朝阳科荟路33号"
-          },
+          "place": null,
           "status": "Pending",
           "statusRaw": "等待中"
         },
         {
           "id": "reczz28Y1dZRunPU",
-          "idx": 11,
+          "idx": 15,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第3天",
           "date": "2026-09-21",
@@ -3494,7 +3099,7 @@
         },
         {
           "id": "reczz28Y1dZRuz5X",
-          "idx": 12,
+          "idx": 11,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第4天",
           "date": "2026-09-22",
@@ -3510,18 +3115,13 @@
           "stay": "约8-10小时",
           "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京环球影城圣诞攻略",
           "images": [],
-          "place": {
-            "name": "临河里街道，北京通州",
-            "lat": 39.877975,
-            "lng": 116.677175,
-            "address": "临河里街道，北京通州"
-          },
+          "place": null,
           "status": "Pending",
           "statusRaw": "等待中"
         },
         {
           "id": "reczz28Y1dZRvVYR",
-          "idx": 13,
+          "idx": 12,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第4天",
           "date": "2026-09-22",
@@ -3543,7 +3143,7 @@
         },
         {
           "id": "reczz28Y1dZRub6a",
-          "idx": 14,
+          "idx": 8,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第5天",
           "date": "2026-09-23",
@@ -3559,18 +3159,13 @@
           "stay": "约3-4小时",
           "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京中国科技馆亲子",
           "images": [],
-          "place": {
-            "name": "奥林匹克公园中心区，北京朝阳科荟路33号",
-            "lat": 40.000013,
-            "lng": 116.39318,
-            "address": "奥林匹克公园中心区，北京朝阳科荟路33号"
-          },
+          "place": null,
           "status": "Pending",
           "statusRaw": "等待中"
         },
         {
           "id": "reczz28Y1dZRv01H",
-          "idx": 15,
+          "idx": 9,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第5天",
           "date": "2026-09-23",
@@ -3586,18 +3181,13 @@
           "stay": "约2小时",
           "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京蓝色港湾圣诞",
           "images": [],
-          "place": {
-            "name": "亮马河国际风情水岸，北京朝阳麦子店街道公园16号蓝色港湾",
-            "lat": 39.949203,
-            "lng": 116.478825,
-            "address": "亮马河国际风情水岸，北京朝阳麦子店街道公园16号蓝色港湾"
-          },
+          "place": null,
           "status": "Pending",
           "statusRaw": "等待中"
         },
         {
           "id": "reczz28Y1dZRuycS",
-          "idx": 16,
+          "idx": 10,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第5天",
           "date": "2026-09-23",
@@ -3619,7 +3209,7 @@
         },
         {
           "id": "reczz28Y1dZRwLUO",
-          "idx": 17,
+          "idx": 4,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第6天",
           "date": "2026-09-24",
@@ -3635,18 +3225,13 @@
           "stay": "约3-4小时",
           "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京颐和园亲子游",
           "images": [],
-          "place": {
-            "name": "颐和园，北京海淀新建宫门路19号",
-            "lat": 39.999608,
-            "lng": 116.275184,
-            "address": "颐和园，北京海淀新建宫门路19号"
-          },
+          "place": null,
           "status": "Pending",
           "statusRaw": "等待中"
         },
         {
           "id": "reczz28Y1dZRuoxN",
-          "idx": 18,
+          "idx": 5,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第6天",
           "date": "2026-09-24",
@@ -3662,18 +3247,13 @@
           "stay": "约2小时",
           "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京圆明园遗址公园",
           "images": [],
-          "place": {
-            "name": "圆明园遗址公园，北京海淀清华西路28号",
-            "lat": 40.006534,
-            "lng": 116.303333,
-            "address": "圆明园遗址公园，北京海淀清华西路28号"
-          },
+          "place": null,
           "status": "Pending",
           "statusRaw": "等待中"
         },
         {
           "id": "reczz28Y1dZRt6Gx",
-          "idx": 19,
+          "idx": 6,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第6天",
           "date": "2026-09-24",
@@ -3689,18 +3269,13 @@
           "stay": "约1小时",
           "xhs": "https://www.xiaohongshu.com/search_result?keyword=清华大学参观攻略",
           "images": [],
-          "place": {
-            "name": "清华大学，北京海淀双清路30号",
-            "lat": 40.003192,
-            "lng": 116.32693,
-            "address": "清华大学，北京海淀双清路30号"
-          },
+          "place": null,
           "status": "Pending",
           "statusRaw": "等待中"
         },
         {
           "id": "reczz28Y1dZRsMyT",
-          "idx": 20,
+          "idx": 7,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第6天",
           "date": "2026-09-24",
@@ -3722,7 +3297,7 @@
         },
         {
           "id": "reczz28Y1dZRswQI",
-          "idx": 21,
+          "idx": 0,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第7天",
           "date": "2026-09-25",
@@ -3738,18 +3313,13 @@
           "stay": "约2-3小时",
           "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京自然博物馆恐龙",
           "images": [],
-          "place": {
-            "name": "国家自然博物馆，北京东城天桥南大街126号",
-            "lat": 39.883198,
-            "lng": 116.399827,
-            "address": "国家自然博物馆，北京东城天桥南大街126号"
-          },
+          "place": null,
           "status": "Pending",
           "statusRaw": "等待中"
         },
         {
           "id": "reczz28Y1dZRsFce",
-          "idx": 22,
+          "idx": 1,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第7天",
           "date": "2026-09-25",
@@ -3765,18 +3335,13 @@
           "stay": "约2小时",
           "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京前门大街伴手礼",
           "images": [],
-          "place": {
-            "name": "大栅栏街道，北京西城",
-            "lat": 39.897549,
-            "lng": 116.398022,
-            "address": "大栅栏街道，北京西城"
-          },
+          "place": null,
           "status": "Pending",
           "statusRaw": "等待中"
         },
         {
           "id": "reczz28Y1dZRvQeu",
-          "idx": 23,
+          "idx": 2,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第7天",
           "date": "2026-09-25",
@@ -3798,7 +3363,7 @@
         },
         {
           "id": "reczz28Y1dZRsbI1",
-          "idx": 24,
+          "idx": 3,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第7天",
           "date": "2026-09-25",
@@ -3814,12 +3379,7 @@
           "stay": "约3小时",
           "xhs": "",
           "images": [],
-          "place": {
-            "name": "北京首都国际机场，北京朝阳首都机场路",
-            "lat": 40.08032,
-            "lng": 116.602789,
-            "address": "北京首都国际机场，北京朝阳首都机场路"
-          },
+          "place": null,
           "status": "Pending",
           "statusRaw": "等待中"
         }
@@ -3893,7 +3453,7 @@
       "items": [
         {
           "id": "reczz28Y1dTstpBa",
-          "idx": 0,
+          "idx": 20,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第1天",
           "date": "2026-09-19",
@@ -3909,18 +3469,13 @@
           "stay": "约3.5小时",
           "xhs": "",
           "images": [],
-          "place": {
-            "name": "北京首都国际机场，北京朝阳首都机场路",
-            "lat": 40.08032,
-            "lng": 116.602789,
-            "address": "北京首都国际机场，北京朝阳首都机场路"
-          },
+          "place": null,
           "status": "Completed",
           "statusRaw": "已完成"
         },
         {
           "id": "reczz28Y1dTsvIjK",
-          "idx": 3,
+          "idx": 21,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第1天",
           "date": "2026-09-19",
@@ -3936,18 +3491,13 @@
           "stay": "约3小时",
           "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京王府井美食攻略",
           "images": [],
-          "place": {
-            "name": "王府井步行街，北京东城王府井大街255号王府井百货东侧",
-            "lat": 39.91337,
-            "lng": 116.412441,
-            "address": "王府井步行街，北京东城王府井大街255号王府井百货东侧"
-          },
+          "place": null,
           "status": "Completed",
           "statusRaw": "已完成"
         },
         {
           "id": "reczz28Y1dTsvWFa",
-          "idx": 4,
+          "idx": 22,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第1天",
           "date": "2026-09-19",
@@ -3976,8 +3526,30 @@
       "date": "2026-09-20",
       "items": [
         {
+          "id": "reczz28Y1dZRt3jS",
+          "idx": 16,
+          "tripId": "reczz28YOFlIwmJn",
+          "day": "第2天",
+          "date": "2026-09-20",
+          "slot": "上午",
+          "start": "2026-09-20 09:00",
+          "overnight": false,
+          "minutes": 540,
+          "order": 0,
+          "nature": "歷史古蹟",
+          "activity": "故宫博物院",
+          "plan": "从午门进、神武门出，参观三大殿、后宫六院、御花园",
+          "note": "需提前7天网上预约门票，建议租电子讲解器",
+          "stay": "约4-5小时",
+          "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京故宫亲子游攻略",
+          "images": [],
+          "place": null,
+          "status": "Pending",
+          "statusRaw": "等待中"
+        },
+        {
           "id": "reczz28Y1dTsvani",
-          "idx": 1,
+          "idx": 23,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第2天",
           "date": "2026-09-20",
@@ -3998,35 +3570,8 @@
           "statusRaw": "等待中"
         },
         {
-          "id": "reczz28Y1dZRt3jS",
-          "idx": 5,
-          "tripId": "reczz28YOFlIwmJn",
-          "day": "第2天",
-          "date": "2026-09-20",
-          "slot": "上午",
-          "start": "2026-09-20 09:00",
-          "overnight": false,
-          "minutes": 540,
-          "order": 0,
-          "nature": "歷史古蹟",
-          "activity": "故宫博物院",
-          "plan": "从午门进、神武门出，参观三大殿、后宫六院、御花园",
-          "note": "需提前7天网上预约门票，建议租电子讲解器",
-          "stay": "约4-5小时",
-          "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京故宫亲子游攻略",
-          "images": [],
-          "place": {
-            "name": "故宫博物院，北京东城景山前街4号",
-            "lat": 39.917909,
-            "lng": 116.397029,
-            "address": "故宫博物院，北京东城景山前街4号"
-          },
-          "status": "Pending",
-          "statusRaw": "等待中"
-        },
-        {
           "id": "reczz28Y1dTst1de",
-          "idx": 2,
+          "idx": 24,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第2天",
           "date": "2026-09-20",
@@ -4042,18 +3587,13 @@
           "stay": "约1小时",
           "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京天安门广场亲子攻略",
           "images": [],
-          "place": {
-            "name": "天安门广场，北京东城西长安街与广场西侧路交叉口东南50米",
-            "lat": 39.903237,
-            "lng": 116.397652,
-            "address": "天安门广场，北京东城西长安街与广场西侧路交叉口东南50米"
-          },
+          "place": null,
           "status": "Pending",
           "statusRaw": "等待中"
         },
         {
           "id": "reczz28Y1dZRueN7",
-          "idx": 6,
+          "idx": 17,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第2天",
           "date": "2026-09-20",
@@ -4069,18 +3609,13 @@
           "stay": "约1小时",
           "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京景山公园故宫全景",
           "images": [],
-          "place": {
-            "name": "景山公园，北京西城景山西街44号",
-            "lat": 39.925916,
-            "lng": 116.396555,
-            "address": "景山公园，北京西城景山西街44号"
-          },
+          "place": null,
           "status": "Pending",
           "statusRaw": "等待中"
         },
         {
           "id": "reczz28Y1dZRwCMm",
-          "idx": 7,
+          "idx": 18,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第2天",
           "date": "2026-09-20",
@@ -4096,18 +3631,13 @@
           "stay": "约2小时",
           "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京南锣鼓巷美食",
           "images": [],
-          "place": {
-            "name": "北京东城南锣鼓巷与地安门东大街交叉口北侧(地铁8号线南锣鼓巷地铁站E西北口步行400米）",
-            "lat": 39.937182,
-            "lng": 116.402394,
-            "address": "北京东城南锣鼓巷与地安门东大街交叉口北侧(地铁8号线南锣鼓巷地铁站E西北口步行400米）"
-          },
+          "place": null,
           "status": "Pending",
           "statusRaw": "等待中"
         },
         {
           "id": "reczz28Y1dZRwKRe",
-          "idx": 8,
+          "idx": 19,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第2天",
           "date": "2026-09-20",
@@ -4137,7 +3667,7 @@
       "items": [
         {
           "id": "reczz28Y1dZRvCgJ",
-          "idx": 9,
+          "idx": 13,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第3天",
           "date": "2026-09-21",
@@ -4153,18 +3683,13 @@
           "stay": "约4-5小时",
           "xhs": "https://www.xiaohongshu.com/search_result?keyword=八达岭长城亲子游",
           "images": [],
-          "place": {
-            "name": "八达岭长城，北京延庆G6京藏高速58号出口",
-            "lat": 40.356141,
-            "lng": 116.016769,
-            "address": "八达岭长城，北京延庆G6京藏高速58号出口"
-          },
+          "place": null,
           "status": "Pending",
           "statusRaw": "等待中"
         },
         {
           "id": "reczz28Y1dZRtGwG",
-          "idx": 10,
+          "idx": 14,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第3天",
           "date": "2026-09-21",
@@ -4180,18 +3705,13 @@
           "stay": "约2小时",
           "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京鸟巢水立方夜景",
           "images": [],
-          "place": {
-            "name": "奥林匹克公园中心区，北京朝阳科荟路33号",
-            "lat": 40.000013,
-            "lng": 116.39318,
-            "address": "奥林匹克公园中心区，北京朝阳科荟路33号"
-          },
+          "place": null,
           "status": "Pending",
           "statusRaw": "等待中"
         },
         {
           "id": "reczz28Y1dZRunPU",
-          "idx": 11,
+          "idx": 15,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第3天",
           "date": "2026-09-21",
@@ -4221,7 +3741,7 @@
       "items": [
         {
           "id": "reczz28Y1dZRuz5X",
-          "idx": 12,
+          "idx": 11,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第4天",
           "date": "2026-09-22",
@@ -4237,18 +3757,13 @@
           "stay": "约8-10小时",
           "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京环球影城圣诞攻略",
           "images": [],
-          "place": {
-            "name": "临河里街道，北京通州",
-            "lat": 39.877975,
-            "lng": 116.677175,
-            "address": "临河里街道，北京通州"
-          },
+          "place": null,
           "status": "Pending",
           "statusRaw": "等待中"
         },
         {
           "id": "reczz28Y1dZRvVYR",
-          "idx": 13,
+          "idx": 12,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第4天",
           "date": "2026-09-22",
@@ -4278,7 +3793,7 @@
       "items": [
         {
           "id": "reczz28Y1dZRub6a",
-          "idx": 14,
+          "idx": 8,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第5天",
           "date": "2026-09-23",
@@ -4294,18 +3809,13 @@
           "stay": "约3-4小时",
           "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京中国科技馆亲子",
           "images": [],
-          "place": {
-            "name": "奥林匹克公园中心区，北京朝阳科荟路33号",
-            "lat": 40.000013,
-            "lng": 116.39318,
-            "address": "奥林匹克公园中心区，北京朝阳科荟路33号"
-          },
+          "place": null,
           "status": "Pending",
           "statusRaw": "等待中"
         },
         {
           "id": "reczz28Y1dZRv01H",
-          "idx": 15,
+          "idx": 9,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第5天",
           "date": "2026-09-23",
@@ -4321,18 +3831,13 @@
           "stay": "约2小时",
           "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京蓝色港湾圣诞",
           "images": [],
-          "place": {
-            "name": "亮马河国际风情水岸，北京朝阳麦子店街道公园16号蓝色港湾",
-            "lat": 39.949203,
-            "lng": 116.478825,
-            "address": "亮马河国际风情水岸，北京朝阳麦子店街道公园16号蓝色港湾"
-          },
+          "place": null,
           "status": "Pending",
           "statusRaw": "等待中"
         },
         {
           "id": "reczz28Y1dZRuycS",
-          "idx": 16,
+          "idx": 10,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第5天",
           "date": "2026-09-23",
@@ -4362,7 +3867,7 @@
       "items": [
         {
           "id": "reczz28Y1dZRwLUO",
-          "idx": 17,
+          "idx": 4,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第6天",
           "date": "2026-09-24",
@@ -4378,18 +3883,13 @@
           "stay": "约3-4小时",
           "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京颐和园亲子游",
           "images": [],
-          "place": {
-            "name": "颐和园，北京海淀新建宫门路19号",
-            "lat": 39.999608,
-            "lng": 116.275184,
-            "address": "颐和园，北京海淀新建宫门路19号"
-          },
+          "place": null,
           "status": "Pending",
           "statusRaw": "等待中"
         },
         {
           "id": "reczz28Y1dZRuoxN",
-          "idx": 18,
+          "idx": 5,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第6天",
           "date": "2026-09-24",
@@ -4405,18 +3905,13 @@
           "stay": "约2小时",
           "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京圆明园遗址公园",
           "images": [],
-          "place": {
-            "name": "圆明园遗址公园，北京海淀清华西路28号",
-            "lat": 40.006534,
-            "lng": 116.303333,
-            "address": "圆明园遗址公园，北京海淀清华西路28号"
-          },
+          "place": null,
           "status": "Pending",
           "statusRaw": "等待中"
         },
         {
           "id": "reczz28Y1dZRt6Gx",
-          "idx": 19,
+          "idx": 6,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第6天",
           "date": "2026-09-24",
@@ -4432,18 +3927,13 @@
           "stay": "约1小时",
           "xhs": "https://www.xiaohongshu.com/search_result?keyword=清华大学参观攻略",
           "images": [],
-          "place": {
-            "name": "清华大学，北京海淀双清路30号",
-            "lat": 40.003192,
-            "lng": 116.32693,
-            "address": "清华大学，北京海淀双清路30号"
-          },
+          "place": null,
           "status": "Pending",
           "statusRaw": "等待中"
         },
         {
           "id": "reczz28Y1dZRsMyT",
-          "idx": 20,
+          "idx": 7,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第6天",
           "date": "2026-09-24",
@@ -4473,7 +3963,7 @@
       "items": [
         {
           "id": "reczz28Y1dZRswQI",
-          "idx": 21,
+          "idx": 0,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第7天",
           "date": "2026-09-25",
@@ -4489,18 +3979,13 @@
           "stay": "约2-3小时",
           "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京自然博物馆恐龙",
           "images": [],
-          "place": {
-            "name": "国家自然博物馆，北京东城天桥南大街126号",
-            "lat": 39.883198,
-            "lng": 116.399827,
-            "address": "国家自然博物馆，北京东城天桥南大街126号"
-          },
+          "place": null,
           "status": "Pending",
           "statusRaw": "等待中"
         },
         {
           "id": "reczz28Y1dZRsFce",
-          "idx": 22,
+          "idx": 1,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第7天",
           "date": "2026-09-25",
@@ -4516,18 +4001,13 @@
           "stay": "约2小时",
           "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京前门大街伴手礼",
           "images": [],
-          "place": {
-            "name": "大栅栏街道，北京西城",
-            "lat": 39.897549,
-            "lng": 116.398022,
-            "address": "大栅栏街道，北京西城"
-          },
+          "place": null,
           "status": "Pending",
           "statusRaw": "等待中"
         },
         {
           "id": "reczz28Y1dZRvQeu",
-          "idx": 23,
+          "idx": 2,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第7天",
           "date": "2026-09-25",
@@ -4549,7 +4029,7 @@
         },
         {
           "id": "reczz28Y1dZRsbI1",
-          "idx": 24,
+          "idx": 3,
           "tripId": "reczz28YOFlIwmJn",
           "day": "第7天",
           "date": "2026-09-25",
@@ -4565,12 +4045,7 @@
           "stay": "约3小时",
           "xhs": "",
           "images": [],
-          "place": {
-            "name": "北京首都国际机场，北京朝阳首都机场路",
-            "lat": 40.08032,
-            "lng": 116.602789,
-            "address": "北京首都国际机场，北京朝阳首都机场路"
-          },
+          "place": null,
           "status": "Pending",
           "statusRaw": "等待中"
         }
@@ -4582,7 +4057,7 @@
   "items": [
     {
       "id": "reczz28Y1dTstpBa",
-      "idx": 0,
+      "idx": 20,
       "tripId": "reczz28YOFlIwmJn",
       "day": "第1天",
       "date": "2026-09-19",
@@ -4598,18 +4073,13 @@
       "stay": "约3.5小时",
       "xhs": "",
       "images": [],
-      "place": {
-        "name": "北京首都国际机场，北京朝阳首都机场路",
-        "lat": 40.08032,
-        "lng": 116.602789,
-        "address": "北京首都国际机场，北京朝阳首都机场路"
-      },
+      "place": null,
       "status": "Completed",
       "statusRaw": "已完成"
     },
     {
       "id": "reczz28Y1dTsvIjK",
-      "idx": 3,
+      "idx": 21,
       "tripId": "reczz28YOFlIwmJn",
       "day": "第1天",
       "date": "2026-09-19",
@@ -4625,18 +4095,13 @@
       "stay": "约3小时",
       "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京王府井美食攻略",
       "images": [],
-      "place": {
-        "name": "王府井步行街，北京东城王府井大街255号王府井百货东侧",
-        "lat": 39.91337,
-        "lng": 116.412441,
-        "address": "王府井步行街，北京东城王府井大街255号王府井百货东侧"
-      },
+      "place": null,
       "status": "Completed",
       "statusRaw": "已完成"
     },
     {
       "id": "reczz28Y1dTsvWFa",
-      "idx": 4,
+      "idx": 22,
       "tripId": "reczz28YOFlIwmJn",
       "day": "第1天",
       "date": "2026-09-19",
@@ -4657,8 +4122,30 @@
       "statusRaw": "等待中"
     },
     {
+      "id": "reczz28Y1dZRt3jS",
+      "idx": 16,
+      "tripId": "reczz28YOFlIwmJn",
+      "day": "第2天",
+      "date": "2026-09-20",
+      "slot": "上午",
+      "start": "2026-09-20 09:00",
+      "overnight": false,
+      "minutes": 540,
+      "order": 0,
+      "nature": "歷史古蹟",
+      "activity": "故宫博物院",
+      "plan": "从午门进、神武门出，参观三大殿、后宫六院、御花园",
+      "note": "需提前7天网上预约门票，建议租电子讲解器",
+      "stay": "约4-5小时",
+      "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京故宫亲子游攻略",
+      "images": [],
+      "place": null,
+      "status": "Pending",
+      "statusRaw": "等待中"
+    },
+    {
       "id": "reczz28Y1dTsvani",
-      "idx": 1,
+      "idx": 23,
       "tripId": "reczz28YOFlIwmJn",
       "day": "第2天",
       "date": "2026-09-20",
@@ -4679,35 +4166,8 @@
       "statusRaw": "等待中"
     },
     {
-      "id": "reczz28Y1dZRt3jS",
-      "idx": 5,
-      "tripId": "reczz28YOFlIwmJn",
-      "day": "第2天",
-      "date": "2026-09-20",
-      "slot": "上午",
-      "start": "2026-09-20 09:00",
-      "overnight": false,
-      "minutes": 540,
-      "order": 0,
-      "nature": "歷史古蹟",
-      "activity": "故宫博物院",
-      "plan": "从午门进、神武门出，参观三大殿、后宫六院、御花园",
-      "note": "需提前7天网上预约门票，建议租电子讲解器",
-      "stay": "约4-5小时",
-      "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京故宫亲子游攻略",
-      "images": [],
-      "place": {
-        "name": "故宫博物院，北京东城景山前街4号",
-        "lat": 39.917909,
-        "lng": 116.397029,
-        "address": "故宫博物院，北京东城景山前街4号"
-      },
-      "status": "Pending",
-      "statusRaw": "等待中"
-    },
-    {
       "id": "reczz28Y1dTst1de",
-      "idx": 2,
+      "idx": 24,
       "tripId": "reczz28YOFlIwmJn",
       "day": "第2天",
       "date": "2026-09-20",
@@ -4723,18 +4183,13 @@
       "stay": "约1小时",
       "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京天安门广场亲子攻略",
       "images": [],
-      "place": {
-        "name": "天安门广场，北京东城西长安街与广场西侧路交叉口东南50米",
-        "lat": 39.903237,
-        "lng": 116.397652,
-        "address": "天安门广场，北京东城西长安街与广场西侧路交叉口东南50米"
-      },
+      "place": null,
       "status": "Pending",
       "statusRaw": "等待中"
     },
     {
       "id": "reczz28Y1dZRueN7",
-      "idx": 6,
+      "idx": 17,
       "tripId": "reczz28YOFlIwmJn",
       "day": "第2天",
       "date": "2026-09-20",
@@ -4750,18 +4205,13 @@
       "stay": "约1小时",
       "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京景山公园故宫全景",
       "images": [],
-      "place": {
-        "name": "景山公园，北京西城景山西街44号",
-        "lat": 39.925916,
-        "lng": 116.396555,
-        "address": "景山公园，北京西城景山西街44号"
-      },
+      "place": null,
       "status": "Pending",
       "statusRaw": "等待中"
     },
     {
       "id": "reczz28Y1dZRwCMm",
-      "idx": 7,
+      "idx": 18,
       "tripId": "reczz28YOFlIwmJn",
       "day": "第2天",
       "date": "2026-09-20",
@@ -4777,18 +4227,13 @@
       "stay": "约2小时",
       "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京南锣鼓巷美食",
       "images": [],
-      "place": {
-        "name": "北京东城南锣鼓巷与地安门东大街交叉口北侧(地铁8号线南锣鼓巷地铁站E西北口步行400米）",
-        "lat": 39.937182,
-        "lng": 116.402394,
-        "address": "北京东城南锣鼓巷与地安门东大街交叉口北侧(地铁8号线南锣鼓巷地铁站E西北口步行400米）"
-      },
+      "place": null,
       "status": "Pending",
       "statusRaw": "等待中"
     },
     {
       "id": "reczz28Y1dZRwKRe",
-      "idx": 8,
+      "idx": 19,
       "tripId": "reczz28YOFlIwmJn",
       "day": "第2天",
       "date": "2026-09-20",
@@ -4810,7 +4255,7 @@
     },
     {
       "id": "reczz28Y1dZRvCgJ",
-      "idx": 9,
+      "idx": 13,
       "tripId": "reczz28YOFlIwmJn",
       "day": "第3天",
       "date": "2026-09-21",
@@ -4826,18 +4271,13 @@
       "stay": "约4-5小时",
       "xhs": "https://www.xiaohongshu.com/search_result?keyword=八达岭长城亲子游",
       "images": [],
-      "place": {
-        "name": "八达岭长城，北京延庆G6京藏高速58号出口",
-        "lat": 40.356141,
-        "lng": 116.016769,
-        "address": "八达岭长城，北京延庆G6京藏高速58号出口"
-      },
+      "place": null,
       "status": "Pending",
       "statusRaw": "等待中"
     },
     {
       "id": "reczz28Y1dZRtGwG",
-      "idx": 10,
+      "idx": 14,
       "tripId": "reczz28YOFlIwmJn",
       "day": "第3天",
       "date": "2026-09-21",
@@ -4853,18 +4293,13 @@
       "stay": "约2小时",
       "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京鸟巢水立方夜景",
       "images": [],
-      "place": {
-        "name": "奥林匹克公园中心区，北京朝阳科荟路33号",
-        "lat": 40.000013,
-        "lng": 116.39318,
-        "address": "奥林匹克公园中心区，北京朝阳科荟路33号"
-      },
+      "place": null,
       "status": "Pending",
       "statusRaw": "等待中"
     },
     {
       "id": "reczz28Y1dZRunPU",
-      "idx": 11,
+      "idx": 15,
       "tripId": "reczz28YOFlIwmJn",
       "day": "第3天",
       "date": "2026-09-21",
@@ -4886,7 +4321,7 @@
     },
     {
       "id": "reczz28Y1dZRuz5X",
-      "idx": 12,
+      "idx": 11,
       "tripId": "reczz28YOFlIwmJn",
       "day": "第4天",
       "date": "2026-09-22",
@@ -4902,18 +4337,13 @@
       "stay": "约8-10小时",
       "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京环球影城圣诞攻略",
       "images": [],
-      "place": {
-        "name": "临河里街道，北京通州",
-        "lat": 39.877975,
-        "lng": 116.677175,
-        "address": "临河里街道，北京通州"
-      },
+      "place": null,
       "status": "Pending",
       "statusRaw": "等待中"
     },
     {
       "id": "reczz28Y1dZRvVYR",
-      "idx": 13,
+      "idx": 12,
       "tripId": "reczz28YOFlIwmJn",
       "day": "第4天",
       "date": "2026-09-22",
@@ -4935,7 +4365,7 @@
     },
     {
       "id": "reczz28Y1dZRub6a",
-      "idx": 14,
+      "idx": 8,
       "tripId": "reczz28YOFlIwmJn",
       "day": "第5天",
       "date": "2026-09-23",
@@ -4951,18 +4381,13 @@
       "stay": "约3-4小时",
       "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京中国科技馆亲子",
       "images": [],
-      "place": {
-        "name": "奥林匹克公园中心区，北京朝阳科荟路33号",
-        "lat": 40.000013,
-        "lng": 116.39318,
-        "address": "奥林匹克公园中心区，北京朝阳科荟路33号"
-      },
+      "place": null,
       "status": "Pending",
       "statusRaw": "等待中"
     },
     {
       "id": "reczz28Y1dZRv01H",
-      "idx": 15,
+      "idx": 9,
       "tripId": "reczz28YOFlIwmJn",
       "day": "第5天",
       "date": "2026-09-23",
@@ -4978,18 +4403,13 @@
       "stay": "约2小时",
       "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京蓝色港湾圣诞",
       "images": [],
-      "place": {
-        "name": "亮马河国际风情水岸，北京朝阳麦子店街道公园16号蓝色港湾",
-        "lat": 39.949203,
-        "lng": 116.478825,
-        "address": "亮马河国际风情水岸，北京朝阳麦子店街道公园16号蓝色港湾"
-      },
+      "place": null,
       "status": "Pending",
       "statusRaw": "等待中"
     },
     {
       "id": "reczz28Y1dZRuycS",
-      "idx": 16,
+      "idx": 10,
       "tripId": "reczz28YOFlIwmJn",
       "day": "第5天",
       "date": "2026-09-23",
@@ -5011,7 +4431,7 @@
     },
     {
       "id": "reczz28Y1dZRwLUO",
-      "idx": 17,
+      "idx": 4,
       "tripId": "reczz28YOFlIwmJn",
       "day": "第6天",
       "date": "2026-09-24",
@@ -5027,18 +4447,13 @@
       "stay": "约3-4小时",
       "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京颐和园亲子游",
       "images": [],
-      "place": {
-        "name": "颐和园，北京海淀新建宫门路19号",
-        "lat": 39.999608,
-        "lng": 116.275184,
-        "address": "颐和园，北京海淀新建宫门路19号"
-      },
+      "place": null,
       "status": "Pending",
       "statusRaw": "等待中"
     },
     {
       "id": "reczz28Y1dZRuoxN",
-      "idx": 18,
+      "idx": 5,
       "tripId": "reczz28YOFlIwmJn",
       "day": "第6天",
       "date": "2026-09-24",
@@ -5054,18 +4469,13 @@
       "stay": "约2小时",
       "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京圆明园遗址公园",
       "images": [],
-      "place": {
-        "name": "圆明园遗址公园，北京海淀清华西路28号",
-        "lat": 40.006534,
-        "lng": 116.303333,
-        "address": "圆明园遗址公园，北京海淀清华西路28号"
-      },
+      "place": null,
       "status": "Pending",
       "statusRaw": "等待中"
     },
     {
       "id": "reczz28Y1dZRt6Gx",
-      "idx": 19,
+      "idx": 6,
       "tripId": "reczz28YOFlIwmJn",
       "day": "第6天",
       "date": "2026-09-24",
@@ -5081,18 +4491,13 @@
       "stay": "约1小时",
       "xhs": "https://www.xiaohongshu.com/search_result?keyword=清华大学参观攻略",
       "images": [],
-      "place": {
-        "name": "清华大学，北京海淀双清路30号",
-        "lat": 40.003192,
-        "lng": 116.32693,
-        "address": "清华大学，北京海淀双清路30号"
-      },
+      "place": null,
       "status": "Pending",
       "statusRaw": "等待中"
     },
     {
       "id": "reczz28Y1dZRsMyT",
-      "idx": 20,
+      "idx": 7,
       "tripId": "reczz28YOFlIwmJn",
       "day": "第6天",
       "date": "2026-09-24",
@@ -5114,7 +4519,7 @@
     },
     {
       "id": "reczz28Y1dZRswQI",
-      "idx": 21,
+      "idx": 0,
       "tripId": "reczz28YOFlIwmJn",
       "day": "第7天",
       "date": "2026-09-25",
@@ -5130,18 +4535,13 @@
       "stay": "约2-3小时",
       "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京自然博物馆恐龙",
       "images": [],
-      "place": {
-        "name": "国家自然博物馆，北京东城天桥南大街126号",
-        "lat": 39.883198,
-        "lng": 116.399827,
-        "address": "国家自然博物馆，北京东城天桥南大街126号"
-      },
+      "place": null,
       "status": "Pending",
       "statusRaw": "等待中"
     },
     {
       "id": "reczz28Y1dZRsFce",
-      "idx": 22,
+      "idx": 1,
       "tripId": "reczz28YOFlIwmJn",
       "day": "第7天",
       "date": "2026-09-25",
@@ -5157,18 +4557,13 @@
       "stay": "约2小时",
       "xhs": "https://www.xiaohongshu.com/search_result?keyword=北京前门大街伴手礼",
       "images": [],
-      "place": {
-        "name": "大栅栏街道，北京西城",
-        "lat": 39.897549,
-        "lng": 116.398022,
-        "address": "大栅栏街道，北京西城"
-      },
+      "place": null,
       "status": "Pending",
       "statusRaw": "等待中"
     },
     {
       "id": "reczz28Y1dZRvQeu",
-      "idx": 23,
+      "idx": 2,
       "tripId": "reczz28YOFlIwmJn",
       "day": "第7天",
       "date": "2026-09-25",
@@ -5190,7 +4585,7 @@
     },
     {
       "id": "reczz28Y1dZRsbI1",
-      "idx": 24,
+      "idx": 3,
       "tripId": "reczz28YOFlIwmJn",
       "day": "第7天",
       "date": "2026-09-25",
@@ -5206,12 +4601,7 @@
       "stay": "约3小时",
       "xhs": "",
       "images": [],
-      "place": {
-        "name": "北京首都国际机场，北京朝阳首都机场路",
-        "lat": 40.08032,
-        "lng": 116.602789,
-        "address": "北京首都国际机场，北京朝阳首都机场路"
-      },
+      "place": null,
       "status": "Pending",
       "statusRaw": "等待中"
     }
