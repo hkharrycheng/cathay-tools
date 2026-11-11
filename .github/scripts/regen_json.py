@@ -13,19 +13,35 @@ TICKETS_TABLE = os.environ.get('TICKETS_TABLE', 'tbl97F6lmemjat8V')
 PASSENGERS_TABLE = os.environ.get('PASSENGERS_TABLE', 'tbleF9mFy3Kfyo77')
 
 RAW_FILE = os.environ.get('RAW_FILE', 'data/feishu_raw.json')
+DEFAULT_REPO = 'hkharrycheng/cathay-tools'
 
 
 def load_raw_snapshot():
-    """優先本機快照；否則用 Actions 的 GITHUB_TOKEN 即時由 repo 取（避開 checkout 時間差）"""
+    """快照來源：① 公開 raw URL（免 token、必定是最新 main）② 本機檔 ③ GitHub API"""
+    repo = os.environ.get('GITHUB_REPOSITORY') or os.environ.get('GITHUB_REPO') or DEFAULT_REPO
+
+    # ① 公開 raw（最穩，避開 checkout 時間差）
+    try:
+        r = requests.get(
+            f'https://raw.githubusercontent.com/{repo}/main/{RAW_FILE}',
+            headers={'User-Agent': 'cathay-regen'}, timeout=20)
+        if r.ok:
+            return json.loads(r.text)
+        print(f'WARN raw URL HTTP {r.status_code}')
+    except Exception as e:
+        print(f'WARN raw URL failed: {e}')
+
+    # ② 本機檔
     if os.path.exists(RAW_FILE):
         try:
             with open(RAW_FILE, encoding='utf-8') as fp:
                 return json.load(fp)
         except Exception as e:
             print(f'WARN local raw snapshot unreadable: {e}')
-    repo = os.environ.get('GITHUB_REPO')
+
+    # ③ GitHub API（如有 token）
     tok = os.environ.get('GITHUB_TOKEN')
-    if repo and tok:
+    if tok:
         try:
             r = requests.get(
                 f'https://api.github.com/repos/{repo}/contents/{RAW_FILE}',
@@ -35,9 +51,9 @@ def load_raw_snapshot():
                 params={'ref': 'main'}, timeout=20)
             if r.ok:
                 return json.loads(r.text)
-            print(f'WARN raw snapshot fetch HTTP {r.status_code}')
+            print(f'WARN raw API HTTP {r.status_code}')
         except Exception as e:
-            print(f'WARN raw snapshot fetch failed: {e}')
+            print(f'WARN raw API failed: {e}')
     return None
 
 
