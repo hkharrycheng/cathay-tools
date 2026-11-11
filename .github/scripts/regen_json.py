@@ -363,3 +363,28 @@ try:
     print(f'Wrote itinerary.json: {len(items)} items, {len(days)} days')
 except Exception as e:
     print(f'WARN itinerary: {e}')
+
+# ===== 自行 commit + push（repo 內 workflow 的 commit 步驟只 add cathay.json）=====
+import subprocess
+
+
+def git_push_outputs():
+    files = [f for f in ('cathay.json', 'itinerary.json') if os.path.exists(f)]
+    if not files:
+        return
+    try:
+        subprocess.run(['git', 'config', 'user.name', 'cathay-bot'], check=True)
+        subprocess.run(['git', 'config', 'user.email', 'cathay-bot@users.noreply.github.com'], check=True)
+        subprocess.run(['git', 'add'] + files, check=True)
+        r = subprocess.run(['git', 'diff', '--staged', '--quiet'])
+        if r.returncode == 0:
+            print('No changes to commit')
+            return
+        subprocess.run(['git', 'commit', '-m', 'auto: regenerate cathay.json + itinerary.json [skip ci]'], check=True)
+        subprocess.run(['git', 'push'], check=True)
+        print('Pushed: ' + ', '.join(files))
+    except Exception as e:
+        print(f'WARN git push: {e}')
+
+
+git_push_outputs()
