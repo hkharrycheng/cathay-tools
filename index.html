@@ -6,7 +6,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>國泰員工機票 - Cathay Staff Tickets</title>
+<title>國泰機票及旅遊助手</title>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -31,6 +31,8 @@ function applyLbTransform() {
   if (lbImg) lbImg.style.transform = `translate(${lbTx}px, ${lbTy}px) scale(${lbScale})`;
 }
 document.addEventListener('DOMContentLoaded', () => {
+  lbWrap = document.getElementById('lightboxWrap');
+  lbImg = document.getElementById('lightboxImg');
   const lb = document.getElementById('lightbox');
   lb.addEventListener('wheel', (e) => {
     e.preventDefault();
@@ -49,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
     lbTx = ox + (e.clientX - sx); lbTy = oy + (e.clientY - sy);
     applyLbTransform();
   });
-  window.addEventListener('mouseup', () => { dragging = false; lbWrap.classList.remove('dragging'); });
+  window.addEventListener('mouseup', () => { dragging = false; if (lbWrap) lbWrap.classList.remove('dragging'); });
   let tStart = null;
   lb.addEventListener('touchstart', (e) => {
     if (e.touches.length === 1) { tStart = { x: e.touches[0].clientX, y: e.touches[0].clientY, ox: lbTx, oy: lbTy }; }
@@ -367,9 +369,39 @@ body {
 .next-card .nc-label{font-size:11px;color:var(--accent);font-weight:700;margin-bottom:6px}
 .next-card .nc-act{font-size:18px;font-weight:700;margin-bottom:4px}
 .next-card .nc-meta{font-size:12px;color:var(--sub)}
-.next-card .nc-tip{background:rgba(255,197,61,.10);border-left:3px solid var(--yellow);padding:8px 10px;border-radius:8px;font-size:12px;color:#ffe0a3;margin-top:8px;line-height:1.5}
-.next-card .nc-timer{font-size:15px;font-weight:800;margin-top:9px;color:var(--green)}
-.next-card .nc-timer.warn{color:var(--yellow)}
+.next-card .nc-grid{display:flex;gap:14px;align-items:stretch}
+.next-card .nc-left{flex:1 1 240px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.next-card .nc-right{flex:0 0 320px;max-width:100%;display:flex;flex-direction:column;gap:6px}
+.next-card .nc-nature{align-self:flex-start;font-size:11px;font-weight:700;padding:3px 10px;border-radius:12px;background:rgba(79,140,255,.16);border:1px solid rgba(79,140,255,.45);color:#9ec1ff}
+.next-card .nc-plan{font-size:12px;color:#cfe0ff;line-height:1.5}
+.next-card .nc-tip{background:rgba(255,197,61,.10);border-left:3px solid var(--yellow);padding:7px 10px;border-radius:8px;font-size:12px;color:#ffe0a3;line-height:1.5}
+.next-card .nc-dist{font-size:12px;color:var(--green);font-weight:700}
+.next-card .nc-dist span{color:var(--sub);font-weight:400}
+#nextMap{width:100%;height:150px;border-radius:10px;overflow:hidden;border:1px solid #2f4a7a;background:#0f1420}
+#nextMap .leaflet-tile-pane{filter:invert(1) hue-rotate(180deg) brightness(.92) contrast(.85)}
+@media(max-width:760px){.next-card .nc-grid{flex-direction:column}.next-card .nc-right{flex:1 1 auto}#nextMap{height:170px}}
+.trip-picker{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.trip-picker select{background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:7px 10px;font-size:12px;max-width:280px}
+.edge-chip{font-size:10px;padding:2px 8px;border-radius:8px;background:rgba(79,140,255,.16);color:#9ec1ff;border:1px solid rgba(79,140,255,.4);font-weight:700}
+.tl-thumb{display:flex;gap:6px;margin-top:7px;flex-wrap:wrap}
+.tl-thumb img{width:74px;height:56px;object-fit:cover;border-radius:8px;border:1px solid var(--border);cursor:pointer}
+.tl-edit label{font-size:11px;color:var(--sub);display:flex;flex-direction:column;gap:4px;flex:1 1 140px;min-width:0}
+.tl-edit input[type=text],.tl-edit input[type=url],.tl-edit textarea{background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:6px 8px;font-size:12px;font-family:inherit;width:100%}
+.tl-edit textarea{min-height:54px;resize:vertical}
+.tl-edit .time-btn{background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:7px 12px;font-size:12px;cursor:pointer;min-width:96px;text-align:left}
+.tl-edit .time-btn:hover{border-color:var(--accent)}
+.tl-edit .e-img{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tl-edit .e-img img{width:62px;height:48px;object-fit:cover;border-radius:6px;border:1px solid var(--border)}
+.tl-edit .e-hint{font-size:11px;color:var(--sub)}
+.tp-modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:3000;padding:16px}
+.tp-modal.show{display:flex}
+.tp-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;width:100%;max-width:320px;box-shadow:0 12px 40px rgba(0,0,0,.5)}
+.tp-box h4{margin:0 0 12px;font-size:14px}
+.tp-row{display:flex;align-items:center;gap:8px;justify-content:center;font-size:18px;font-weight:700}
+.tp-row select{background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:8px 12px;font-size:16px;font-weight:700}
+.tp-actions{display:flex;gap:8px;margin-top:14px}
+.tp-actions button{flex:1;padding:9px;border-radius:10px;border:1px solid var(--border);background:var(--card2);color:var(--text);font-size:13px;cursor:pointer}
+.tp-actions button.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
 .timeline{margin-top:4px}
 .tl-day{margin-bottom:6px}
 .tl-day h4{font-size:14px;color:var(--accent);display:flex;align-items:center;gap:8px;margin:14px 0 8px}
@@ -407,6 +439,21 @@ body {
 .place-row .pr-sub{font-size:11px;color:var(--sub);margin-top:2px}
 .j09-toast{position:fixed;left:50%;bottom:78px;transform:translateX(-50%) translateY(10px);background:rgba(26,34,51,.96);border:1px solid var(--border);color:var(--text);padding:9px 16px;border-radius:22px;font-size:12px;max-width:88%;text-align:center;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:1200;box-shadow:0 6px 24px rgba(0,0,0,.45)}
 .j09-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* J09 v1.22 地圖 popup 暗淡色系 */
+.leaflet-popup-content-wrapper{background:#161c28 !important;color:#d7deea !important;border:1px solid #2c3648;box-shadow:0 10px 26px rgba(0,0,0,.6);border-radius:10px}
+.leaflet-popup-tip{background:#161c28 !important;border:1px solid #2c3648}
+.leaflet-popup-content{margin:10px 12px;font-size:12px;line-height:1.55}
+.leaflet-popup-content b{color:#fff}
+.leaflet-container a.leaflet-popup-close-button{color:#8b96a8 !important}
+.leaflet-container a.leaflet-popup-close-button:hover{color:#fff !important}
+/* 新增活動 modal */
+.add-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.add-grid label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:#9aa6bb}
+.add-grid .wide{grid-column:1/-1}
+.add-grid input,.add-grid select,.add-grid textarea{background:#0e1420;border:1px solid #2b3648;border-radius:8px;color:#dbe3ef;padding:8px;font-size:12px;font-family:inherit}
+.add-grid textarea{min-height:54px;resize:vertical}
+.tl-btn.del{color:#ff9a9a;border-color:#4a2a30}
 </style>
 
 </head>
@@ -416,10 +463,10 @@ body {
   <div class="header">
     <h1>
       <img class="logo" src="cathay-logo.png" alt="Cathay">
-      國泰員工機票
+      國泰機票及旅遊助手
     </h1>
     <div class="meta">
-      <div><span class="version" id="version">v1.20</span> &nbsp;|&nbsp; 更新：<span id="lastUpdate">-</span></div>
+      <div><span class="version" id="version">v1.22</span> &nbsp;|&nbsp; 更新：<span id="lastUpdate">-</span></div>
     </div>
   </div>
 </div>
@@ -514,10 +561,10 @@ body {
   <div class="container">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px">
       <div class="section-title" style="margin-bottom:0">🧭 設計行程</div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap">
-        <button class="mini-btn" id="itinPushBtn" onclick="pushTripEdits()" style="display:none;border-color:#ffc53d;color:#ffc53d">⬆️ 推送更改（0）</button>
-        <button class="mini-btn" onclick="reloadItinerary()">🔄 重載行程</button>
-        <button class="mini-btn" onclick="updateItineraryJson()">⚙️ 更新 .json</button>
+      <div class="trip-picker">
+        <select id="tripSelect" onchange="changeTrip(this.value)"></select>
+        <button class="mini-btn" onclick="syncLatestItinerary()">📡 同步最新</button>
+        <button class="mini-btn" onclick="reloadItinerary()">🔄 重載</button>
       </div>
     </div>
     <div class="trip-head" id="tripHeader"></div>
@@ -527,6 +574,8 @@ body {
       <button class="trip-filter-btn active" data-trip="all">全部</button>
       <button class="trip-filter-btn" data-trip="pending">⏳ 未完成</button>
       <button class="trip-filter-btn" data-trip="done">✅ 已完成</button>
+      <select id="natureSelect" class="combo" style="max-width:180px" onchange="setTripNature(this.value)"><option value="ALL">全部活動性質</option></select>
+      <button class="mini-btn" onclick="openAddActivity()">➕ 新增活動</button>
     </div>
     <div class="timeline" id="timeline"></div>
     <div class="footer">Cathay Staff Tickets · J09</div>
@@ -538,14 +587,49 @@ body {
     <div class="section-title">🗺 設計行程圖</div>
     <div class="filter-bar">
       <select id="tripDaySelect" class="combo" style="max-width:200px"></select>
+      <select id="natureSelectMap" class="combo" style="max-width:190px" onchange="setTripNature(this.value)"><option value="ALL">全部活動性質</option></select>
       <button class="mini-btn" onclick="fitTrip()">🗺 全覽</button>
       <button class="mini-btn" onclick="fitTripZoom()">🔍 最近點放大</button>
     </div>
     <div class="map-wrap"><div id="tripMap"></div></div>
-    <div class="trip-place-list" id="tripPlaceList"></div>
     <div class="footer">Cathay Staff Tickets · J09</div>
   </div>
 </div>
+
+<div class="tp-modal" id="tpModal">
+  <div class="tp-box">
+    <h4>選擇時間</h4>
+    <div class="tp-row">
+      <select id="tpHour"></select>
+      <span>:</span>
+      <select id="tpMinute"></select>
+    </div>
+    <div class="tp-actions">
+      <button onclick="closeTimePicker()">取消</button>
+      <button class="primary" onclick="confirmTimePicker()">確定</button>
+    </div>
+  </div>
+</div>
+
+<div class="tp-modal" id="addModal">
+  <div class="tp-box" style="width:min(580px,92vw);text-align:left">
+    <h4>➕ 新增活動</h4>
+    <div class="add-grid">
+      <label class="wide">活動名<input id="a_act" type="text" placeholder="例：亞龍灣森林公園"></label>
+      <label>活動性質<select id="a_nature"></select></label>
+      <label>天數<select id="a_day"></select></label>
+      <label>時間<select id="a_time"></select></label>
+      <label>小紅書連結<input id="a_xhs" type="url" placeholder="https://..."></label>
+      <label class="wide">行程<textarea id="a_plan"></textarea></label>
+      <label class="wide">建議備註<textarea id="a_note"></textarea></label>
+    </div>
+    <div class="tp-actions">
+      <button onclick="closeAddActivity()">取消</button>
+      <button class="primary" onclick="submitAddActivity()">儲存並上傳</button>
+    </div>
+  </div>
+</div>
+
 
 
 <nav class="tab-bar">
@@ -616,7 +700,7 @@ function fmtPct(v) { return (v * 100).toFixed(1) + '%'; }
 function fmtMoney(v) { return v != null && !isNaN(v) ? '$' + Number(v).toLocaleString() : null; }
 
 function renderAll() {
-  document.getElementById('lastUpdate').textContent = DATA.lastUpdate;
+  setHeaderTime(DATA.lastUpdate);
   renderStats();
   renderPie();
   renderLine();
@@ -1109,6 +1193,7 @@ function switchTab(tab) {
     }
     if (tab === 'itinerary') {
       renderTripHeader(); renderTripProgress(); renderTimeline(); renderNextCard();
+      if (nextMap) setTimeout(() => nextMap.invalidateSize(), 80);
     }
     if (tab === 'tripmap') {
       if (!tripMap) initTripMap();
@@ -1222,469 +1307,546 @@ function closePushModal() { document.getElementById('pushModal').classList.remov
 
 loadData();
 
-/* ================= J09 v1.20 旅程助手（設計行程 / 行程圖） ================= */
-const TRIP_DRAFT_KEY = 'j09TripDraft';
-let ITIN = null, ITIN_RAW = null;
-let tripFilter = 'all', tripDay = null, tripSel = 'ALL', tripEditId = null;
-let tripDraft = tripDraftLoad();
-let tripMap = null, tripLayerGroup = null, tripMarkers = {};
-let nextTimerId = null;
-let tripFitted = false;
+/* ================= J09 v1.21 旅程助手（設計行程 / 行程圖） ================= */
+const TRIP_SEL_KEY = 'j09TripId';
+const SLOT_HOUR = { '上午': '09:00', '中午': '12:00', '下午': '14:00', '傍晚': '17:00', '晚上': '19:00', '全天': '08:00' };
 
-function tripDraftLoad() {
-  try { return JSON.parse(localStorage.getItem(TRIP_DRAFT_KEY)) || {}; } catch (e) { return {}; }
+let ITIN = null;
+function setHeaderTime(t) {
+  if (!t || t === '-') return;
+  const el = document.getElementById('lastUpdate');
+  if (!el) return;
+  const cur = el.textContent.trim();
+  if (cur === '-' || String(t) > cur) el.textContent = t;
 }
-function tripDraftSave() {
-  localStorage.setItem(TRIP_DRAFT_KEY, JSON.stringify(tripDraft));
-  updatePushBtn();
-}
+let TRIP = null;
+let ITEMS = [];
+let DAYS = [];
+let TRIP_META = {};
+let tripId = null;
+let tripFilter = 'all', tripDay = null, tripEditId = null, tripSel = 'ALL';
+let tripNature = 'ALL';
+const NATURES = ['飛機','住宿','歷史古蹟','自然景點','商城','展覽','美食','滴滴'];
+let tripMap = null, tripLayerGroup = null, tripMarkers = {};
+let nextMap = null, nextLayer = null;
+let tpEdit = null, tpValue = null;
+
 function esc(s) {
   return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 function pad2(n) { return (n < 10 ? '0' : '') + n; }
-function fmtDateObj(d) { return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
-function timeOf(it) {
-  const s = it && it.start ? String(it.start) : '';
-  const m = s.match(/(\d{2}:\d{2})/);
-  return m ? m[1] : '—';
-}
-function slotOf(hh) {
-  const h = parseInt(String(hh).slice(0, 2), 10);
-  if (isNaN(h)) return '上午';
-  if (h < 12) return '上午';
-  if (h < 13) return '中午';
-  if (h < 17) return '下午';
-  if (h < 19) return '傍晚';
-  return '晚上';
-}
 function toast(msg, ms) {
-  let t = document.getElementById('j09Toast');
-  if (!t) { t = document.createElement('div'); t.id = 'j09Toast'; t.className = 'j09-toast'; document.body.appendChild(t); }
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(t._h);
-  t._h = setTimeout(() => t.classList.remove('show'), ms || 2600);
-}
-function dayLabels() { return (ITIN && ITIN.trip && ITIN.trip.dayLabels) || []; }
-function dayDates() {
-  const m = {};
-  ((ITIN && ITIN.days) || []).forEach(d => { if (d.label && d.date) m[d.label] = d.date; });
-  const t = (ITIN && ITIN.trip) || {};
-  if (t.start && dayLabels().length) {
-    const s = new Date(t.start + 'T00:00:00');
-    if (!isNaN(s.getTime())) {
-      dayLabels().forEach((l, i) => {
-        if (!m[l]) { const d = new Date(s.getTime() + i * 86400000); m[l] = fmtDateObj(d); }
-      });
-    }
+  let el = document.getElementById('toast');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'toast';
+    el.style.cssText = 'position:fixed;left:50%;bottom:74px;transform:translateX(-50%);background:#26324a;color:#fff;padding:9px 16px;border-radius:20px;font-size:12px;z-index:4000;box-shadow:0 6px 24px rgba(0,0,0,.4);max-width:86vw;text-align:center';
+    document.body.appendChild(el);
   }
-  return m;
+  el.textContent = msg;
+  el.style.display = 'block';
+  clearTimeout(el._t);
+  el._t = setTimeout(() => { el.style.display = 'none'; }, ms || 2600);
 }
-function dayIndex(lbl) { const i = dayLabels().indexOf(lbl); return i < 0 ? 99 : i; }
-function cmpItem(a, b) {
-  const d = dayIndex(a.day) - dayIndex(b.day);
-  if (d) return d;
-  const s = String(a.start || '').localeCompare(String(b.start || ''));
-  if (s) return s;
-  return (a.idx || 0) - (b.idx || 0);
-}
-function countDone() { return ((ITIN && ITIN.items) || []).filter(x => x.status === 'Completed').length; }
-function countTotal() { return ((ITIN && ITIN.items) || []).length; }
+function val(id) { const e = document.getElementById(id); return e ? String(e.value || '').trim() : ''; }
+function dayNum(s) { const m = String(s || '').match(/\d+/); return m ? parseInt(m[0], 10) : 0; }
 
-function applyTripDraft() {
-  if (!ITIN) return;
-  const dates = dayDates();
-  const ids = Object.keys(tripDraft);
-  if (!ids.length) { rebuildDays(); return; }
-  ids.forEach(id => {
-    const it = (ITIN.items || []).find(x => x.id === id);
-    if (!it) return;
-    const dr = tripDraft[id] || {};
-    const day = dr.day || it.day;
-    const time = /^\d{2}:\d{2}$/.test(dr.time || '') ? dr.time : (timeOf(it) === '—' ? '09:00' : timeOf(it));
-    it.day = day;
-    it.date = dates[day] || it.date;
-    it.slot = slotOf(time);
-    it.start = (it.date || '') + ' ' + time;
-    it.overnight = false;
-  });
-  rebuildDays();
-}
-function rebuildDays() {
-  if (!ITIN) return;
-  const labels = dayLabels().slice();
-  const dates = dayDates();
-  (ITIN.items || []).forEach(it => {
-    const same = (ITIN.items || []).filter(x => x.day === it.day).sort((a, b) => String(a.start || '').localeCompare(String(b.start || '')));
-    it.order = same.indexOf(it);
-  });
-  const dayArr = labels.map(l => ({ label: l, date: dates[l] || '', items: (ITIN.items || []).filter(x => x.day === l).sort((a, b) => String(a.start || '').localeCompare(String(b.start || ''))) }));
-  ((ITIN.items || []).map(x => x.day)).forEach(d => { if (labels.indexOf(d) < 0) dayArr.push({ label: d, date: dates[d] || '', items: (ITIN.items || []).filter(x => x.day === d) }); });
-  ITIN.days = dayArr;
-  ITIN.items.sort(cmpItem);
-  ITIN.itemsCount = (ITIN.items || []).length;
-  ITIN.completedCount = countDone();
-}
-
+/* ---------- 資料載入 ---------- */
 async function loadItinerary() {
   const wrap = document.getElementById('timeline');
   try {
-    const res = await fetch('itinerary.json?v=' + Date.now());
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    ITIN = await res.json();
-    ITIN_RAW = JSON.parse(JSON.stringify(ITIN));
-    tripDraft = tripDraftLoad();
-    applyTripDraft();
-    renderTripHeader();
-    renderTripProgress();
-    renderTimeline();
-    renderNextCard();
-    buildTripDaySelect();
-    if (document.getElementById('panel-tripmap') && document.getElementById('panel-tripmap').classList.contains('active')) renderTripMap();
-    updatePushBtn();
+    const r = await fetch('itinerary.json?v=' + Date.now());
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    ITIN = await r.json();
+  setHeaderTime(ITIN.lastUpdate);
+    if (!ITIN.trips || !ITIN.trips.length) throw new Error('itinerary.json 沒有行程資料');
+    let saved = null;
+    try { saved = localStorage.getItem(TRIP_SEL_KEY); } catch (e) { }
+    const def = ITIN.defaultTripId;
+    tripId = (saved && ITIN.trips.some(t => t.id === saved)) ? saved : (def && ITIN.trips.some(t => t.id === def) ? def : ITIN.trips[ITIN.trips.length - 1].id);
+    applyTrip(tripId, true);
   } catch (e) {
-    if (wrap) wrap.innerHTML = '<div class="tl-empty">❌ 無法載入 itinerary.json（' + esc(e.message) + '）</div>';
-    console.error('itinerary 載入失敗', e);
+    if (wrap) wrap.innerHTML = '<div class="tl-empty">讀取 itinerary.json 失敗：' + esc(e.message) + '</div>';
   }
 }
-function reloadItinerary() { loadItinerary().then(() => toast('🔄 已重載 itinerary.json')); }
-async function updateItineraryJson() {
-  try {
-    const r = await fetch(J09_WORKER + '/api/refresh', { method: 'POST' });
-    const j = await r.json();
-    if (j.dispatched) toast('✅ 已觸發 GitHub Actions 重生 itinerary.json（1–2 分鐘後按「🔄 重載行程」）', 4200);
-    else toast('⚠️ 觸發失敗：' + (j.error || JSON.stringify(j)), 4200);
-  } catch (e) { toast('❌ 觸發失敗：' + e.message, 4200); }
+
+function applyTrip(id, keepSaved) {
+  const t = (ITIN.trips || []).find(x => x.id === id) || ITIN.trips[ITIN.trips.length - 1];
+  if (!t) return;
+  tripId = t.id;
+  TRIP = t;
+  ITEMS = (t.items || []).slice();
+  DAYS = (t.days || []).slice();
+  TRIP_META = t.trip || {};
+  tripFilter = 'all';
+  tripDay = null;
+  tripEditId = null;
+  tripNature = 'ALL';
+  document.querySelectorAll('.trip-filter-btn').forEach(b => b.classList.toggle('active', b.dataset.trip === 'all'));
+  if (!keepSaved) { try { localStorage.setItem(TRIP_SEL_KEY, tripId); } catch (e) { } }
+  if (nextMap) { try { nextMap.remove(); } catch (e) { } nextMap = null; nextLayer = null; }
+  renderTripAll();
 }
 
-function updatePushBtn() {
-  const btn = document.getElementById('itinPushBtn');
-  if (!btn) return;
-  const n = Object.keys(tripDraft).length;
-  btn.style.display = n ? '' : 'none';
-  btn.textContent = '⬆️ 推送更改（' + n + '）';
+function renderTripAll() {
+  buildTripSelect();
+  buildNatureSelect();
+  renderTripHeader();
+  renderTripProgress();
+  renderNextCard();
+  renderTimeline();
+  buildTripDaySelect();
+  renderTripMap();
 }
 
+function changeTrip(id) { applyTrip(id, false); }
+
+function buildNatureSelect() {
+  const used = [...new Set(ITEMS.map(i => i.nature).filter(Boolean))].sort();
+  if (tripNature !== 'ALL' && used.indexOf(tripNature) < 0) tripNature = 'ALL';
+  const html = '<option value="ALL">全部活動性質</option>' +
+    used.map(n => '<option value="' + esc(n) + '"' + (tripNature === n ? ' selected' : '') + '>' + esc(n) + '</option>').join('');
+  ['natureSelect', 'natureSelectMap'].forEach(id => {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    sel.innerHTML = html;
+    sel.value = tripNature;
+  });
+}
+function setTripNature(v) {
+  tripNature = (v === 'ALL' || !v) ? 'ALL' : v;
+  ['natureSelect', 'natureSelectMap'].forEach(id => { const el = document.getElementById(id); if (el) el.value = tripNature; });
+  renderTimeline(); renderTripMap();
+}
+
+function buildTripSelect() {
+  const sel = document.getElementById('tripSelect');
+  if (!sel || !ITIN) return;
+  const list = (ITIN.trips || []).slice().sort((a, b) => String(b.startDate || '').localeCompare(String(a.startDate || '')));
+  sel.innerHTML = list.map(t => '<option value="' + esc(t.id) + '"' + (t.id === tripId ? ' selected' : '') + '>' +
+    esc(t.label || t.id) + (t.id === (ITIN.defaultTripId || '') ? '（最新）' : '') + '</option>').join('');
+}
+
+/* ---------- 行程摘要 / 進度 ---------- */
 function renderTripHeader() {
-  const box = document.getElementById('tripHeader');
-  if (!ITIN || !box) return;
-  const t = ITIN.trip || {};
-  const chips = [];
-  if (t.party) chips.push('👥 ' + t.party);
-  if (t.food) chips.push('🌶 ' + t.food);
-  if (t.climate) chips.push('🥵 ' + t.climate);
-  if (t.mode) chips.push('🧭 ' + t.mode);
-  if (t.category) chips.push('🧾 ' + t.category);
-  box.innerHTML =
+  const el = document.getElementById('tripHeader');
+  if (!el || !TRIP) return;
+  const m = TRIP_META || {};
+  const total = ITEMS.length;
+  const done = ITEMS.filter(i => i.status === 'Completed').length;
+  const natures = [...new Set(ITEMS.map(i => i.nature).filter(Boolean))];
+  el.innerHTML =
     '<div class="th-row1">' +
-      '<span class="th-dates">' + esc(t.name || ((t.start || '') + ' → ' + (t.end || ''))) + '</span>' +
-      '<span class="th-chip">' + (t.days || dayLabels().length) + ' 天</span>' +
-      '<span class="th-chip green">完成 ' + countDone() + '/' + countTotal() + '</span>' +
+      '<div class="th-dates">' + esc(TRIP.label || '行程') + '</div>' +
+      '<span class="th-chip">' + esc(TRIP.city || '未設定城市') + '</span>' +
+      '<span class="th-chip green">' + (m.days || 0) + ' 天</span>' +
     '</div>' +
-    '<div class="th-sub">更新 ' + esc(ITIN.lastUpdate || '-') + ' · 數據源 飛書「計劃行程」表</div>' +
-    '<div class="th-chips">' + chips.map(c => '<span class="tagpill">' + esc(c) + '</span>').join('') + '</div>';
+    '<div class="th-sub">' + esc(m.start || '') + (m.end ? ' → ' + esc(m.end) : '') +
+      ' · ' + total + ' 項 · 已完成 ' + done + ' / ' + total + '</div>' +
+    '<div class="th-chips">' +
+      natures.map(n => '<span class="tagpill">' + esc(n) + '</span>').join('') +
+      (m.food ? '<span class="tagpill">🍽 ' + esc(m.food) + '</span>' : '') +
+      (m.mode ? '<span class="tagpill">🚗 ' + esc(m.mode) + '</span>' : '') +
+    '</div>';
 }
 
 function renderTripProgress() {
-  const box = document.getElementById('tripProgress');
-  if (!ITIN || !box) return;
-  const items = ITIN.items || [];
-  const total = items.length, done = countDone();
-  const pct = total ? Math.round(done / total * 100) : 0;
-  const labels = dayLabels();
-  const bars = labels.map(l => {
-    const ds = items.filter(x => x.day === l);
-    const dn = ds.filter(x => x.status === 'Completed').length;
-    const r = ds.length ? Math.round(dn / ds.length * 100) : 0;
-    const isFull = ds.length && dn === ds.length;
-    return '<div class="prog-day' + (tripDay === l ? ' active' : '') + '" onclick="setDayFilter(\'' + esc(l) + '\')" title="點擊只看 ' + esc(l) + '">' +
-      '<div class="daybar' + (isFull ? ' full' : '') + (tripDay === l ? ' active' : '') + '"><div class="dfill' + (dn === 0 ? ' zero' : '') + '" style="height:' + (dn === 0 ? '4px' : Math.max(r, 2) + '%') + '"></div></div>' +
-      '<div class="dayno">' + esc(String(l).replace('第', '').replace('天', '')) + '日</div>' +
-      '<div class="daycnt">' + dn + '/' + ds.length + '</div></div>';
-  }).join('');
-  box.innerHTML = '<div class="prog-card"><div class="prog-inner">' +
-    '<div class="prog-left"><div class="prog-num">' + pct + '%<small>完成</small></div>' +
-    '<div class="prog-done">完成 ' + done + '/' + total + '</div>' +
-    '<div class="prog-track"><div class="prog-fill" style="width:' + pct + '%"></div></div></div>' +
-    '<div class="prog-days">' + bars + '</div>' +
-    '<div class="prog-hint">' + (tripDay ? '已只看 ' + esc(tripDay) + '，再點同一條棒取消' : '點每日細棒可只睇該日行程，再點一次取消') + '</div>' +
+  const el = document.getElementById('tripProgress');
+  if (!el || !TRIP) return;
+  const total = ITEMS.length;
+  const done = ITEMS.filter(i => i.status === 'Completed').length;
+  const pct = total ? Math.round(done * 100 / total) : 0;
+  el.innerHTML =
+    '<div class="prog-card"><div class="prog-inner">' +
+      '<div class="prog-left"><div class="prog-num">' + pct + '%<small>完成</small></div>' +
+      '<div class="prog-done">' + done + ' / ' + total + ' 項</div>' +
+      '<div class="prog-track"><div class="prog-fill" style="width:' + pct + '%"></div></div></div>' +
+      '<div class="prog-days">' + (DAYS || []).map(d => {
+        const c = d.items.filter(i => i.status === 'Completed').length;
+        const h = d.items.length ? Math.round(c * 100 / d.items.length) : 0;
+        return '<div class="prog-day' + (tripDay === d.label ? ' active' : '') + '" onclick="setTripDay(\'' + esc(d.label) + '\')">' +
+          '<div class="daybar' + (h === 100 ? ' full' : '') + (tripDay === d.label ? ' active' : '') + '"><div class="dfill' + (h === 0 ? ' zero' : '') + '" style="height:' + (h === 0 ? 0 : h) + '%"></div></div>' +
+          '<div class="dayno">' + esc(d.label) + '</div><div class="daycnt">' + c + '/' + d.items.length + '</div></div>';
+      }).join('') + '</div>' +
     '</div></div>';
 }
-function setDayFilter(lbl) {
-  tripDay = (tripDay === lbl ? null : lbl);
-  renderTripProgress();
-  renderTimeline();
-  const sel = document.getElementById('tripDaySelect');
-  if (sel) sel.value = tripDay || 'ALL';
+
+/* ---------- 下一個行程 ---------- */
+function timeOf(it) {
+  const s = String(it.start || '');
+  const m = s.match(/(\d{2}):(\d{2})$/);
+  if (m) return m[1] + ':' + m[2];
+  return SLOT_HOUR[it.slot] || '09:00';
+}
+function nextItem() { return ITEMS.find(i => i.status !== 'Completed') || null; }
+function prevPlacedItem(it) {
+  const idx = ITEMS.indexOf(it);
+  for (let k = idx - 1; k >= 0; k--) { if (ITEMS[k].place) return ITEMS[k]; }
+  return null;
+}
+function hav(a, b) {
+  if (!a || !b) return null;
+  const R = 6371, rad = d => d * Math.PI / 180;
+  const dLat = rad(b.lat - a.lat), dLon = rad(b.lng - a.lng);
+  const s = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  return 2 * R * Math.asin(Math.sqrt(s));
 }
 
-function nextItem() {
-  if (!ITIN) return null;
-  const pend = (ITIN.items || []).filter(x => x.status !== 'Completed');
-  if (!pend.length) return null;
-  pend.sort(cmpItem);
-  return pend[0];
-}
 function renderNextCard() {
   const box = document.getElementById('nextCard');
-  if (!ITIN || !box) return;
+  if (!box) return;
   const it = nextItem();
   if (!it) {
-    box.innerHTML = '<div class="nc-label">✅ 行程完成</div><div class="nc-act">全部行程已完成，辛苦晒！</div>';
+    box.innerHTML = '<div class="nc-label">下一個行程</div><div class="nc-meta">🎉 這個行程全部已完成</div>';
     return;
   }
+  const prev = prevPlacedItem(it);
+  const km = (it.place && prev) ? hav(prev.place, it.place) : null;
+  let distHtml;
+  if (it.place) {
+    distHtml = km != null
+      ? '<div class="nc-dist">距上一站 ' + km.toFixed(1) + ' km <span>（直線距離，上一站：' + esc(prev.activity) + '）</span></div>'
+      : '<div class="nc-dist">本行程第一個有座標的地點 <span>（無上一站可比）</span></div>';
+  } else {
+    distHtml = '<div class="nc-dist"><span>本項未設「景點」座標，未能計算距離' + (prev ? '；地圖顯示上一站' : '') + '</span></div>';
+  }
+  const mapBlock = (it.place || prev) ? '<div id="nextMap"></div>'
+    : '<div id="nextMap" style="display:flex;align-items:center;justify-content:center;color:#777;font-size:11px">本行程暫無座標</div>';
+
   box.innerHTML =
     '<div class="nc-label">下一個行程</div>' +
-    '<div class="nc-act">' + esc(it.activity || '—') + '</div>' +
-    '<div class="nc-meta">' + esc(it.day || '') + ' · ' + esc(it.slot || '') + ' · 預計 ' + esc(timeOf(it)) + ' · 建議停留 ' + esc(it.stay || '—') + '</div>' +
-    (it.note ? '<div class="nc-tip">⚠️ 提示：' + esc(it.note) + '</div>' : '') +
-    '<div class="nc-timer" id="nextTimer">—</div>' +
-    '<div class="nc-meta" style="margin-top:4px">計劃時間 ' + esc(it.start || '—') + '（未標記完成，計時以完成時刻為準）</div>';
-  updateNextTimer();
-  if (!nextTimerId) nextTimerId = setInterval(updateNextTimer, 1000);
-}
-function updateNextTimer() {
-  const el = document.getElementById('nextTimer');
-  const it = nextItem();
-  if (!el || !it) return;
-  const st = String(it.start || '').replace(' ', 'T');
-  const start = new Date(st.length === 16 ? st + ':00' : st);
-  if (isNaN(start.getTime())) { el.textContent = '—'; return; }
-  const diff = start.getTime() - Date.now();
-  if (diff > 0) {
-    const dd = Math.floor(diff / 86400000), hh = Math.floor(diff % 86400000 / 3600000), mm = Math.floor(diff % 3600000 / 60000), ss = Math.floor(diff % 60000 / 1000);
-    el.className = 'nc-timer';
-    el.textContent = '⏳ 距開始 ' + (dd > 0 ? dd + ' 天 ' : '') + pad2(hh) + ':' + pad2(mm) + ':' + pad2(ss);
-  } else {
-    const over = Math.floor(-diff / 86400000);
-    el.className = 'nc-timer warn';
-    el.textContent = over > 0 ? ('⏰ 逾期 ' + over + ' 天未完成') : ('⏰ 已逾時 ' + Math.floor(-diff / 3600000) + ' 小時未完成');
-  }
+    '<div class="nc-grid">' +
+      '<div class="nc-left">' +
+        '<div class="nc-act">' + esc(it.activity) + '</div>' +
+        '<div><span class="nc-nature">🏷 ' + esc(it.nature || '未分類') + '</span></div>' +
+        '<div class="nc-meta">' + esc(it.day) + ' · ' + esc(it.slot) + ' · ' + esc(timeOf(it)) + (it.overnight ? '（至第2天上午）' : '') + '</div>' +
+        (it.plan ? '<div class="nc-plan">📋 ' + esc(it.plan) + '</div>' : '') +
+        (it.note ? '<div class="nc-tip">💡 ' + esc(it.note) + '</div>' : '<div class="nc-tip">💡 暫無建議備註</div>') +
+      '</div>' +
+      '<div class="nc-right">' + distHtml + mapBlock + '</div>' +
+    '</div>';
+
+  if (it.place || prev) setTimeout(() => renderNextMap(it, prev), 30);
 }
 
-function tripFiltered(items) {
-  if (tripFilter === 'done') return items.filter(i => i.status === 'Completed');
-  if (tripFilter === 'pending') return items.filter(i => i.status !== 'Completed');
-  return items;
+function renderNextMap(it, prev) {
+  const el = document.getElementById('nextMap');
+  if (!el || !window.L) return;
+  if (nextMap && nextMap.getContainer() !== el) { try { nextMap.remove(); } catch (e) { } nextMap = null; nextLayer = null; }
+  const here = it.place, from = prev && prev.place;
+  if (!here && !from) return;
+  const center = here || from;
+  if (!nextMap) {
+    nextMap = L.map(el, { zoomControl: false, attributionControl: false, scrollWheelZoom: false, dragging: true, tap: false })
+      .setView([center.lat, center.lng], 11);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(nextMap);
+    nextLayer = L.layerGroup().addTo(nextMap);
+  }
+  nextLayer.clearLayers();
+  const pts = [];
+  if (here) {
+    L.circleMarker([here.lat, here.lng], { radius: 9, color: '#4f8cff', weight: 3, fillColor: '#4f8cff', fillOpacity: .9 }).addTo(nextLayer).bindTooltip(it.activity, { direction: 'top' });
+    pts.push([here.lat, here.lng]);
+  }
+  if (from) {
+    L.circleMarker([from.lat, from.lng], { radius: 6, color: '#8899aa', weight: 2, fillColor: '#8899aa', fillOpacity: .7 }).addTo(nextLayer).bindTooltip('上一站：' + prev.activity);
+    pts.push([from.lat, from.lng]);
+    if (here) L.polyline([[from.lat, from.lng], [here.lat, here.lng]], { color: '#4f8cff', weight: 1.6, dashArray: '6 6', opacity: .8 }).addTo(nextLayer);
+  }
+  nextMap.invalidateSize();
+  if (pts.length > 1) nextMap.fitBounds(L.latLngBounds(pts), { padding: [24, 24] });
+  else nextMap.setView(pts[0], 13);
 }
+
+/* ---------- Timeline ---------- */
 function renderTimeline() {
-  const wrap = document.getElementById('timeline');
-  if (!wrap) return;
-  if (!ITIN) { wrap.innerHTML = '<div class="tl-empty">載入中…</div>'; return; }
-  const days = (ITIN.days || []);
-  const rows = [];
-  days.forEach(d => {
-    if (tripDay && d.label !== tripDay) return;
-    const items = tripFiltered((d.items || []).slice().sort((a, b) => String(a.start || '').localeCompare(String(b.start || ''))));
-    rows.push('<div class="tl-day"><h4>' + esc(d.label) + ' <span class="dt">' + esc(d.date || '') + '</span></h4>');
-    if (!items.length) rows.push('<div class="tl-empty" style="padding:8px 0">當日暫無（符合篩選嘅）行程</div>');
-    else items.forEach(it => rows.push(tlItemHtml(it)));
-    rows.push('</div>');
-  });
-  wrap.innerHTML = rows.length ? rows.join('') : '<div class="tl-empty">冇行程</div>';
+  const el = document.getElementById('timeline');
+  if (!el || !TRIP) return;
+  let list = ITEMS.slice();
+  if (tripFilter === 'pending') list = list.filter(i => i.status !== 'Completed');
+  if (tripFilter === 'done') list = list.filter(i => i.status === 'Completed');
+  if (tripDay) list = list.filter(i => i.day === tripDay);
+  if (tripNature !== 'ALL') list = list.filter(i => (i.nature || '') === tripNature);
+
+  if (!list.length) { el.innerHTML = '<div class="tl-empty">沒有符合條件的項目</div>'; return; }
+
+  const labels = [...new Set(list.map(i => i.day))].sort((a, b) => dayNum(a) - dayNum(b));
+  el.innerHTML = labels.map(lb => {
+    const arr = list.filter(i => i.day === lb);
+    const date = arr[0].date;
+    return '<div class="tl-day"><h4>📍 ' + esc(lb) + ' <span class="dt">' + esc(date) + '</span></h4>' +
+      arr.map(it => tlItemHtml(it)).join('') + '</div>';
+  }).join('');
 }
-function metaBits(it) {
-  const bits = [];
-  if (it.stay) bits.push('建議停留 ' + esc(it.stay));
-  if (it.budget != null && it.budget !== '') bits.push('預算 HK$' + esc(it.budget));
-  if (it.taxiMin != null && it.taxiMin !== '') bits.push('🚕 ' + esc(it.taxiMin) + ' 分鐘');
-  if (it.distKm != null && it.distKm !== '') bits.push('📏 ' + esc(it.distKm) + ' KM');
-  if (it.place && (it.place.name || it.place.address)) bits.push('📍 ' + esc(it.place.name || it.place.address));
-  return bits.map(b => '<span>' + b + '</span>').join('');
-}
+
 function tlItemHtml(it) {
-  const done = it.status === 'Completed';
-  const dr = tripDraft[it.id];
-  const mapBtn = (it.place && it.place.lat != null) ? '<button class="tl-btn map" onclick="focusPlace(\'' + it.id + '\')">📍 地圖</button>' : '';
-  const edit = (tripEditId === it.id) ? editPanelHtml(it) : '';
-  return '<div class="tl-item' + (done ? ' done' : '') + '"><div class="tl-card">' +
-    '<div class="tl-time">🕐 ' + esc(timeOf(it)) +
-      (done ? '<span class="tl-draft ok">✅ 已完成</span>' : '') +
-      (dr ? '<span class="tl-draft">✏️ 未推送</span>' : '') +
-    '</div>' +
-    '<div class="tl-act">' + esc(it.activity || '—') + '</div>' +
-    (it.plan ? '<div class="tl-plan">' + esc(it.plan) + '</div>' : '') +
-    (it.note ? '<div class="tl-note">⚠️ ' + esc(it.note) + '</div>' : '') +
-    '<div class="tl-meta">' + metaBits(it) + '</div>' +
-    '<div class="tl-btns">' +
-      '<button class="tl-btn' + (done ? '' : ' done') + '" onclick="toggleTripItem(\'' + it.id + '\')">' + (done ? '↩ 取消完成' : '✅ 完成') + '</button>' +
-      '<button class="tl-btn" onclick="startTripEdit(\'' + it.id + '\')">✏️ 修改</button>' +
-      mapBtn +
-      (dr ? '<button class="tl-btn" onclick="revertTripEdit(\'' + it.id + '\')">↩ 還原</button>' : '') +
-    '</div>' + edit + '</div></div>';
+  const idx = ITEMS.indexOf(it);
+  const isFirst = idx === 0;
+  const isLast = idx === ITEMS.length - 1;
+  let edge = '';
+  if (isFirst) edge = '<span class="edge-chip">' + ((it.nature === '住宿') ? '🏨 起點' : '🛫 起點') + '</span>';
+  if (isLast) edge += '<span class="edge-chip">' + ((it.nature === '飛機') ? '🛬 終點' : '🏨 終點') + '</span>';
+
+  const bits = [];
+  if (it.nature) bits.push('🏷 ' + esc(it.nature));
+  if (it.stay) bits.push('⏱ ' + esc(it.stay));
+  if (it.place && it.place.name) bits.push('📍 ' + esc(it.place.name));
+
+  const thumbs = (it.images || []).map(im =>
+    '<img src="' + J09_WORKER + '/api/media?token=' + encodeURIComponent(im.token) + '" alt="' + esc(im.name) + '" onclick="openLightbox(this.src)" loading="lazy">'
+  ).join('');
+
+  return '<div class="tl-item' + (it.status === 'Completed' ? ' done' : '') + '">' +
+    '<div class="tl-card">' +
+      '<div class="tl-time">🕘 ' + esc(timeOf(it)) + (it.overnight ? ' <span style="color:#8899aa;font-weight:400">（至第2天上午）</span>' : '') +
+        (it.status === 'Completed' ? ' <span class="tl-draft ok">已完成</span>' : '') + edge + '</div>' +
+      '<div class="tl-act">' + esc(it.activity) + '</div>' +
+      (it.plan ? '<div class="tl-plan">📋 ' + esc(it.plan) + '</div>' : '') +
+      (it.note ? '<div class="tl-note">💡 ' + esc(it.note) + '</div>' : '') +
+      (it.xhs ? '<div class="tl-plan">📕 <a href="' + esc(it.xhs) + '" target="_blank" rel="noopener" style="color:#ff8fab">小紅書參考連結</a></div>' : '') +
+      (bits.length ? '<div class="tl-meta">' + bits.map(b => '<span>' + b + '</span>').join('') + '</div>' : '') +
+      (thumbs ? '<div class="tl-thumb">' + thumbs + '</div>' : '') +
+      '<div class="tl-btns">' +
+        (it.place ? '<button class="tl-btn map" onclick="focusPlace(\'' + esc(it.id) + '\')">🗺 地圖</button>' : '') +
+        '<button class="tl-btn ' + (it.status === 'Completed' ? 'done' : '') + '" onclick="toggleTripItem(\'' + esc(it.id) + '\')">' +
+          (it.status === 'Completed' ? '↩️ 改回未完成' : '✅ 標記完成') + '</button>' +
+        '<button class="tl-btn" onclick="' + (tripEditId === it.id ? 'cancelTripEdit()' : 'openTripEdit(\'' + esc(it.id) + '\')') + '">' +
+          (tripEditId === it.id ? '✖ 收起' : '✏️ 修改') + '</button>' +
+        '<button class="tl-btn del" onclick="deleteTripItem(\'' + esc(it.id) + '\')">🗑 刪除</button>' +
+      '</div>' +
+      (tripEditId === it.id ? editPanelHtml(it) : '') +
+    '</div></div>';
 }
+
+function openTripEdit(id) { tripEditId = id; renderTimeline(); }
+function cancelTripEdit() { tripEditId = null; tpEdit = null; renderTimeline(); }
+
 function editPanelHtml(it) {
-  const labels = dayLabels().length ? dayLabels() : ['第1天'];
-  const cur = timeOf(it) === '—' ? '09:00' : timeOf(it);
+  const labels = (DAYS.map(d => d.label)).slice();
+  if (it.day && labels.indexOf(it.day) < 0) labels.push(it.day);
+  const time = timeOf(it);
+  const imgs = it.images || [];
   return '<div class="tl-edit">' +
-    '<div class="erow"><span class="fl-label">天數</span>' +
-      '<select id="editDay_' + it.id + '">' + labels.map(l => '<option value="' + esc(l) + '"' + (l === it.day ? ' selected' : '') + '>' + esc(l) + '</option>').join('') + '</select>' +
-      '<span class="fl-label">時間</span>' +
-      '<input type="time" id="editTime_' + it.id + '" step="900" value="' + esc(cur) + '">' +
-    '</div>' +
+    '<div class="erow"><label>活動名<input type="text" id="e_act_' + esc(it.id) + '" value="' + esc(it.activity) + '"></label>' +
+      '<label>活動性質（唯讀）<input type="text" value="' + esc(it.nature || '') + '" disabled></label></div>' +
+    '<div class="erow"><label>行程<textarea id="e_plan_' + esc(it.id) + '">' + esc(it.plan) + '</textarea></label></div>' +
+    '<div class="erow"><label>建議備註<textarea id="e_note_' + esc(it.id) + '">' + esc(it.note) + '</textarea></label></div>' +
+    '<div class="erow"><label>小紅書連結<input type="url" id="e_xhs_' + esc(it.id) + '" value="' + esc(it.xhs) + '" placeholder="https://..."></label></div>' +
     '<div class="erow">' +
-      '<button class="tl-btn done" onclick="saveTripEdit(\'' + it.id + '\')">💾 儲存（暫存本機）</button>' +
-      '<button class="tl-btn" onclick="cancelTripEdit()">✖ 取消</button>' +
-      '<button class="tl-btn" onclick="revertTripEdit(\'' + it.id + '\')">↩ 還原飛書值</button>' +
+      '<label>天數<select id="e_day_' + esc(it.id) + '">' + labels.sort((a, b) => dayNum(a) - dayNum(b)).map(l => '<option value="' + esc(l) + '"' + (l === it.day ? ' selected' : '') + '>' + esc(l) + '</option>').join('') + '</select></label>' +
+      '<label>時間<button type="button" class="time-btn" id="e_time_btn_' + esc(it.id) + '" onclick="openTimePicker(\'' + esc(it.id) + '\')">' + time + '</button>' +
+        '<input type="hidden" id="e_time_' + esc(it.id) + '" value="' + time + '"></label>' +
     '</div>' +
-    '<div class="e-hint">改動只暫存喺瀏覽器（localStorage），按頂部「⬆️ 推送更改」才會寫回飛書 → 重生 JSON。</div>' +
+    '<div class="erow e-img"><span class="e-hint">圖片詳細：' + (imgs.length ? '目前 ' + imgs.length + ' 張' : '未上傳') + '</span>' +
+      imgs.map(im => '<img src="' + J09_WORKER + '/api/media?token=' + encodeURIComponent(im.token) + '" alt="">').join('') +
+      '<input type="file" id="e_img_' + esc(it.id) + '" accept="image/*"></div>' +
+    '<div class="erow"><button class="tl-btn done" id="e_save_' + esc(it.id) + '" onclick="saveTripEdit(\'' + esc(it.id) + '\')">💾 儲存並上傳</button>' +
+      '<button class="tl-btn" onclick="cancelTripEdit()">取消</button></div>' +
   '</div>';
 }
-function startTripEdit(id) { tripEditId = id; renderTimeline(); }
-function cancelTripEdit() { tripEditId = null; renderTimeline(); }
-function saveTripEdit(id) {
-  const dEl = document.getElementById('editDay_' + id);
-  const tEl = document.getElementById('editTime_' + id);
-  const day = dEl ? dEl.value : '';
-  let time = tEl ? tEl.value : '';
-  if (!day || !time) { toast('⚠️ 請填天數同時間'); return; }
-  if (!/^\d{1,2}:\d{2}$/.test(time)) { toast('⚠️ 時間格式要 HH:MM'); return; }
-  time = pad2(parseInt(time.split(':')[0], 10)) + ':' + time.split(':')[1];
-  tripDraft[id] = { day: day, time: time };
-  tripDraftSave();
-  applyTripDraft();
-  tripEditId = null;
-  renderTripHeader(); renderTimeline(); renderNextCard(); renderTripProgress(); renderTripMap();
-  toast('✏️ 已暫存本機（未推送）');
+
+/* ---------- 時間選擇器 ---------- */
+function initTimePicker() {
+  const hh = document.getElementById('tpHour'), mm = document.getElementById('tpMinute');
+  if (!hh || !mm || hh.options.length) return;
+  for (let h = 0; h < 24; h++) hh.appendChild(new Option(pad2(h), pad2(h)));
+  for (let m = 0; m < 60; m += 5) mm.appendChild(new Option(pad2(m), pad2(m)));
 }
-function revertTripEdit(id) {
-  delete tripDraft[id];
-  tripDraftSave();
-  const raw = ((ITIN_RAW && ITIN_RAW.items) || []).find(x => x.id === id);
-  const cur = ((ITIN && ITIN.items) || []).find(x => x.id === id);
-  if (raw && cur) {
-    cur.day = raw.day; cur.date = raw.date; cur.slot = raw.slot;
-    cur.start = raw.start; cur.overnight = raw.overnight; cur.order = raw.order;
-  }
-  rebuildDays();
-  renderTripHeader(); renderTimeline(); renderNextCard(); renderTripProgress(); renderTripMap();
-  toast('↩ 已還原飛書值');
+function openTimePicker(id) {
+  initTimePicker();
+  tpEdit = id;
+  const cur = val('e_time_' + id) || '09:00';
+  const parts = cur.split(':');
+  document.getElementById('tpHour').value = pad2(parseInt(parts[0], 10) || 0);
+  const m = parseInt(parts[1], 10) || 0;
+  document.getElementById('tpMinute').value = pad2(Math.round(m / 5) * 5 === 60 ? 55 : Math.round(m / 5) * 5);
+  document.getElementById('tpModal').classList.add('show');
+}
+function closeTimePicker() { document.getElementById('tpModal').classList.remove('show'); tpEdit = null; }
+function confirmTimePicker() {
+  if (!tpEdit) return;
+  const h = val('tpHour'), m = val('tpMinute');
+  tpValue = h + ':' + m;
+  const hid = document.getElementById('e_time_' + tpEdit);
+  if (hid) hid.value = tpValue;
+  const btn = document.getElementById('e_time_btn_' + tpEdit);
+  if (btn) btn.textContent = tpValue;
+  closeTimePicker();
+}
+
+/* ---------- 寫回多維表格 ---------- */
+async function apiPost(path, body) {
+  const r = await fetch(J09_WORKER + path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  let j = null;
+  try { j = await r.json(); } catch (e) { }
+  if (!r.ok) throw new Error((j && (j.error || (j.errors || [])[0])) || ('HTTP ' + r.status));
+  if (!j || !(j.ok >= 1)) throw new Error((j && (j.errors || [])[0]) || '雲端寫入失敗');
+  return j;
 }
 
 async function toggleTripItem(id) {
-  if (!ITIN) return;
-  const it = (ITIN.items || []).find(x => x.id === id);
+  const it = ITEMS.find(x => x.id === id);
   if (!it) return;
-  const next = (it.status === 'Completed') ? 'Pending' : 'Completed';
-  it.status = next;
-  ITIN.completedCount = countDone();
-  renderTripHeader(); renderTimeline(); renderNextCard(); renderTripProgress();
+  const next = it.status === 'Completed' ? 'Pending' : 'Completed';
   try {
-    const r = await fetch(J09_WORKER + '/api/plan-status', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ records: (function () { const o = {}; o[id] = next; return o; })() })
-    });
-    const j = await r.json();
-    if (j.ok === 0 || j.error) throw new Error((j.errors && j.errors[0]) || j.error || '寫回失敗');
-    const rawIt = ((ITIN_RAW && ITIN_RAW.items) || []).find(x => x.id === id);
-    if (rawIt) rawIt.status = next;
-    toast(next === 'Completed' ? '✅ 已標記完成（已寫回飛書）' : '↩ 已取消完成（已寫回飛書）');
+    await apiPost('/api/plan-status', { records: { [id]: next } });
+    it.status = next;
+    rebuildDaysLocal();
+    renderTripAll();
+    toast(next === 'Completed' ? '✅ 已標記完成並寫回多維表格' : '↩️ 已改回未完成並寫回多維表格');
+    startSyncPoll();
+  } catch (e) { toast('❌ ' + e.message, 4000); }
+}
+
+async function saveTripEdit(id) {
+  const it = ITEMS.find(x => x.id === id);
+  if (!it) return;
+  const act = val('e_act_' + id), plan = val('e_plan_' + id), note = val('e_note_' + id), xhs = val('e_xhs_' + id);
+  if (xhs && !/^https?:\/\//i.test(xhs)) { toast('⚠️ 小紅書連結必須以 http:// 或 https:// 開頭', 4000); return; }
+  const day = val('e_day_' + id), time = val('e_time_' + id);
+  const fileEl = document.getElementById('e_img_' + id);
+  const file = fileEl && fileEl.files && fileEl.files[0];
+  const btn = document.getElementById('e_save_' + id);
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ 上傳中…'; }
+  try {
+    await apiPost('/api/plan-fields', { records: { [id]: { activity: act, plan: plan, note: note, xhs: xhs } }, sync: false });
+
+    if (day !== it.day || time !== timeOf(it)) {
+      await apiPost('/api/plan-edit', { records: { [id]: { day: day, time: time } }, sync: false });
+    }
+    if (file) {
+      const fd = new FormData();
+      fd.append('record_id', id);
+      fd.append('file', file);
+      const r = await fetch(J09_WORKER + '/api/plan-image', { method: 'POST', body: fd });
+      let j = null;
+      try { j = await r.json(); } catch (e) { }
+      if (!r.ok || !j || !(j.ok >= 1)) throw new Error((j && (j.errors || [])[0]) || '圖片上傳失敗');
+      it.images = [{ token: j.file_token, name: j.file_name || file.name }];
+    }
+
+    it.activity = act; it.plan = plan; it.note = note; it.xhs = xhs;
+    if (day) {
+      it.day = day;
+      const start = (TRIP_META && TRIP_META.start) || (ITEMS[0] && ITEMS[0].date) || '';
+      if (start) {
+        const d = new Date(start + 'T00:00:00');
+        d.setDate(d.getDate() + Math.max(dayNum(day) - 1, 0));
+        it.date = d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+      }
+    }
+    it.start = it.date + ' ' + time;
+    it.slot = (time < '12:00') ? '上午' : (time < '13:00') ? '中午' : (time < '17:00') ? '下午' : (time < '19:00') ? '傍晚' : '晚上';
+
+    rebuildDaysLocal();
+    tripEditId = null;
+    renderTripAll();
+    if (!file) await apiPost('/api/plan-sync', {});
+    toast('✅ 已寫回多維表格，雲端重生中…');
+    startSyncPoll();
   } catch (e) {
-    it.status = (next === 'Completed') ? 'Pending' : 'Completed';
-    ITIN.completedCount = countDone();
-    renderTripHeader(); renderTimeline(); renderNextCard(); renderTripProgress();
-    toast('❌ 同步失敗：' + e.message, 3600);
+    toast('❌ ' + e.message, 4500);
+    if (btn) { btn.disabled = false; btn.textContent = '💾 儲存並上傳'; }
   }
 }
 
-async function pushTripEdits() {
-  const ids = Object.keys(tripDraft);
-  if (!ids.length) { toast('冇待推送嘅改動'); return; }
-  const btn = document.getElementById('itinPushBtn');
-  if (btn) { btn.disabled = true; btn.textContent = '⏳ 寫回飛書中…'; }
-  try {
-    const records = {};
-    ids.forEach(id => { records[id] = { day: tripDraft[id].day, time: tripDraft[id].time }; });
-    const r = await fetch(J09_WORKER + '/api/plan-edit', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ records: records })
-    });
-    const j = await r.json();
-    if (!j.ok) throw new Error((j.errors && j.errors[0]) || j.error || '寫回飛書失敗');
-    ids.forEach(id => {
-      const rawIt = ((ITIN_RAW && ITIN_RAW.items) || []).find(x => x.id === id);
-      const cur = ((ITIN && ITIN.items) || []).find(x => x.id === id);
-      if (rawIt && cur) { rawIt.day = cur.day; rawIt.date = cur.date; rawIt.slot = cur.slot; rawIt.start = cur.start; rawIt.order = cur.order; }
-    });
-    tripDraft = {};
-    tripDraftSave();
-    renderTimeline(); renderTripProgress(); renderNextCard(); renderTripHeader();
-    toast('✅ 已寫回飛書 ' + j.ok + ' 條，開始重生 JSON…', 3600);
-    try {
-      const rr = await fetch(J09_WORKER + '/api/refresh', { method: 'POST' });
-      const jj = await rr.json();
-      if (jj.dispatched) toast('✅ 已觸發 GitHub Actions，1–2 分鐘後按「🔄 重載行程」', 5200);
-      else toast('⚠️ JSON 重生觸發失敗：' + (jj.error || ''), 5200);
-    } catch (e2) { toast('⚠️ JSON 重生觸發失敗：' + e2.message, 5200); }
-  } catch (e) {
-    toast('❌ 推送失敗：' + e.message, 5200);
-  } finally {
-    if (btn) btn.disabled = false;
-    updatePushBtn();
-  }
+function rebuildDaysLocal() {
+  ITEMS.sort((a, b) => (a.date + ' ' + timeOf(a)).localeCompare(b.date + ' ' + timeOf(b)));
+  const labels = [...new Set(ITEMS.map(i => i.day).filter(Boolean))].sort((a, b) => dayNum(a) - dayNum(b));
+  DAYS = labels.map(l => {
+    const arr = ITEMS.filter(i => i.day === l);
+    return { label: l, date: arr[0].date, items: arr, total: arr.length, completed: arr.filter(i => i.status === 'Completed').length };
+  });
+  TRIP.items = ITEMS;
+  TRIP.days = DAYS;
+  TRIP.itemsCount = ITEMS.length;
+  TRIP.completedCount = ITEMS.filter(i => i.status === 'Completed').length;
 }
+
+let syncPollTimer = null, syncPollBase = null, syncPollStart = 0;
+function startSyncPoll() {
+  clearInterval(syncPollTimer);
+  syncPollBase = ITIN ? String(ITIN.lastUpdate || '') : null;
+  syncPollStart = Date.now();
+  syncPollTimer = setInterval(async () => {
+    if (Date.now() - syncPollStart > 180000) {
+      clearInterval(syncPollTimer); syncPollTimer = null;
+      toast('⚠️ 雲端仍在處理，稍後可按「重載」查看', 4500);
+      return;
+    }
+    if (tripEditId) return;
+    try {
+      const r = await fetch('itinerary.json?v=' + Date.now());
+      if (!r.ok) return;
+      const j = await r.json();
+      if (!syncPollBase || String(j.lastUpdate || '') !== syncPollBase) {
+        clearInterval(syncPollTimer); syncPollTimer = null;
+        ITIN = j;
+        applyTrip(tripId, true);
+        toast('✅ 已同步最新 .json');
+      }
+    } catch (e) { }
+  }, 8000);
+}
+
+function syncLatestItinerary() {
+  fetch(J09_WORKER + '/api/refresh', { method: 'POST' })
+    .then(() => {
+      toast('📡 已通知雲端由多維表格同步，正在等待新 .json…', 4000);
+      startSyncPoll();
+    })
+    .catch(e => toast('❌ 同步失敗：' + e.message));
+}
+function updateItineraryJson() { syncLatestItinerary(); }
+function reloadItinerary() { loadItinerary().then(() => toast('🔄 已重載 itinerary.json')); }
 
 /* ---------- 行程圖（Leaflet） ---------- */
 function buildTripDaySelect() {
   const sel = document.getElementById('tripDaySelect');
-  if (!sel || !ITIN) return;
-  sel.innerHTML = '<option value="ALL">全部天數</option>' + dayLabels().map(l => '<option value="' + esc(l) + '">' + esc(l) + '</option>').join('');
-  sel.value = tripDay || 'ALL';
+  if (!sel) return;
+  const labels = (DAYS || []).map(d => d.label);
+  sel.innerHTML = '<option value="ALL">全部天數</option>' +
+    labels.map(l => '<option value="' + esc(l) + '"' + (tripDay === l ? ' selected' : '') + '>' + esc(l) + '</option>').join('');
+}
+function setTripDay(v) {
+  tripDay = (v === 'ALL' || !v) ? null : v;
+  buildTripDaySelect();
+  renderTimeline(); renderTripProgress(); renderTripMap();
 }
 function initTripMap() {
   const el = document.getElementById('tripMap');
-  if (!el || typeof L === 'undefined') return;
+  if (!el || !window.L) return;
   tripMap = L.map(el, { scrollWheelZoom: true, zoomControl: true }).setView([34.0, 110.0], 4);
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19, attribution: '© OpenStreetMap contributors'
-  }).addTo(tripMap);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap' }).addTo(tripMap);
   tripLayerGroup = L.layerGroup().addTo(tripMap);
-  tripFitted = false;
-}
-function tripPalette(i) {
-  const p = ['#4f8cff', '#3dd68c', '#ffc53d', '#ff8c42', '#c084fc', '#38bdf8', '#f472b6'];
-  return p[(i < 0 ? 0 : i) % p.length];
 }
 function renderTripMap() {
-  if (!ITIN) return;
   if (!tripMap) initTripMap();
   if (!tripMap) return;
   if (tripLayerGroup) tripLayerGroup.clearLayers(); else tripLayerGroup = L.layerGroup().addTo(tripMap);
   tripMarkers = {};
-  const list = [];
-  (ITIN.items || []).forEach(it => {
-    if (!it.place || it.place.lat == null || it.place.lng == null) return;
-    if (tripDay && it.day !== tripDay) return;
-    const color = tripPalette(dayIndex(it.day));
+  const list = (ITEMS || []).filter(it => it.place && it.place.lat != null && (!tripDay || it.day === tripDay) && (tripNature === 'ALL' || (it.nature || '') === tripNature));
+  const pts = [];
+  list.forEach(it => {
+    const col = it.status === 'Completed' ? '#3dd68c' : '#4f8cff';
     const m = L.circleMarker([it.place.lat, it.place.lng], {
-      radius: 7, color: '#0f1420', weight: 2, fillColor: color, fillOpacity: 1
-    }).bindPopup('<b>' + esc(it.activity || '') + '</b><br>' + esc(it.day || '') + ' · ' + esc(timeOf(it)) + '<br>' + esc(it.place.name || it.place.address || ''));
-    m.on('click', () => highlightPlace(it.id));
-    m.addTo(tripLayerGroup);
+      radius: 7, color: col, weight: 2, fillColor: col, fillOpacity: .85
+    }).addTo(tripLayerGroup);
+    m.bindPopup('<b>' + esc(it.activity) + '</b><br>' + esc(it.day) + ' · ' + esc(timeOf(it)) + '<br>' + esc(it.nature || '') +
+      (it.note ? '<br><span style="color:#ffd489">' + esc(it.note) + '</span>' : ''));
+    m.on('click', () => { tripSel = it.id; });
     tripMarkers[it.id] = m;
-    list.push(it);
+    pts.push([it.place.lat, it.place.lng]);
   });
-  renderPlaceList(list);
-  const sel = (ITIN.items || []).find(x => x.id === tripSel);
-  if (sel && tripMarkers[sel.id]) tripMarkers[sel.id].openPopup();
-  if (!tripFitted && tripDay === null) { fitTrip(); tripFitted = true; }
-}
-function renderPlaceList(list) {
-  const box = document.getElementById('tripPlaceList');
-  if (!box) return;
-  if (!list.length) { box.innerHTML = '<div class="tl-empty">此範圍未有座標景點</div>'; return; }
-  box.innerHTML = list.map(it =>
-    '<div class="place-row' + (tripSel === it.id ? ' on' : '') + '" onclick="focusPlace(\'' + it.id + '\')">' +
-      '<div class="dot" style="background:' + tripPalette(dayIndex(it.day)) + '"></div>' +
-      '<div style="flex:1;min-width:0"><div class="pr-act">' + esc(it.activity || '') + '</div>' +
-      '<div class="pr-sub">' + esc(it.day || '') + ' · ' + esc(timeOf(it)) + ' · ' + esc((it.place && (it.place.name || it.place.address)) || '') + '</div></div>' +
-    '</div>').join('');
+  if (pts.length > 1) {
+    L.polyline(pts, { color: '#4f8cff', weight: 1.4, dashArray: '5 7', opacity: .6 }).addTo(tripLayerGroup);
+  }
+  if (pts.length) { tripMap.invalidateSize(); tripMap.fitBounds(L.latLngBounds(pts), { padding: [30, 30], maxZoom: 14 }); }
 }
 function focusPlace(id) {
-  tripSel = id;
-  switchTab('tripmap');
-  const it = ((ITIN && ITIN.items) || []).find(x => x.id === id);
+  const it = ITEMS.find(x => x.id === id);
   if (!it || !it.place) return;
+  switchTab('tripmap');
   setTimeout(() => {
     if (!tripMap) initTripMap();
     renderTripMap();
@@ -1697,16 +1859,13 @@ function highlightPlace(id) {
   tripSel = id;
   m.openPopup();
   tripMap.setView(m.getLatLng(), Math.max(tripMap.getZoom(), 13), { animate: true });
-  renderPlaceList((ITIN.items || []).filter(it => it.place && it.place.lat != null && (!tripDay || it.day === tripDay)));
 }
 function fitTrip() {
   if (!tripMap) { initTripMap(); if (!tripMap) return; }
   const pts = Object.keys(tripMarkers).map(k => tripMarkers[k].getLatLng());
   if (!pts.length) { tripMap.setView([34.0, 110.0], 4); return; }
-  const b = L.latLngBounds(pts);
   tripMap.invalidateSize();
-  tripMap.fitBounds(b, { padding: [30, 30], maxZoom: 14 });
-  tripFitted = true;
+  tripMap.fitBounds(L.latLngBounds(pts), { padding: [30, 30], maxZoom: 14 });
 }
 function fitTripZoom() {
   if (!tripMap) return;
@@ -1716,6 +1875,64 @@ function fitTripZoom() {
   if (sel) { tripMap.setView(sel.getLatLng(), 15); return; }
   fitTrip();
   setTimeout(() => { if (tripMap) tripMap.setZoom(Math.min(tripMap.getZoom() + 2, 17)); }, 200);
+}
+
+/* ---------- 刪除 / 新增活動 ---------- */
+async function deleteTripItem(id) {
+  const it = ITEMS.find(x => x.id === id);
+  if (!it) return;
+  if (!confirm('確定刪除「' + it.activity + '」？會一併從多維表格刪除。')) return;
+  try {
+    await apiPost('/api/plan-delete', { record_id: id, tripId: tripId });
+    ITEMS = ITEMS.filter(x => x.id !== id);
+    TRIP.items = ITEMS;
+    rebuildDaysLocal();
+    renderTripAll();
+    toast('🗑 已刪除並通知雲端重生 .json');
+    startSyncPoll();
+  } catch (e) { toast('❌ ' + e.message, 4500); }
+}
+
+function openAddActivity() {
+  const daySel = document.getElementById('a_day');
+  const natSel = document.getElementById('a_nature');
+  const timeSel = document.getElementById('a_time');
+  if (!daySel || !natSel || !timeSel) return;
+  daySel.innerHTML = (DAYS || []).map(d => '<option value="' + esc(d.label) + '">' + esc(d.label) + '</option>').join('');
+  natSel.innerHTML = NATURES.map(n => '<option value="' + esc(n) + '">' + esc(n) + '</option>').join('');
+  if (!timeSel.options.length) {
+    for (let h = 0; h < 24; h++) for (let m = 0; m < 60; m += 5)
+      timeSel.appendChild(new Option(pad2(h) + ':' + pad2(m), pad2(h) + ':' + pad2(m)));
+    timeSel.value = '09:00';
+  }
+  document.getElementById('a_act').value = '';
+  document.getElementById('a_plan').value = '';
+  document.getElementById('a_note').value = '';
+  document.getElementById('a_xhs').value = '';
+  document.getElementById('addModal').classList.add('show');
+}
+function closeAddActivity() { document.getElementById('addModal').classList.remove('show'); }
+
+async function submitAddActivity() {
+  const act = val('a_act'), nature = val('a_nature'), day = val('a_day'), time = val('a_time');
+  const plan = val('a_plan'), note = val('a_note'), xhs = val('a_xhs');
+  if (!act) { toast('⚠️ 請填活動名', 3000); return; }
+  if (xhs && !/^https?:\/\//i.test(xhs)) { toast('⚠️ 小紅書連結必須以 http:// 或 https:// 開頭', 4000); return; }
+  try {
+    const j = await apiPost('/api/plan-create', { tripId: tripId, activity: act, nature: nature, day: day, time: time, plan: plan, note: note, xhs: xhs });
+    const date = j.date || '';
+    const item = { id: j.record_id, activity: act, nature: nature, plan: plan, note: note, xhs: xhs, day: day, date: date,
+      start: date + ' ' + time, slot: slotOf(time), status: 'Pending', images: [] };
+    ITEMS.push(item);
+    rebuildDaysLocal();
+    closeAddActivity();
+    renderTripAll();
+    toast('✅ 已新增並寫入多維表格，雲端重生中…');
+    startSyncPoll();
+  } catch (e) { toast('❌ ' + e.message, 4500); }
+}
+function slotOf(t) {
+  return (t < '12:00') ? '上午' : (t < '13:00') ? '中午' : (t < '17:00') ? '下午' : (t < '19:00') ? '傍晚' : '晚上';
 }
 
 /* ---------- 事件綁定 ---------- */
@@ -1729,13 +1946,16 @@ document.querySelectorAll('.trip-filter-btn').forEach(btn => {
 });
 (function () {
   const sel = document.getElementById('tripDaySelect');
-  if (sel) sel.addEventListener('change', e => {
-    tripDay = (e.target.value === 'ALL' ? null : e.target.value);
-    renderTimeline(); renderTripProgress(); renderTripMap();
-  });
+  if (sel) sel.addEventListener('change', e => setTripDay(e.target.value));
+  const modal = document.getElementById('tpModal');
+  if (modal) modal.addEventListener('click', e => { if (e.target === modal) closeTimePicker(); });
+  const addModal = document.getElementById('addModal');
+  if (addModal) addModal.addEventListener('click', e => { if (e.target === addModal) closeAddActivity(); });
 })();
 
+initTimePicker();
 loadItinerary();
+
 </script>
 
 <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
