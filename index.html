@@ -8,6 +8,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>國泰員工機票 - Cathay Staff Tickets</title>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 /* ===== 截圖 lightbox（fullscreen zoom/pan） ===== */
 let lbScale = 1, lbTx = 0, lbTy = 0, lbImg = null, lbWrap = null;
@@ -329,7 +331,84 @@ body {
   color: rgba(255,255,255,0.6); font-size: 12px; z-index: 10;
   background: rgba(0,0,0,0.5); padding: 4px 12px; border-radius: 12px;
 }
+
+/* ===== J09 v1.20 設計行程 / 設計行程圖 ===== */
+.trip-filter-btn{background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:16px;padding:5px 12px;font-size:12px;cursor:pointer;transition:all .2s}
+.trip-filter-btn:hover{border-color:var(--accent)}
+.trip-filter-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.trip-head{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:12px}
+.trip-head .th-row1{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.trip-head .th-dates{font-size:18px;font-weight:700}
+.trip-head .th-chip{font-size:11px;padding:3px 9px;border-radius:11px;background:rgba(79,140,255,.15);color:var(--accent);border:1px solid rgba(79,140,255,.35)}
+.trip-head .th-chip.green{background:rgba(61,214,140,.15);color:var(--green);border-color:rgba(61,214,140,.35)}
+.trip-head .th-sub{color:var(--sub);font-size:12px;margin-bottom:7px}
+.trip-head .th-chips{display:flex;gap:6px;flex-wrap:wrap}
+.tagpill{font-size:11px;color:var(--sub);border:1px solid var(--border);border-radius:10px;padding:3px 9px;background:var(--card2)}
+.prog-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:12px}
+.prog-inner{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.prog-left{min-width:124px;flex:0 0 auto}
+.prog-num{font-size:27px;font-weight:800;color:var(--green);line-height:1.1}
+.prog-num small{font-size:11px;color:var(--sub);font-weight:600;margin-left:3px}
+.prog-done{font-size:11px;color:var(--sub);margin-top:2px}
+.prog-track{height:6px;background:var(--card2);border-radius:4px;overflow:hidden;margin-top:8px}
+.prog-fill{height:100%;background:linear-gradient(90deg,#3dd68c,#4f8cff);border-radius:4px;transition:width .3s}
+.prog-days{flex:1;display:flex;gap:10px;justify-content:space-between;min-width:0}
+.prog-day{flex:1;display:flex;flex-direction:column;align-items:center;cursor:pointer;user-select:none}
+.prog-day .daybar{width:45px;height:64px;background:rgba(255,255,255,.06);border-radius:6px;position:relative;overflow:hidden;display:flex;align-items:flex-end;border:1px solid var(--border);transition:border-color .2s,box-shadow .2s}
+.prog-day .dfill{width:100%;background:linear-gradient(180deg,#4f8cff,#2a56c9);transition:height .35s}
+.prog-day .dfill.zero{background:transparent;border-top:1px dashed rgba(120,160,255,.55)}
+.prog-day .daybar.full .dfill{background:linear-gradient(180deg,#3dd68c,#1f9e63)}
+.prog-day .daybar.active{border-color:var(--yellow);box-shadow:0 0 0 2px rgba(255,197,61,.25)}
+.prog-day .dayno{font-size:10px;color:var(--sub);margin-top:4px;white-space:nowrap}
+.prog-day .daycnt{font-size:10px;color:var(--text);font-weight:700}
+.prog-day.active .dayno{color:var(--yellow)}
+.prog-hint{flex-basis:100%;font-size:11px;color:var(--sub);margin-top:2px}
+.next-card{background:linear-gradient(135deg,#1d2b4a,#1a2233);border:1px solid #2f4a7a;border-radius:14px;padding:14px;margin-bottom:12px}
+.next-card .nc-label{font-size:11px;color:var(--accent);font-weight:700;margin-bottom:6px}
+.next-card .nc-act{font-size:18px;font-weight:700;margin-bottom:4px}
+.next-card .nc-meta{font-size:12px;color:var(--sub)}
+.next-card .nc-tip{background:rgba(255,197,61,.10);border-left:3px solid var(--yellow);padding:8px 10px;border-radius:8px;font-size:12px;color:#ffe0a3;margin-top:8px;line-height:1.5}
+.next-card .nc-timer{font-size:15px;font-weight:800;margin-top:9px;color:var(--green)}
+.next-card .nc-timer.warn{color:var(--yellow)}
+.timeline{margin-top:4px}
+.tl-day{margin-bottom:6px}
+.tl-day h4{font-size:14px;color:var(--accent);display:flex;align-items:center;gap:8px;margin:14px 0 8px}
+.tl-day h4 .dt{color:var(--sub);font-size:11px;font-weight:400}
+.tl-item{position:relative;padding-left:26px;padding-bottom:10px}
+.tl-item::before{content:'';position:absolute;left:7px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,#2e3a55,#1a2233)}
+.tl-item::after{content:'';position:absolute;left:3px;top:9px;width:10px;height:10px;border-radius:50%;background:var(--accent);border:2px solid var(--bg)}
+.tl-item.done::after{background:var(--green)}
+.tl-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 12px}
+.tl-time{font-size:12px;color:var(--accent);font-weight:700;margin-bottom:3px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.tl-act{font-size:15px;font-weight:700}
+.tl-plan{font-size:12px;color:var(--sub);margin-top:4px;line-height:1.55}
+.tl-note{font-size:11px;color:#ffd489;margin-top:6px;line-height:1.5}
+.tl-meta{display:flex;gap:6px;flex-wrap:wrap;font-size:11px;color:var(--sub);margin-top:7px}
+.tl-meta span{background:var(--card2);border-radius:8px;padding:2px 8px}
+.tl-btns{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap}
+.tl-btn{background:var(--card2);border:1px solid var(--border);color:var(--sub);border-radius:8px;padding:4px 10px;font-size:11px;cursor:pointer}
+.tl-btn:active{transform:scale(.97)}
+.tl-btn.done{color:var(--green);border-color:rgba(61,214,140,.45)}
+.tl-btn.map{color:var(--accent);border-color:rgba(79,140,255,.45)}
+.tl-draft{font-size:10px;padding:2px 7px;border-radius:6px;background:rgba(255,197,61,.15);color:var(--yellow);font-weight:600}
+.tl-draft.ok{background:rgba(61,214,140,.15);color:var(--green)}
+.tl-edit{background:var(--card2);border:1px dashed var(--border);border-radius:10px;padding:10px;margin-top:9px;display:flex;flex-direction:column;gap:8px}
+.tl-edit .erow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.tl-edit select,.tl-edit input[type=time]{background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:6px 8px;font-size:12px}
+.tl-edit .e-hint{font-size:11px;color:var(--sub);line-height:1.5}
+.tl-empty{color:var(--sub);text-align:center;padding:24px;font-size:13px}
+#tripMap{width:100%;height:430px}
+#tripMap .leaflet-tile-pane{filter:invert(1) hue-rotate(180deg) brightness(.92) contrast(.85)}
+.trip-place-list{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.place-row{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 10px;cursor:pointer}
+.place-row.on{border-color:var(--accent);background:var(--card2)}
+.place-row .dot{width:10px;height:10px;border-radius:50%;margin-top:4px;flex:0 0 auto}
+.place-row .pr-act{font-size:13px;font-weight:600}
+.place-row .pr-sub{font-size:11px;color:var(--sub);margin-top:2px}
+.j09-toast{position:fixed;left:50%;bottom:78px;transform:translateX(-50%) translateY(10px);background:rgba(26,34,51,.96);border:1px solid var(--border);color:var(--text);padding:9px 16px;border-radius:22px;font-size:12px;max-width:88%;text-align:center;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:1200;box-shadow:0 6px 24px rgba(0,0,0,.45)}
+.j09-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
+
 </head>
 <body>
 
@@ -340,7 +419,7 @@ body {
       國泰員工機票
     </h1>
     <div class="meta">
-      <div><span class="version" id="version">v1.18</span> &nbsp;|&nbsp; 更新：<span id="lastUpdate">-</span></div>
+      <div><span class="version" id="version">v1.20</span> &nbsp;|&nbsp; 更新：<span id="lastUpdate">-</span></div>
     </div>
   </div>
 </div>
@@ -377,7 +456,7 @@ body {
   </div>
 </div>
 
-<div class="tab-panel" id="panel-stats">
+<div class="tab-panel" id="panel-analytics">
   <div class="container">
     <div class="stats-grid" id="statsGrid"></div>
     <div class="chart-card" style="margin-top:14px">
@@ -395,13 +474,7 @@ body {
         <div class="chart-box" id="lineChart"></div>
       </div>
     </div>
-    <div class="footer">Cathay Staff Tickets · J09</div>
-  </div>
-</div>
-
-<div class="tab-panel" id="panel-map">
-  <div class="container">
-    <div class="section-title">🌍 世界地圖 · 乘客航線</div>
+    <div class="section-title" style="margin-top:18px">🌍 世界地圖 · 乘客航線</div>
     <div class="map-filters">
       <div class="filter-row">
         <span class="fl-label">👥 乘客</span>
@@ -437,18 +510,60 @@ body {
   </div>
 </div>
 
+<div class="tab-panel" id="panel-itinerary">
+  <div class="container">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+      <div class="section-title" style="margin-bottom:0">🧭 設計行程</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="mini-btn" id="itinPushBtn" onclick="pushTripEdits()" style="display:none;border-color:#ffc53d;color:#ffc53d">⬆️ 推送更改（0）</button>
+        <button class="mini-btn" onclick="reloadItinerary()">🔄 重載行程</button>
+        <button class="mini-btn" onclick="updateItineraryJson()">⚙️ 更新 .json</button>
+      </div>
+    </div>
+    <div class="trip-head" id="tripHeader"></div>
+    <div id="tripProgress"></div>
+    <div class="next-card" id="nextCard"></div>
+    <div class="filter-bar">
+      <button class="trip-filter-btn active" data-trip="all">全部</button>
+      <button class="trip-filter-btn" data-trip="pending">⏳ 未完成</button>
+      <button class="trip-filter-btn" data-trip="done">✅ 已完成</button>
+    </div>
+    <div class="timeline" id="timeline"></div>
+    <div class="footer">Cathay Staff Tickets · J09</div>
+  </div>
+</div>
+
+<div class="tab-panel" id="panel-tripmap">
+  <div class="container">
+    <div class="section-title">🗺 設計行程圖</div>
+    <div class="filter-bar">
+      <select id="tripDaySelect" class="combo" style="max-width:200px"></select>
+      <button class="mini-btn" onclick="fitTrip()">🗺 全覽</button>
+      <button class="mini-btn" onclick="fitTripZoom()">🔍 最近點放大</button>
+    </div>
+    <div class="map-wrap"><div id="tripMap"></div></div>
+    <div class="trip-place-list" id="tripPlaceList"></div>
+    <div class="footer">Cathay Staff Tickets · J09</div>
+  </div>
+</div>
+
+
 <nav class="tab-bar">
   <button class="tab-btn active" data-tab="flights">
     <span class="tab-icon">✈️</span>
     <span>航班</span>
   </button>
-  <button class="tab-btn" data-tab="stats">
+  <button class="tab-btn" data-tab="analytics">
     <span class="tab-icon">📊</span>
-    <span>統計</span>
+    <span>航班統計</span>
   </button>
-  <button class="tab-btn" data-tab="map">
-    <span class="tab-icon">🌍</span>
-    <span>地圖</span>
+  <button class="tab-btn" data-tab="itinerary">
+    <span class="tab-icon">🧭</span>
+    <span>設計行程</span>
+  </button>
+  <button class="tab-btn" data-tab="tripmap">
+    <span class="tab-icon">🗺</span>
+    <span>行程圖</span>
   </button>
 </nav>
 
@@ -829,7 +944,7 @@ function refreshMapAll() {
 function jumpToPax(name) {
   const p = DATA.passengers.find(x => x.name === name || (x.appName || '').includes(name));
   if (!p) return;
-  switchTab('map');
+  switchTab('analytics');
   selectedPax = p.id;
   const sel = document.getElementById('paxSelect');
   if (sel) sel.value = p.id;
@@ -979,20 +1094,29 @@ function showAirportDetail(code) {
 
 function switchTab(tab) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelector('.tab-btn[data-tab="' + tab + '"]').classList.add('active');
+  const btn = document.querySelector('.tab-btn[data-tab="' + tab + '"]');
+  if (btn) btn.classList.add('active');
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  document.getElementById('panel-' + tab).classList.add('active');
+  const panel = document.getElementById('panel-' + tab);
+  if (panel) panel.classList.add('active');
   setTimeout(() => {
-    if (tab === 'map' && mapChart) mapChart.resize();
-    if (tab === 'stats') {
-      const pc = echarts.getInstanceByDom(document.getElementById('pieChart'));
-      if (pc) pc.resize();
-      const lc = echarts.getInstanceByDom(document.getElementById('lineChart'));
-      if (lc) lc.resize();
-      const tf = echarts.getInstanceByDom(document.getElementById('topFlyersChart'));
-      if (tf) tf.resize();
+    if (tab === 'analytics') {
+      if (mapChart) mapChart.resize();
+      ['pieChart', 'lineChart', 'topFlyersChart'].forEach(function (id) {
+        const c = echarts.getInstanceByDom(document.getElementById(id));
+        if (c) c.resize();
+      });
     }
-  }, 50);
+    if (tab === 'itinerary') {
+      renderTripHeader(); renderTripProgress(); renderTimeline(); renderNextCard();
+    }
+    if (tab === 'tripmap') {
+      if (!tripMap) initTripMap();
+      setTimeout(() => {
+        if (tripMap) { tripMap.invalidateSize(); renderTripMap(); }
+      }, 90);
+    }
+  }, 60);
 }
 
 document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -1097,6 +1221,521 @@ async function pushToLark() {
 function closePushModal() { document.getElementById('pushModal').classList.remove('show'); }
 
 loadData();
+
+/* ================= J09 v1.20 旅程助手（設計行程 / 行程圖） ================= */
+const TRIP_DRAFT_KEY = 'j09TripDraft';
+let ITIN = null, ITIN_RAW = null;
+let tripFilter = 'all', tripDay = null, tripSel = 'ALL', tripEditId = null;
+let tripDraft = tripDraftLoad();
+let tripMap = null, tripLayerGroup = null, tripMarkers = {};
+let nextTimerId = null;
+let tripFitted = false;
+
+function tripDraftLoad() {
+  try { return JSON.parse(localStorage.getItem(TRIP_DRAFT_KEY)) || {}; } catch (e) { return {}; }
+}
+function tripDraftSave() {
+  localStorage.setItem(TRIP_DRAFT_KEY, JSON.stringify(tripDraft));
+  updatePushBtn();
+}
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+function pad2(n) { return (n < 10 ? '0' : '') + n; }
+function fmtDateObj(d) { return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
+function timeOf(it) {
+  const s = it && it.start ? String(it.start) : '';
+  const m = s.match(/(\d{2}:\d{2})/);
+  return m ? m[1] : '—';
+}
+function slotOf(hh) {
+  const h = parseInt(String(hh).slice(0, 2), 10);
+  if (isNaN(h)) return '上午';
+  if (h < 12) return '上午';
+  if (h < 13) return '中午';
+  if (h < 17) return '下午';
+  if (h < 19) return '傍晚';
+  return '晚上';
+}
+function toast(msg, ms) {
+  let t = document.getElementById('j09Toast');
+  if (!t) { t = document.createElement('div'); t.id = 'j09Toast'; t.className = 'j09-toast'; document.body.appendChild(t); }
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._h);
+  t._h = setTimeout(() => t.classList.remove('show'), ms || 2600);
+}
+function dayLabels() { return (ITIN && ITIN.trip && ITIN.trip.dayLabels) || []; }
+function dayDates() {
+  const m = {};
+  ((ITIN && ITIN.days) || []).forEach(d => { if (d.label && d.date) m[d.label] = d.date; });
+  const t = (ITIN && ITIN.trip) || {};
+  if (t.start && dayLabels().length) {
+    const s = new Date(t.start + 'T00:00:00');
+    if (!isNaN(s.getTime())) {
+      dayLabels().forEach((l, i) => {
+        if (!m[l]) { const d = new Date(s.getTime() + i * 86400000); m[l] = fmtDateObj(d); }
+      });
+    }
+  }
+  return m;
+}
+function dayIndex(lbl) { const i = dayLabels().indexOf(lbl); return i < 0 ? 99 : i; }
+function cmpItem(a, b) {
+  const d = dayIndex(a.day) - dayIndex(b.day);
+  if (d) return d;
+  const s = String(a.start || '').localeCompare(String(b.start || ''));
+  if (s) return s;
+  return (a.idx || 0) - (b.idx || 0);
+}
+function countDone() { return ((ITIN && ITIN.items) || []).filter(x => x.status === 'Completed').length; }
+function countTotal() { return ((ITIN && ITIN.items) || []).length; }
+
+function applyTripDraft() {
+  if (!ITIN) return;
+  const dates = dayDates();
+  const ids = Object.keys(tripDraft);
+  if (!ids.length) { rebuildDays(); return; }
+  ids.forEach(id => {
+    const it = (ITIN.items || []).find(x => x.id === id);
+    if (!it) return;
+    const dr = tripDraft[id] || {};
+    const day = dr.day || it.day;
+    const time = /^\d{2}:\d{2}$/.test(dr.time || '') ? dr.time : (timeOf(it) === '—' ? '09:00' : timeOf(it));
+    it.day = day;
+    it.date = dates[day] || it.date;
+    it.slot = slotOf(time);
+    it.start = (it.date || '') + ' ' + time;
+    it.overnight = false;
+  });
+  rebuildDays();
+}
+function rebuildDays() {
+  if (!ITIN) return;
+  const labels = dayLabels().slice();
+  const dates = dayDates();
+  (ITIN.items || []).forEach(it => {
+    const same = (ITIN.items || []).filter(x => x.day === it.day).sort((a, b) => String(a.start || '').localeCompare(String(b.start || '')));
+    it.order = same.indexOf(it);
+  });
+  const dayArr = labels.map(l => ({ label: l, date: dates[l] || '', items: (ITIN.items || []).filter(x => x.day === l).sort((a, b) => String(a.start || '').localeCompare(String(b.start || ''))) }));
+  ((ITIN.items || []).map(x => x.day)).forEach(d => { if (labels.indexOf(d) < 0) dayArr.push({ label: d, date: dates[d] || '', items: (ITIN.items || []).filter(x => x.day === d) }); });
+  ITIN.days = dayArr;
+  ITIN.items.sort(cmpItem);
+  ITIN.itemsCount = (ITIN.items || []).length;
+  ITIN.completedCount = countDone();
+}
+
+async function loadItinerary() {
+  const wrap = document.getElementById('timeline');
+  try {
+    const res = await fetch('itinerary.json?v=' + Date.now());
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    ITIN = await res.json();
+    ITIN_RAW = JSON.parse(JSON.stringify(ITIN));
+    tripDraft = tripDraftLoad();
+    applyTripDraft();
+    renderTripHeader();
+    renderTripProgress();
+    renderTimeline();
+    renderNextCard();
+    buildTripDaySelect();
+    if (document.getElementById('panel-tripmap') && document.getElementById('panel-tripmap').classList.contains('active')) renderTripMap();
+    updatePushBtn();
+  } catch (e) {
+    if (wrap) wrap.innerHTML = '<div class="tl-empty">❌ 無法載入 itinerary.json（' + esc(e.message) + '）</div>';
+    console.error('itinerary 載入失敗', e);
+  }
+}
+function reloadItinerary() { loadItinerary().then(() => toast('🔄 已重載 itinerary.json')); }
+async function updateItineraryJson() {
+  try {
+    const r = await fetch(J09_WORKER + '/api/refresh', { method: 'POST' });
+    const j = await r.json();
+    if (j.dispatched) toast('✅ 已觸發 GitHub Actions 重生 itinerary.json（1–2 分鐘後按「🔄 重載行程」）', 4200);
+    else toast('⚠️ 觸發失敗：' + (j.error || JSON.stringify(j)), 4200);
+  } catch (e) { toast('❌ 觸發失敗：' + e.message, 4200); }
+}
+
+function updatePushBtn() {
+  const btn = document.getElementById('itinPushBtn');
+  if (!btn) return;
+  const n = Object.keys(tripDraft).length;
+  btn.style.display = n ? '' : 'none';
+  btn.textContent = '⬆️ 推送更改（' + n + '）';
+}
+
+function renderTripHeader() {
+  const box = document.getElementById('tripHeader');
+  if (!ITIN || !box) return;
+  const t = ITIN.trip || {};
+  const chips = [];
+  if (t.party) chips.push('👥 ' + t.party);
+  if (t.food) chips.push('🌶 ' + t.food);
+  if (t.climate) chips.push('🥵 ' + t.climate);
+  if (t.mode) chips.push('🧭 ' + t.mode);
+  if (t.category) chips.push('🧾 ' + t.category);
+  box.innerHTML =
+    '<div class="th-row1">' +
+      '<span class="th-dates">' + esc(t.name || ((t.start || '') + ' → ' + (t.end || ''))) + '</span>' +
+      '<span class="th-chip">' + (t.days || dayLabels().length) + ' 天</span>' +
+      '<span class="th-chip green">完成 ' + countDone() + '/' + countTotal() + '</span>' +
+    '</div>' +
+    '<div class="th-sub">更新 ' + esc(ITIN.lastUpdate || '-') + ' · 數據源 飛書「計劃行程」表</div>' +
+    '<div class="th-chips">' + chips.map(c => '<span class="tagpill">' + esc(c) + '</span>').join('') + '</div>';
+}
+
+function renderTripProgress() {
+  const box = document.getElementById('tripProgress');
+  if (!ITIN || !box) return;
+  const items = ITIN.items || [];
+  const total = items.length, done = countDone();
+  const pct = total ? Math.round(done / total * 100) : 0;
+  const labels = dayLabels();
+  const bars = labels.map(l => {
+    const ds = items.filter(x => x.day === l);
+    const dn = ds.filter(x => x.status === 'Completed').length;
+    const r = ds.length ? Math.round(dn / ds.length * 100) : 0;
+    const isFull = ds.length && dn === ds.length;
+    return '<div class="prog-day' + (tripDay === l ? ' active' : '') + '" onclick="setDayFilter(\'' + esc(l) + '\')" title="點擊只看 ' + esc(l) + '">' +
+      '<div class="daybar' + (isFull ? ' full' : '') + (tripDay === l ? ' active' : '') + '"><div class="dfill' + (dn === 0 ? ' zero' : '') + '" style="height:' + (dn === 0 ? '4px' : Math.max(r, 2) + '%') + '"></div></div>' +
+      '<div class="dayno">' + esc(String(l).replace('第', '').replace('天', '')) + '日</div>' +
+      '<div class="daycnt">' + dn + '/' + ds.length + '</div></div>';
+  }).join('');
+  box.innerHTML = '<div class="prog-card"><div class="prog-inner">' +
+    '<div class="prog-left"><div class="prog-num">' + pct + '%<small>完成</small></div>' +
+    '<div class="prog-done">完成 ' + done + '/' + total + '</div>' +
+    '<div class="prog-track"><div class="prog-fill" style="width:' + pct + '%"></div></div></div>' +
+    '<div class="prog-days">' + bars + '</div>' +
+    '<div class="prog-hint">' + (tripDay ? '已只看 ' + esc(tripDay) + '，再點同一條棒取消' : '點每日細棒可只睇該日行程，再點一次取消') + '</div>' +
+    '</div></div>';
+}
+function setDayFilter(lbl) {
+  tripDay = (tripDay === lbl ? null : lbl);
+  renderTripProgress();
+  renderTimeline();
+  const sel = document.getElementById('tripDaySelect');
+  if (sel) sel.value = tripDay || 'ALL';
+}
+
+function nextItem() {
+  if (!ITIN) return null;
+  const pend = (ITIN.items || []).filter(x => x.status !== 'Completed');
+  if (!pend.length) return null;
+  pend.sort(cmpItem);
+  return pend[0];
+}
+function renderNextCard() {
+  const box = document.getElementById('nextCard');
+  if (!ITIN || !box) return;
+  const it = nextItem();
+  if (!it) {
+    box.innerHTML = '<div class="nc-label">✅ 行程完成</div><div class="nc-act">全部行程已完成，辛苦晒！</div>';
+    return;
+  }
+  box.innerHTML =
+    '<div class="nc-label">下一個行程</div>' +
+    '<div class="nc-act">' + esc(it.activity || '—') + '</div>' +
+    '<div class="nc-meta">' + esc(it.day || '') + ' · ' + esc(it.slot || '') + ' · 預計 ' + esc(timeOf(it)) + ' · 建議停留 ' + esc(it.stay || '—') + '</div>' +
+    (it.note ? '<div class="nc-tip">⚠️ 提示：' + esc(it.note) + '</div>' : '') +
+    '<div class="nc-timer" id="nextTimer">—</div>' +
+    '<div class="nc-meta" style="margin-top:4px">計劃時間 ' + esc(it.start || '—') + '（未標記完成，計時以完成時刻為準）</div>';
+  updateNextTimer();
+  if (!nextTimerId) nextTimerId = setInterval(updateNextTimer, 1000);
+}
+function updateNextTimer() {
+  const el = document.getElementById('nextTimer');
+  const it = nextItem();
+  if (!el || !it) return;
+  const st = String(it.start || '').replace(' ', 'T');
+  const start = new Date(st.length === 16 ? st + ':00' : st);
+  if (isNaN(start.getTime())) { el.textContent = '—'; return; }
+  const diff = start.getTime() - Date.now();
+  if (diff > 0) {
+    const dd = Math.floor(diff / 86400000), hh = Math.floor(diff % 86400000 / 3600000), mm = Math.floor(diff % 3600000 / 60000), ss = Math.floor(diff % 60000 / 1000);
+    el.className = 'nc-timer';
+    el.textContent = '⏳ 距開始 ' + (dd > 0 ? dd + ' 天 ' : '') + pad2(hh) + ':' + pad2(mm) + ':' + pad2(ss);
+  } else {
+    const over = Math.floor(-diff / 86400000);
+    el.className = 'nc-timer warn';
+    el.textContent = over > 0 ? ('⏰ 逾期 ' + over + ' 天未完成') : ('⏰ 已逾時 ' + Math.floor(-diff / 3600000) + ' 小時未完成');
+  }
+}
+
+function tripFiltered(items) {
+  if (tripFilter === 'done') return items.filter(i => i.status === 'Completed');
+  if (tripFilter === 'pending') return items.filter(i => i.status !== 'Completed');
+  return items;
+}
+function renderTimeline() {
+  const wrap = document.getElementById('timeline');
+  if (!wrap) return;
+  if (!ITIN) { wrap.innerHTML = '<div class="tl-empty">載入中…</div>'; return; }
+  const days = (ITIN.days || []);
+  const rows = [];
+  days.forEach(d => {
+    if (tripDay && d.label !== tripDay) return;
+    const items = tripFiltered((d.items || []).slice().sort((a, b) => String(a.start || '').localeCompare(String(b.start || ''))));
+    rows.push('<div class="tl-day"><h4>' + esc(d.label) + ' <span class="dt">' + esc(d.date || '') + '</span></h4>');
+    if (!items.length) rows.push('<div class="tl-empty" style="padding:8px 0">當日暫無（符合篩選嘅）行程</div>');
+    else items.forEach(it => rows.push(tlItemHtml(it)));
+    rows.push('</div>');
+  });
+  wrap.innerHTML = rows.length ? rows.join('') : '<div class="tl-empty">冇行程</div>';
+}
+function metaBits(it) {
+  const bits = [];
+  if (it.stay) bits.push('建議停留 ' + esc(it.stay));
+  if (it.budget != null && it.budget !== '') bits.push('預算 HK$' + esc(it.budget));
+  if (it.taxiMin != null && it.taxiMin !== '') bits.push('🚕 ' + esc(it.taxiMin) + ' 分鐘');
+  if (it.distKm != null && it.distKm !== '') bits.push('📏 ' + esc(it.distKm) + ' KM');
+  if (it.place && (it.place.name || it.place.address)) bits.push('📍 ' + esc(it.place.name || it.place.address));
+  return bits.map(b => '<span>' + b + '</span>').join('');
+}
+function tlItemHtml(it) {
+  const done = it.status === 'Completed';
+  const dr = tripDraft[it.id];
+  const mapBtn = (it.place && it.place.lat != null) ? '<button class="tl-btn map" onclick="focusPlace(\'' + it.id + '\')">📍 地圖</button>' : '';
+  const edit = (tripEditId === it.id) ? editPanelHtml(it) : '';
+  return '<div class="tl-item' + (done ? ' done' : '') + '"><div class="tl-card">' +
+    '<div class="tl-time">🕐 ' + esc(timeOf(it)) +
+      (done ? '<span class="tl-draft ok">✅ 已完成</span>' : '') +
+      (dr ? '<span class="tl-draft">✏️ 未推送</span>' : '') +
+    '</div>' +
+    '<div class="tl-act">' + esc(it.activity || '—') + '</div>' +
+    (it.plan ? '<div class="tl-plan">' + esc(it.plan) + '</div>' : '') +
+    (it.note ? '<div class="tl-note">⚠️ ' + esc(it.note) + '</div>' : '') +
+    '<div class="tl-meta">' + metaBits(it) + '</div>' +
+    '<div class="tl-btns">' +
+      '<button class="tl-btn' + (done ? '' : ' done') + '" onclick="toggleTripItem(\'' + it.id + '\')">' + (done ? '↩ 取消完成' : '✅ 完成') + '</button>' +
+      '<button class="tl-btn" onclick="startTripEdit(\'' + it.id + '\')">✏️ 修改</button>' +
+      mapBtn +
+      (dr ? '<button class="tl-btn" onclick="revertTripEdit(\'' + it.id + '\')">↩ 還原</button>' : '') +
+    '</div>' + edit + '</div></div>';
+}
+function editPanelHtml(it) {
+  const labels = dayLabels().length ? dayLabels() : ['第1天'];
+  const cur = timeOf(it) === '—' ? '09:00' : timeOf(it);
+  return '<div class="tl-edit">' +
+    '<div class="erow"><span class="fl-label">天數</span>' +
+      '<select id="editDay_' + it.id + '">' + labels.map(l => '<option value="' + esc(l) + '"' + (l === it.day ? ' selected' : '') + '>' + esc(l) + '</option>').join('') + '</select>' +
+      '<span class="fl-label">時間</span>' +
+      '<input type="time" id="editTime_' + it.id + '" step="900" value="' + esc(cur) + '">' +
+    '</div>' +
+    '<div class="erow">' +
+      '<button class="tl-btn done" onclick="saveTripEdit(\'' + it.id + '\')">💾 儲存（暫存本機）</button>' +
+      '<button class="tl-btn" onclick="cancelTripEdit()">✖ 取消</button>' +
+      '<button class="tl-btn" onclick="revertTripEdit(\'' + it.id + '\')">↩ 還原飛書值</button>' +
+    '</div>' +
+    '<div class="e-hint">改動只暫存喺瀏覽器（localStorage），按頂部「⬆️ 推送更改」才會寫回飛書 → 重生 JSON。</div>' +
+  '</div>';
+}
+function startTripEdit(id) { tripEditId = id; renderTimeline(); }
+function cancelTripEdit() { tripEditId = null; renderTimeline(); }
+function saveTripEdit(id) {
+  const dEl = document.getElementById('editDay_' + id);
+  const tEl = document.getElementById('editTime_' + id);
+  const day = dEl ? dEl.value : '';
+  let time = tEl ? tEl.value : '';
+  if (!day || !time) { toast('⚠️ 請填天數同時間'); return; }
+  if (!/^\d{1,2}:\d{2}$/.test(time)) { toast('⚠️ 時間格式要 HH:MM'); return; }
+  time = pad2(parseInt(time.split(':')[0], 10)) + ':' + time.split(':')[1];
+  tripDraft[id] = { day: day, time: time };
+  tripDraftSave();
+  applyTripDraft();
+  tripEditId = null;
+  renderTripHeader(); renderTimeline(); renderNextCard(); renderTripProgress(); renderTripMap();
+  toast('✏️ 已暫存本機（未推送）');
+}
+function revertTripEdit(id) {
+  delete tripDraft[id];
+  tripDraftSave();
+  const raw = ((ITIN_RAW && ITIN_RAW.items) || []).find(x => x.id === id);
+  const cur = ((ITIN && ITIN.items) || []).find(x => x.id === id);
+  if (raw && cur) {
+    cur.day = raw.day; cur.date = raw.date; cur.slot = raw.slot;
+    cur.start = raw.start; cur.overnight = raw.overnight; cur.order = raw.order;
+  }
+  rebuildDays();
+  renderTripHeader(); renderTimeline(); renderNextCard(); renderTripProgress(); renderTripMap();
+  toast('↩ 已還原飛書值');
+}
+
+async function toggleTripItem(id) {
+  if (!ITIN) return;
+  const it = (ITIN.items || []).find(x => x.id === id);
+  if (!it) return;
+  const next = (it.status === 'Completed') ? 'Pending' : 'Completed';
+  it.status = next;
+  ITIN.completedCount = countDone();
+  renderTripHeader(); renderTimeline(); renderNextCard(); renderTripProgress();
+  try {
+    const r = await fetch(J09_WORKER + '/api/plan-status', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ records: (function () { const o = {}; o[id] = next; return o; })() })
+    });
+    const j = await r.json();
+    if (j.ok === 0 || j.error) throw new Error((j.errors && j.errors[0]) || j.error || '寫回失敗');
+    const rawIt = ((ITIN_RAW && ITIN_RAW.items) || []).find(x => x.id === id);
+    if (rawIt) rawIt.status = next;
+    toast(next === 'Completed' ? '✅ 已標記完成（已寫回飛書）' : '↩ 已取消完成（已寫回飛書）');
+  } catch (e) {
+    it.status = (next === 'Completed') ? 'Pending' : 'Completed';
+    ITIN.completedCount = countDone();
+    renderTripHeader(); renderTimeline(); renderNextCard(); renderTripProgress();
+    toast('❌ 同步失敗：' + e.message, 3600);
+  }
+}
+
+async function pushTripEdits() {
+  const ids = Object.keys(tripDraft);
+  if (!ids.length) { toast('冇待推送嘅改動'); return; }
+  const btn = document.getElementById('itinPushBtn');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ 寫回飛書中…'; }
+  try {
+    const records = {};
+    ids.forEach(id => { records[id] = { day: tripDraft[id].day, time: tripDraft[id].time }; });
+    const r = await fetch(J09_WORKER + '/api/plan-edit', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ records: records })
+    });
+    const j = await r.json();
+    if (!j.ok) throw new Error((j.errors && j.errors[0]) || j.error || '寫回飛書失敗');
+    ids.forEach(id => {
+      const rawIt = ((ITIN_RAW && ITIN_RAW.items) || []).find(x => x.id === id);
+      const cur = ((ITIN && ITIN.items) || []).find(x => x.id === id);
+      if (rawIt && cur) { rawIt.day = cur.day; rawIt.date = cur.date; rawIt.slot = cur.slot; rawIt.start = cur.start; rawIt.order = cur.order; }
+    });
+    tripDraft = {};
+    tripDraftSave();
+    renderTimeline(); renderTripProgress(); renderNextCard(); renderTripHeader();
+    toast('✅ 已寫回飛書 ' + j.ok + ' 條，開始重生 JSON…', 3600);
+    try {
+      const rr = await fetch(J09_WORKER + '/api/refresh', { method: 'POST' });
+      const jj = await rr.json();
+      if (jj.dispatched) toast('✅ 已觸發 GitHub Actions，1–2 分鐘後按「🔄 重載行程」', 5200);
+      else toast('⚠️ JSON 重生觸發失敗：' + (jj.error || ''), 5200);
+    } catch (e2) { toast('⚠️ JSON 重生觸發失敗：' + e2.message, 5200); }
+  } catch (e) {
+    toast('❌ 推送失敗：' + e.message, 5200);
+  } finally {
+    if (btn) btn.disabled = false;
+    updatePushBtn();
+  }
+}
+
+/* ---------- 行程圖（Leaflet） ---------- */
+function buildTripDaySelect() {
+  const sel = document.getElementById('tripDaySelect');
+  if (!sel || !ITIN) return;
+  sel.innerHTML = '<option value="ALL">全部天數</option>' + dayLabels().map(l => '<option value="' + esc(l) + '">' + esc(l) + '</option>').join('');
+  sel.value = tripDay || 'ALL';
+}
+function initTripMap() {
+  const el = document.getElementById('tripMap');
+  if (!el || typeof L === 'undefined') return;
+  tripMap = L.map(el, { scrollWheelZoom: true, zoomControl: true }).setView([34.0, 110.0], 4);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19, attribution: '© OpenStreetMap contributors'
+  }).addTo(tripMap);
+  tripLayerGroup = L.layerGroup().addTo(tripMap);
+  tripFitted = false;
+}
+function tripPalette(i) {
+  const p = ['#4f8cff', '#3dd68c', '#ffc53d', '#ff8c42', '#c084fc', '#38bdf8', '#f472b6'];
+  return p[(i < 0 ? 0 : i) % p.length];
+}
+function renderTripMap() {
+  if (!ITIN) return;
+  if (!tripMap) initTripMap();
+  if (!tripMap) return;
+  if (tripLayerGroup) tripLayerGroup.clearLayers(); else tripLayerGroup = L.layerGroup().addTo(tripMap);
+  tripMarkers = {};
+  const list = [];
+  (ITIN.items || []).forEach(it => {
+    if (!it.place || it.place.lat == null || it.place.lng == null) return;
+    if (tripDay && it.day !== tripDay) return;
+    const color = tripPalette(dayIndex(it.day));
+    const m = L.circleMarker([it.place.lat, it.place.lng], {
+      radius: 7, color: '#0f1420', weight: 2, fillColor: color, fillOpacity: 1
+    }).bindPopup('<b>' + esc(it.activity || '') + '</b><br>' + esc(it.day || '') + ' · ' + esc(timeOf(it)) + '<br>' + esc(it.place.name || it.place.address || ''));
+    m.on('click', () => highlightPlace(it.id));
+    m.addTo(tripLayerGroup);
+    tripMarkers[it.id] = m;
+    list.push(it);
+  });
+  renderPlaceList(list);
+  const sel = (ITIN.items || []).find(x => x.id === tripSel);
+  if (sel && tripMarkers[sel.id]) tripMarkers[sel.id].openPopup();
+  if (!tripFitted && tripDay === null) { fitTrip(); tripFitted = true; }
+}
+function renderPlaceList(list) {
+  const box = document.getElementById('tripPlaceList');
+  if (!box) return;
+  if (!list.length) { box.innerHTML = '<div class="tl-empty">此範圍未有座標景點</div>'; return; }
+  box.innerHTML = list.map(it =>
+    '<div class="place-row' + (tripSel === it.id ? ' on' : '') + '" onclick="focusPlace(\'' + it.id + '\')">' +
+      '<div class="dot" style="background:' + tripPalette(dayIndex(it.day)) + '"></div>' +
+      '<div style="flex:1;min-width:0"><div class="pr-act">' + esc(it.activity || '') + '</div>' +
+      '<div class="pr-sub">' + esc(it.day || '') + ' · ' + esc(timeOf(it)) + ' · ' + esc((it.place && (it.place.name || it.place.address)) || '') + '</div></div>' +
+    '</div>').join('');
+}
+function focusPlace(id) {
+  tripSel = id;
+  switchTab('tripmap');
+  const it = ((ITIN && ITIN.items) || []).find(x => x.id === id);
+  if (!it || !it.place) return;
+  setTimeout(() => {
+    if (!tripMap) initTripMap();
+    renderTripMap();
+    highlightPlace(id);
+  }, 120);
+}
+function highlightPlace(id) {
+  const m = tripMarkers[id];
+  if (!m || !tripMap) return;
+  tripSel = id;
+  m.openPopup();
+  tripMap.setView(m.getLatLng(), Math.max(tripMap.getZoom(), 13), { animate: true });
+  renderPlaceList((ITIN.items || []).filter(it => it.place && it.place.lat != null && (!tripDay || it.day === tripDay)));
+}
+function fitTrip() {
+  if (!tripMap) { initTripMap(); if (!tripMap) return; }
+  const pts = Object.keys(tripMarkers).map(k => tripMarkers[k].getLatLng());
+  if (!pts.length) { tripMap.setView([34.0, 110.0], 4); return; }
+  const b = L.latLngBounds(pts);
+  tripMap.invalidateSize();
+  tripMap.fitBounds(b, { padding: [30, 30], maxZoom: 14 });
+  tripFitted = true;
+}
+function fitTripZoom() {
+  if (!tripMap) return;
+  const pts = Object.keys(tripMarkers).map(k => tripMarkers[k].getLatLng());
+  if (!pts.length) return;
+  const sel = tripSel !== 'ALL' ? tripMarkers[tripSel] : null;
+  if (sel) { tripMap.setView(sel.getLatLng(), 15); return; }
+  fitTrip();
+  setTimeout(() => { if (tripMap) tripMap.setZoom(Math.min(tripMap.getZoom() + 2, 17)); }, 200);
+}
+
+/* ---------- 事件綁定 ---------- */
+document.querySelectorAll('.trip-filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.trip-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    tripFilter = btn.dataset.trip;
+    renderTimeline();
+  });
+});
+(function () {
+  const sel = document.getElementById('tripDaySelect');
+  if (sel) sel.addEventListener('change', e => {
+    tripDay = (e.target.value === 'ALL' ? null : e.target.value);
+    renderTimeline(); renderTripProgress(); renderTripMap();
+  });
+})();
+
+loadItinerary();
 </script>
 
 <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
