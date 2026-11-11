@@ -1,6 +1,6 @@
 {
   "version": "1.02",
-  "lastUpdate": "2026-11-11 08:53",
+  "lastUpdate": "2026-11-11 08:54",
   "source": {
     "baseToken": "C2x4byTkEaN3Ths9FXwcagDSn5e",
     "ticketsTable": "tbl97F6lmemjat8V",
@@ -14,7 +14,7 @@
     "avgBooked": 0.8761,
     "avgStaffPercent": 0.0416,
     "avgStaffCount": 14.3333,
-    "avgDiscount": 0.8388,
+    "avgDiscount": 0.8392,
     "statusDist": [
       {
         "status": "Accepted",
@@ -251,10 +251,10 @@
       "p33": 4.0,
       "noOfStaff": 10.0,
       "staffPercent": 0.0305810397553517,
-      "yHk": 575.0,
+      "yHk": 531.0,
       "yListedHk": 5805.0,
       "yMilesHk": 459.0,
-      "discount": 0.900947459086994,
+      "discount": 0.908527131782946,
       "asiaMilesUsed": 13000.0,
       "finalStatus": "Accepted",
       "finalStatusProb": 1.0,
