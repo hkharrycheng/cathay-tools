@@ -1,5 +1,5 @@
 {
-  "version": "1.00",
+  "version": "1.02",
   "lastUpdate": "2026-11-11 08:21",
   "source": {
     "baseToken": "C2x4byTkEaN3Ths9FXwcagDSn5e",
@@ -72,7 +72,9 @@
       "finalStatusProb": 1.0,
       "rollingProb": 0.825,
       "passengers": [],
-      "screenshots": []
+      "screenshots": [
+        "screenshots/cx603_accepted.jpg"
+      ]
     },
     {
       "id": "reczz28SKYWtDeD1",
@@ -103,7 +105,9 @@
       "finalStatusProb": 1.0,
       "rollingProb": 0.815789473684211,
       "passengers": [],
-      "screenshots": []
+      "screenshots": [
+        "screenshots/cap_1027b.jpg"
+      ]
     },
     {
       "id": "reczz28MTLsUcb1v",
@@ -134,7 +138,9 @@
       "finalStatusProb": 1.0,
       "rollingProb": 0.805555555555556,
       "passengers": [],
-      "screenshots": []
+      "screenshots": [
+        "screenshots/CX785_20261013.jpg"
+      ]
     },
     {
       "id": "recvvxwlIHWx66",
@@ -165,7 +171,9 @@
       "finalStatusProb": 1.0,
       "rollingProb": 0.794117647058823,
       "passengers": [],
-      "screenshots": []
+      "screenshots": [
+        "screenshots/CX815_20260921.jpg"
+      ]
     },
     {
       "id": "recvvRkaiEMT2Y",
