@@ -3,21 +3,39 @@
 """
 GitHub Actions: regenerate cathay.json from Feishu Bitable (no lark-cli needed)
 """
-import os, json, requests
+import os, json, re, requests
 from datetime import datetime
 
-APP_ID = os.environ['FEISHU_APP_ID']
-APP_SECRET = os.environ['FEISHU_APP_SECRET']
-BASE_TOKEN = os.environ['BASE_TOKEN']
-TICKETS_TABLE = os.environ['TICKETS_TABLE']
+APP_ID = os.environ.get('FEISHU_APP_ID')
+APP_SECRET = os.environ.get('FEISHU_APP_SECRET')
+BASE_TOKEN = os.environ.get('BASE_TOKEN', 'C2x4byTkEaN3Ths9FXwcagDSn5e')
+TICKETS_TABLE = os.environ.get('TICKETS_TABLE', 'tbl97F6lmemjat8V')
 PASSENGERS_TABLE = os.environ.get('PASSENGERS_TABLE', 'tbleF9mFy3Kfyo77')
+
+RAW_FILE = os.environ.get('RAW_FILE', 'data/feishu_raw.json')
+RAW = None
+if os.path.exists(RAW_FILE):
+    try:
+        with open(RAW_FILE, encoding='utf-8') as fp:
+            RAW = json.load(fp)
+        print(f'Raw snapshot: {RAW_FILE} generatedAt={RAW.get("generatedAt")}')
+    except Exception as e:
+        print(f'WARN raw snapshot unreadable: {e}')
+        RAW = None
+
 
 def get_token():
     r = requests.post('https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal',
         json={'app_id': APP_ID, 'app_secret': APP_SECRET}, timeout=15)
-    return r.json()['tenant_access_token']
+    j = r.json()
+    if not j.get('tenant_access_token'):
+        raise SystemExit(f'Feishu auth failed: code={j.get("code")} msg={j.get("msg")}')
+    return j['tenant_access_token']
+
 
 def list_records(token, table_id):
+    if RAW:
+        return (RAW.get('tables') or {}).get(table_id, [])
     out, page = [], ''
     while True:
         url = f'https://open.feishu.cn/open-apis/bitable/v1/apps/{BASE_TOKEN}/tables/{table_id}/records?page_size=100'
@@ -55,7 +73,7 @@ def ts(v):
         return datetime.fromtimestamp(v/1000).strftime('%Y-%m-%d %H:%M')
     return str(v)
 
-token = get_token()
+token = None if RAW else get_token()
 raw = list_records(token, TICKETS_TABLE)
 print(f'Read {len(raw)} tickets')
 
