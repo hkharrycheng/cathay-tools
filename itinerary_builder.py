@@ -13,7 +13,7 @@ HKT = timezone(timedelta(hours=8))
 SLOT_START = {"上午": 9, "中午": 12, "下午": 14, "傍晚": 17, "晚上": 19, "全天": 8}
 SLOT_ORDER = {"上午": 0, "中午": 1, "下午": 2, "傍晚": 3, "晚上": 4, "全天": 5}
 OVERNIGHT_KEY = "及第2天上午"
-AIR_NATURE = {"飛機"}
+AIR_NATURE = {"飛機", "飛機或船"}
 STAY_NATURE = {"住宿"}
 EDGE_NATURE = AIR_NATURE | STAY_NATURE
 
@@ -234,6 +234,9 @@ def build_itinerary(plan_rows, trip_rows, req_rows, base_token, version,
         plan_ids.update(ids)
         items = enforce_edges(build_trip_items(sub, start, rid))
         dates = sorted({i["date"] for i in items})
+        # 行程總表無「開始日期」欄時，用第一項日期補上，令預設行程排序仍按時間
+        if not start and dates:
+            start = dates[0]
         days, day_labels = build_days(items)
         meta = meta_of(req_rows, city)
         trips.append({
