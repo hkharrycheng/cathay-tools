@@ -137,7 +137,8 @@
 1. **修復行程圖片大量破圖**：Timeline 圖片改分批載入（同時最多 3 張，IntersectionObserver 按可視範圍排隊），失敗自動重試 2 次；解決一次渲染 169 張圖時 Worker／飛書被瞬時併發打到 403 的問題
 2. **航班卡票價面板重設計**：原本三條窄直柱改成「原價／實付／AM」橫向比例條＋右側金額，不再出現大片空白錯覺
 3. **統計圖表穩定渲染**：移除 tab-panel fadeIn 動畫（背景分頁會令 panel 停在 opacity 0），圖表只在 panel 可見且有寬度時初始化，切 Tab 時自動 resize／補畫
-4. **版本／時間**：首頁右上角 `v1.23`，時間跟隨 `itinerary.json.lastUpdate`（2026-11-12 09:44）
+4. **版本／時間**：首頁右上角 `v1.23`，時間跟隨最新重生 JSON 的 `lastUpdate`（2026-11-12 12:30 HKT）
+5. **修復 CI 重生資料遺失**：飛書單條 link 回傳 dict 令 `topFlyers`／乘客名變空；已修 `regen_json.py`／`push_paid.py`／`gen_cathay_json.py`，重生後 `topFlyers` 8 人、19 張航班有乘客名
 
 ---
 
