@@ -132,8 +132,14 @@ def opt(v):
 
 
 def link_ids(v):
-    """link 字段：默認 [{"record_ids":[..]}] / [{"id":..}] / ["id"] -> id 列表"""
+    """link 字段：默認 [{"record_ids":[..]}] / [{"id":..}] / ["id"] / 單條 dict -> id 列表"""
     if not v:
+        return []
+    if isinstance(v, dict):
+        if v.get("record_ids"):
+            return list(v.get("record_ids") or [])
+        if v.get("id"):
+            return [v.get("id")]
         return []
     if isinstance(v, list):
         ids = []
@@ -150,9 +156,11 @@ def link_ids(v):
 
 
 def link_texts(v):
-    """link 字段：直接攞 text_arr（關聯記錄顯示名），最可靠"""
+    """link 字段：直接攞 text_arr（關聯記錄顯示名），單條 link 會回傳 dict"""
     if not v:
         return []
+    if isinstance(v, dict):
+        return list(v.get("text_arr") or ([v.get("text")] if v.get("text") else []))
     if isinstance(v, list):
         out = []
         for item in v:
