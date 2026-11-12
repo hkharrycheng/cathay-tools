@@ -367,8 +367,14 @@ def main():
     )[:15]
 
     # 6. 構建最終 JSON
+    try:
+        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "cathay.json"), encoding="utf-8") as fp:
+            prev_v = float(json.load(fp).get("version") or "1.02")
+    except Exception:
+        prev_v = 1.02
+    version_str = f"{prev_v + 0.01:.2f}"
     result = {
-        "version": "1.00",
+        "version": version_str,
         "lastUpdate": datetime.now().strftime('%Y-%m-%d %H:%M'),
         "source": {
             "baseToken": BASE_TOKEN,
