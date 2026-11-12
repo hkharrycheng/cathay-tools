@@ -153,14 +153,22 @@ if PASSENGERS_TABLE:
 tickets = []
 for rec in raw:
     f = rec.get('fields', {})
-    # Resolve passenger names from link field
+    # Resolve passenger names from link field（v1.23：單條 link 會回傳 dict 而非 list）
     pax_links = f.get('Passengers', [])
     pax_names = []
+    if isinstance(pax_links, dict):
+        pax_links = [pax_links]
     if isinstance(pax_links, list):
         for pl in pax_links:
-            pid = pl if isinstance(pl, str) else (pl.get('id') or pl.get('record_id'))
-            if pid and pid in pax_map:
-                pax_names.append(pax_map[pid])
+            if isinstance(pl, str):
+                ids = [pl]
+            elif isinstance(pl, dict):
+                ids = pl.get('record_ids') or ([pl.get('id')] if pl.get('id') else [])
+            else:
+                ids = []
+            for pid in ids:
+                if pid in pax_map:
+                    pax_names.append(pax_map[pid])
     t = {
         'id': rec['record_id'],
         'displayName': opt(f.get('Display Name')) or '',
