@@ -141,6 +141,10 @@
 5. **修復 CI 重生資料遺失**：飛書單條 link 回傳 dict 令 `topFlyers`／乘客名變空；已修 `regen_json.py`／`push_paid.py`／`gen_cathay_json.py`，重生後 `topFlyers` 8 人、19 張航班有乘客名
 6. **修復行程下拉只剩 2 個**：production `itinerary.json` 由 2026-11-11 舊 Worker snapshot（2 行程／71 項）重建，並非前端 select 問題；已 full sync `/api/plan-sync`（10 行程／264 項）再 regen，下拉恢復 10 個行程，預設最新「北京 2026 七天遊」
 
+**v1.24 更新（2026-11-12）**：
+1. **手機天數進度改 4 欄卡片格**：`max-width:760px` 下 `.prog-days` 由橫向 flex 改 `grid` + `repeat(auto-fit,minmax(60px,1fr))`；8 天＝4×2、14 天＝4×4，每格保留「第N天」、完成／總數與完成率柱高，只須上下滾動，不再橫向溢出
+2. **版本／時間**：首頁右上角 `v1.24`，時間跟隨最新重生 JSON 的 `lastUpdate`
+
 ---
 
 ## JSON Structure
@@ -169,6 +173,7 @@
 
 | 版本 | 日期 | 更新內容 |
 |------|------|----------|
+| v1.24 | 2026-11-12 | 手機天數進度改 4 欄卡片格（8 天 4×2、14 天 4×4），只須上下滾動、不再橫向溢出；首頁版本升 v1.24 |
 | v1.23 | 2026-11-12 | 修復行程圖片大量破圖（分批載入＋自動重試）、航班卡票價面板改橫向比例條、統計圖表移除 fadeIn 並只在可見時初始化、首頁版本時間更新、行程下拉恢復 10 個行程（full snapshot sync） |
 | v1.22 | 2026-11-11 | 設計行程六項優化：行程圖 popup 改暗淡色系、移除地圖下方詳細清單、新增「活動性質」FILTER（Timeline 與地圖聯動）、Timeline 可整條刪除／新增活動並即時寫回飛書＋重生 JSON、圖片上傳後改 8 秒輪詢 lastUpdate（不再固定 105 秒 reload 清掉本地預覽）、移除「點擊日子可過濾」提示；修正重複 panel-tripmap；Worker 新增 plan-create／plan-delete／plan-sync，所有 mutation 自動 snapshot＋dispatch；首頁版本時間顯示最新數據時間 |
 | v1.21 | 2026-11-06 | 新增「設計行程」及「行程圖」Tab：行程總表下拉、下一個行程卡（距離＋活動性質＋備註）、時間 popup、Timeline 機場／酒店起訖、每項活動五欄修改＋圖片上傳、即時同步與預設最新行程；修正 renderAll 函數重名導致頁面空白 |
