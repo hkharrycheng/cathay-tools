@@ -1,6 +1,6 @@
 {
-  "version": "1.06",
-  "lastUpdate": "2026-11-12 09:35",
+  "version": "1.07",
+  "lastUpdate": "2026-11-12 09:44",
   "source": {
     "baseToken": "C2x4byTkEaN3Ths9FXwcagDSn5e",
     "tripsTable": "tblW8jSdaVe6uF31",
@@ -11,7 +11,7 @@
   "trips": [
     {
       "id": "reczz28YZNFHEe2S",
-      "label": "澳門考察 2009（CityU MEEM2009 實驗報告，來源：澳門團Lab Report.pdf）；2009-05-20 至 2009-05-21",
+      "label": "澳門 2009 兩天遊",
       "city": "澳門",
       "startDate": "2009-05-20",
       "planCount": 19,
@@ -925,7 +925,7 @@
     },
     {
       "id": "reczz28YZK0CykgJ",
-      "label": "歐洲五城 2012（慕尼黑・薩爾茨堡・維也納・布拉格・柏林）；2012-09-29 至 2012-10-14",
+      "label": "歐洲 2012 十四天遊",
       "city": "歐洲",
       "startDate": "2012-09-30",
       "planCount": 35,
@@ -2651,7 +2651,7 @@
     },
     {
       "id": "reczz28YZK4WBpof",
-      "label": "新加坡 2012（含 LEGOLAND 馬來西亞）；2012-12-23 至 2012-12-27",
+      "label": "新加坡 2012 五天遊",
       "city": "新加坡",
       "startDate": "2012-12-23",
       "planCount": 32,
@@ -4164,7 +4164,7 @@
     },
     {
       "id": "reczz28YZK6h2Ivd",
-      "label": "台北 2015（十分・平溪・淡水）；2015-10-17 至 2015-10-20",
+      "label": "台北 2015 四天遊",
       "city": "台北",
       "startDate": "2015-10-17",
       "planCount": 20,
@@ -5140,7 +5140,7 @@
     },
     {
       "id": "reczz28YP3AuAP6c",
-      "label": "三亞 2016 蜜月",
+      "label": "三亞 2016 八天遊",
       "city": "三亞",
       "startDate": "2016-03-31",
       "planCount": 46,
@@ -7566,7 +7566,7 @@
     },
     {
       "id": "reczz28YZK2Sn6Bk",
-      "label": "澳門團 2016（金光飛航往返）；2016-11-23 至 2016-11-25",
+      "label": "澳門 2016 三天遊",
       "city": "澳門",
       "startDate": "2016-11-23",
       "planCount": 36,
@@ -9237,7 +9237,7 @@
     },
     {
       "id": "reczz28YZK8nOsE4",
-      "label": "珠海 2018（長隆海洋王國）；2018-11-20 至 2018-11-22",
+      "label": "珠海 2018 三天遊",
       "city": "珠海",
       "startDate": "2018-11-20",
       "planCount": 17,
@@ -15219,7 +15219,7 @@
     },
     {
       "id": "reczz28YOFlIwmJn",
-      "label": "北京 · 2026-09-19",
+      "label": "北京 2026 七天遊",
       "city": "北京",
       "startDate": "2026-09-19",
       "planCount": 25,
