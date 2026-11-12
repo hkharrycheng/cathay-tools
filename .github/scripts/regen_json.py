@@ -206,7 +206,7 @@ for rec in raw:
 
 with_status = [t for t in tickets if t['finalStatus'] is not None]
 accepted = [t for t in with_status if t['finalStatus'] == 'Accepted']
-upcoming = [t for t in tickets if t['startTime'] and t['startTime'] > datetime.now().strftime('%Y-%m-%d %H:%M')]
+upcoming = [t for t in tickets if t['startTime'] and t['startTime'] > datetime.now(HKT).strftime('%Y-%m-%d %H:%M')]
 
 # Top Flyers leaderboard (only staff with Flight Load App Name)
 pax_count = {}
@@ -238,7 +238,7 @@ staff_trend = [{'time': t['startTime'], 'staff': t['noOfStaff']}
 
 result = {
     'version': VERSION,
-    'lastUpdate': datetime.now().strftime('%Y-%m-%d %H:%M'),
+    'lastUpdate': datetime.now(HKT).strftime('%Y-%m-%d %H:%M'),
     'source': {'baseToken': BASE_TOKEN, 'ticketsTable': TICKETS_TABLE,
                'passengersTable': PASSENGERS_TABLE},
     'stats': {
