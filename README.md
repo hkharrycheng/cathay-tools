@@ -133,6 +133,12 @@
 5. **刪除／新增活動**：Timeline 每項加「🗑 刪除」（`/api/plan-delete`，同步移除行程總表 link）；Filter Bar 加「➕ 新增活動」（`/api/plan-create`，自動計計劃日期、寫入活動性質／狀態＝等待中、append link）
 6. **移除「點擊日子可過濾 Timeline 與地圖」提示**（日柱點擊功能保留）
 
+**v1.23 更新（2026-11-12）**：
+1. **修復行程圖片大量破圖**：Timeline 圖片改分批載入（同時最多 3 張，IntersectionObserver 按可視範圍排隊），失敗自動重試 2 次；解決一次渲染 169 張圖時 Worker／飛書被瞬時併發打到 403 的問題
+2. **航班卡票價面板重設計**：原本三條窄直柱改成「原價／實付／AM」橫向比例條＋右側金額，不再出現大片空白錯覺
+3. **統計圖表穩定渲染**：移除 tab-panel fadeIn 動畫（背景分頁會令 panel 停在 opacity 0），圖表只在 panel 可見且有寬度時初始化，切 Tab 時自動 resize／補畫
+4. **版本／時間**：首頁右上角 `v1.23`，時間跟隨 `itinerary.json.lastUpdate`（2026-11-12 09:44）
+
 ---
 
 ## JSON Structure
@@ -161,6 +167,7 @@
 
 | 版本 | 日期 | 更新內容 |
 |------|------|----------|
+| v1.23 | 2026-11-12 | 修復行程圖片大量破圖（分批載入＋自動重試）、航班卡票價面板改橫向比例條、統計圖表移除 fadeIn 並只在可見時初始化、首頁版本時間更新 |
 | v1.22 | 2026-11-11 | 設計行程六項優化：行程圖 popup 改暗淡色系、移除地圖下方詳細清單、新增「活動性質」FILTER（Timeline 與地圖聯動）、Timeline 可整條刪除／新增活動並即時寫回飛書＋重生 JSON、圖片上傳後改 8 秒輪詢 lastUpdate（不再固定 105 秒 reload 清掉本地預覽）、移除「點擊日子可過濾」提示；修正重複 panel-tripmap；Worker 新增 plan-create／plan-delete／plan-sync，所有 mutation 自動 snapshot＋dispatch；首頁版本時間顯示最新數據時間 |
 | v1.21 | 2026-11-06 | 新增「設計行程」及「行程圖」Tab：行程總表下拉、下一個行程卡（距離＋活動性質＋備註）、時間 popup、Timeline 機場／酒店起訖、每項活動五欄修改＋圖片上傳、即時同步與預設最新行程；修正 renderAll 函數重名導致頁面空白 |
 | v1.18 | 2026-10-28 | 國泰員工機票使用統計（龍虎榜）：只計有 Flight Load App Name 嘅成員；圓形頭像對齊 bar 底部 + 名稱；頭像直接從飛書成員表 Profile Pict 下載（唔再 hardcode mapping）；修復 hidden tab chart resize；航班卡片恢復乘客頭像 |
