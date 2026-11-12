@@ -254,11 +254,17 @@ def main():
         raw_pax = row.get('Passengers', '')
         if raw_pax:
             try:
-                if isinstance(raw_pax, list):
+                if isinstance(raw_pax, dict):
+                    pax_list = [raw_pax]
+                elif isinstance(raw_pax, list):
                     pax_list = raw_pax
                 else:
                     pax_list = json.loads(raw_pax)
-                pax_ids = [p['id'] for p in pax_list]
+                for p in pax_list:
+                    if isinstance(p, str):
+                        pax_ids.append(p)
+                    elif isinstance(p, dict):
+                        pax_ids.extend(p.get('record_ids') or ([p['id']] if p.get('id') else []))
             except:
                 pass
 
