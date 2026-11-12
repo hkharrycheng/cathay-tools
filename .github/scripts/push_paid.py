@@ -208,6 +208,7 @@ def sync_cathay_json(token):
                 "id": rid,
                 "name": name,
                 "appName": s(f.get("Flight Load App Name")),
+                "avatar": "pax-avatars/%s.jpg" % name if name else "",
             })
 
         # 航班
@@ -289,6 +290,19 @@ def sync_cathay_json(token):
                     pass
         upcoming.sort(key=lambda x: x["startTime"])
 
+        # 龍虎榜：只計有 Flight Load App Name 嘅員工
+        staff_names = {p["name"] for p in passengers if p.get("appName")}
+        pax_count = {}
+        for t in tickets:
+            for pn in t.get("passengers", []):
+                if pn in staff_names:
+                    pax_count[pn] = pax_count.get(pn, 0) + 1
+        top_flyers = sorted(
+            [{"name": n, "flights": c, "avatar": "pax-avatars/%s.jpg" % n}
+             for n, c in pax_count.items()],
+            key=lambda x: -x["flights"],
+        )[:15]
+
         result = {
             "version": "%.2f" % new_version,
             "lastUpdate": datetime.now(tz=HK_TZ).strftime("%Y-%m-%d %H:%M"),
@@ -314,6 +328,7 @@ def sync_cathay_json(token):
             "upcoming": upcoming,
             "tickets": tickets,
             "passengers": passengers,
+            "topFlyers": top_flyers,
         }
 
         gh_put(
