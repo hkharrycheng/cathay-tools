@@ -131,8 +131,7 @@ body {
 .tab-btn.active { color: var(--accent); }
 .tab-btn.active .tab-icon { transform: scale(1.15); }
 .tab-panel { display: none; }
-.tab-panel.active { display: block; animation: fadeIn 0.25s; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.tab-panel.active { display: block; }
 .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px; }
 .stat-card {
   background: var(--card); border: 1px solid var(--border); border-radius: 14px;
@@ -154,9 +153,9 @@ body {
   .charts-grid { grid-template-columns: 1fr 1fr; }
 }
 .charts-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 14px; }
-.chart-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 14px; }
+.chart-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 14px; min-width: 0; overflow: hidden; }
 .chart-card h3 { font-size: 14px; color: var(--sub); margin-bottom: 8px; }
-.chart-box { width: 100%; height: 240px; }
+.chart-box { width: 100%; height: 240px; min-height: 240px; overflow: hidden; }
 .section-title { font-size: 16px; font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
 .section-title::before { content: ''; width: 4px; height: 16px; background: var(--accent); border-radius: 2px; }
 .upcoming-section { margin-bottom: 14px; }
@@ -207,22 +206,17 @@ body {
 .status-Rejected { background: rgba(255,93,108,0.15); color: var(--red); }
 .status-No-Show { background: rgba(255,197,61,0.15); color: var(--yellow); }
 .status-null { background: rgba(79,140,255,0.15); color: var(--accent); }
-.tc-bars { display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; padding-left: 10px; border-left: 1px solid var(--border); }
-.bar-chart { display: flex; align-items: flex-end; gap: 5px; height: 74px; }
-.bar-col { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
-.bar-val { font-size: 9px; font-weight: 700; color: var(--text); margin-bottom: 2px; white-space: nowrap; }
-.bar {
-  width: 16px; border-radius: 3px 3px 0 0;
-  background: var(--accent);
-  position: relative;
-  min-height: 2px;
-}
-.bar.b-orig { background: linear-gradient(180deg, #4f8cff, #2d5fc0); }
-.bar.b-paid { background: linear-gradient(180deg, #3dd68c, #1f9e63); }
-.bar.b-am   { background: linear-gradient(180deg, #ffc53d, #d99a1f); }
-.bar-name { font-size: 9px; color: var(--sub); margin-top: 3px; }
-.bar-null { font-size: 9px; color: var(--sub); height: 74px; display: flex; align-items: center; justify-content: center; padding: 0 8px; }
-.bar-discount { font-size: 11px; color: var(--green); margin-top: 6px; font-weight: 700; white-space: nowrap; }
+.tc-bars { display: flex; flex-direction: column; align-items: stretch; justify-content: center; flex-shrink: 0; width: 156px; padding-left: 12px; border-left: 1px solid var(--border); }
+.fare-bars { display: flex; flex-direction: column; gap: 7px; width: 100%; }
+.fare-row { display: flex; align-items: center; gap: 6px; font-size: 9px; width: 100%; }
+.fare-name { width: 22px; flex-shrink: 0; color: var(--sub); }
+.fare-track { flex: 1; min-width: 34px; height: 6px; background: #202a3d; border-radius: 3px; overflow: hidden; }
+.fare-track i { display: block; height: 100%; border-radius: 3px; background: linear-gradient(90deg, #4f8cff, #2d5fc0); }
+.fare-row.b-paid .fare-track i { background: linear-gradient(90deg, #3dd68c, #1f9e63); }
+.fare-row.b-am .fare-track i { background: linear-gradient(90deg, #ffc53d, #d99a1f); }
+.fare-val { min-width: 46px; flex-shrink: 0; text-align: right; font-size: 10px; font-weight: 700; color: var(--text); white-space: nowrap; }
+.bar-null { font-size: 9px; color: var(--sub); text-align: center; padding: 8px 0; }
+.bar-discount { font-size: 11px; color: var(--green); margin-top: 8px; font-weight: 700; white-space: nowrap; text-align: center; }
 .bar-discount.none { color: var(--sub); font-weight: 400; }
 .pax-link { color: var(--accent); cursor: pointer; text-decoration: underline; }
 .pax-link:active { color: #7eb0ff; }
@@ -384,7 +378,10 @@ body {
 .trip-picker select{background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:7px 10px;font-size:12px;max-width:280px}
 .edge-chip{font-size:10px;padding:2px 8px;border-radius:8px;background:rgba(79,140,255,.16);color:#9ec1ff;border:1px solid rgba(79,140,255,.4);font-weight:700}
 .tl-thumb{display:flex;gap:6px;margin-top:7px;flex-wrap:wrap}
-.tl-thumb img{width:74px;height:56px;object-fit:cover;border-radius:8px;border:1px solid var(--border);cursor:pointer}
+.tl-thumb img{width:74px;height:56px;object-fit:cover;border-radius:8px;border:1px solid var(--border);cursor:pointer;background:#1b2433}
+.tl-thumb img.pending{background:linear-gradient(110deg,#1b2433 30%,#243044 50%,#1b2433 70%);background-size:200% 100%;animation:tlShimmer 1.2s infinite}
+.tl-thumb img.img-fail{opacity:.45;border-color:#6b3a44}
+@keyframes tlShimmer{from{background-position:200% 0}to{background-position:-200% 0}}
 .tl-edit label{font-size:11px;color:var(--sub);display:flex;flex-direction:column;gap:4px;flex:1 1 140px;min-width:0}
 .tl-edit input[type=text],.tl-edit input[type=url],.tl-edit textarea{background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:6px 8px;font-size:12px;font-family:inherit;width:100%}
 .tl-edit textarea{min-height:54px;resize:vertical}
@@ -466,7 +463,7 @@ body {
       國泰機票及旅遊助手
     </h1>
     <div class="meta">
-      <div><span class="version" id="version">v1.22</span> &nbsp;|&nbsp; 更新：<span id="lastUpdate">-</span></div>
+      <div><span class="version" id="version">v1.23</span> &nbsp;|&nbsp; 更新：<span id="lastUpdate">-</span></div>
     </div>
   </div>
 </div>
@@ -729,7 +726,9 @@ function renderStats() {
 }
 
 function renderPie() {
-  const chart = echarts.init(document.getElementById('pieChart'));
+  const el = document.getElementById('pieChart');
+  if (!el || !el.clientWidth || !DATA.stats || !DATA.stats.statusDist) return;
+  const chart = echarts.getInstanceByDom(el) || echarts.init(el);
   const dist = DATA.stats.statusDist;
   const colors = { Accepted: '#3dd68c', Rejected: '#ff5d6c', 'No Show': '#ffc53d' };
   chart.setOption({
@@ -747,7 +746,9 @@ function renderPie() {
 }
 
 function renderLine() {
-  const chart = echarts.init(document.getElementById('lineChart'));
+  const el = document.getElementById('lineChart');
+  if (!el || !el.clientWidth || !DATA.rollingProb) return;
+  const chart = echarts.getInstanceByDom(el) || echarts.init(el);
   const rolling = DATA.rollingProb;
   chart.setOption({
     backgroundColor: 'transparent',
@@ -763,8 +764,20 @@ function renderLine() {
 function renderTopFlyers() {
   const el = document.getElementById('topFlyersChart');
   if (!el || !DATA.topFlyers || !DATA.topFlyers.length) return;
-  const chart = echarts.init(el);
   const data = DATA.topFlyers.slice();
+  // 圓形頭像 + 名稱 below chart（即使圖表區隱藏也先填好）
+  const avBox = document.getElementById('topFlyersAvatars');
+  if (avBox) {
+    avBox.innerHTML = data.map(d => `
+      <div style="text-align:center;flex:0 0 auto">
+        ${d.avatar
+          ? `<img src="${d.avatar}" style="width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid #4f8cff;box-shadow:0 2px 8px rgba(79,140,255,.3)"/>`
+          : `<div style="width:52px;height:52px;border-radius:50%;background:#2a3a55;margin:0 auto;display:flex;align-items:center;justify-content:center;color:#8fa0b8;font-size:18px;font-weight:bold">${d.name[0]}</div>`}
+        <div style="color:#8fa0b8;font-size:11px;margin-top:4px;white-space:nowrap">${d.name}</div>
+      </div>`).join('');
+  }
+  if (!el.clientWidth) return;
+  const chart = echarts.getInstanceByDom(el) || echarts.init(el);
   const names = data.map(d => d.name);
   const values = data.map(d => d.flights);
   const maxV = Math.max(...values);
@@ -777,18 +790,7 @@ function renderTopFlyers() {
     series: [
       { type: 'bar', data: values, barMaxWidth: 50, itemStyle: { borderRadius: [6, 6, 0, 0], color: { type: 'linear', x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: '#4f8cff' }, { offset: 1, color: '#2a56c9' }] } }, label: { show: true, position: 'top', color: '#e8ecf4', fontWeight: 'bold' }, z: 2 },
     ],
-  });
-  // 圓形頭像 + 名稱 below chart
-  const avBox = document.getElementById('topFlyersAvatars');
-  if (avBox) {
-    avBox.innerHTML = data.map(d => `
-      <div style="text-align:center;flex:0 0 auto">
-        ${d.avatar
-          ? `<img src="${d.avatar}" style="width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid #4f8cff;box-shadow:0 2px 8px rgba(79,140,255,.3)"/>`
-          : `<div style="width:52px;height:52px;border-radius:50%;background:#2a3a55;margin:0 auto;display:flex;align-items:center;justify-content:center;color:#8fa0b8;font-size:18px;font-weight:bold">${d.name[0]}</div>`}
-        <div style="color:#8fa0b8;font-size:11px;margin-top:4px;white-space:nowrap">${d.name}</div>
-      </div>`).join('');
-  }
+  }, true);
   window.addEventListener('resize', () => chart.resize());
 }
 
@@ -866,9 +868,9 @@ function ticketCard(t) {
     if (paid != null) vals.push({ label: '實付', v: Number(paid.replace(/,/g,'').replace('$','')), cls: 'b-paid' });
     if (am != null) vals.push({ label: 'AM', v: Number(am.replace(/,/g,'').replace('$','')), cls: 'b-am' });
     const maxV = Math.max(...vals.map(x => x.v), 1);
-    barsHtml = `<div class="bar-chart">` + vals.map(x => {
-      const h = Math.max(Math.round(x.v / maxV * 68), 3);
-      return `<div class="bar-col"><div class="bar-val">$${Number(x.v).toLocaleString()}</div><div class="bar ${x.cls}" style="height:${h}px"></div><div class="bar-name">${x.label}</div></div>`;
+    barsHtml = `<div class="fare-bars">` + vals.map(x => {
+      const w = Math.max(Math.round(x.v / maxV * 100), 6);
+      return `<div class="fare-row ${x.cls}"><span class="fare-name">${x.label}</span><span class="fare-track"><i style="width:${w}%"></i></span><span class="fare-val">$${Number(x.v).toLocaleString()}</span></div>`;
     }).join('') + `</div>`;
   }
   const shots = t.screenshots || [];
@@ -1187,9 +1189,14 @@ function switchTab(tab) {
     if (tab === 'analytics') {
       if (mapChart) mapChart.resize();
       ['pieChart', 'lineChart', 'topFlyersChart'].forEach(function (id) {
-        const c = echarts.getInstanceByDom(document.getElementById(id));
+        const dom = document.getElementById(id);
+        if (!dom) return;
+        const c = echarts.getInstanceByDom(dom);
         if (c) c.resize();
       });
+      if (!echarts.getInstanceByDom(document.getElementById('pieChart'))) renderPie();
+      if (!echarts.getInstanceByDom(document.getElementById('lineChart'))) renderLine();
+      if (!echarts.getInstanceByDom(document.getElementById('topFlyersChart'))) renderTopFlyers();
     }
     if (tab === 'itinerary') {
       renderTripHeader(); renderTripProgress(); renderTimeline(); renderNextCard();
@@ -1559,9 +1566,55 @@ function renderNextMap(it, prev) {
 }
 
 /* ---------- Timeline ---------- */
+/* 圖片分批載入：同時最多 3 張，失敗自動重試 2 次，避免 Worker/飛書被瞬時併發打到 403 */
+let IMG_Q = [], IMG_ACTIVE = 0, IMG_MAX = 3, IMG_GEN = 0, imgObserver = null;
+function imgPump() {
+  while (IMG_ACTIVE < IMG_MAX && IMG_Q.length) {
+    const im = IMG_Q.shift();
+    if (!im || !im.isConnected || im.dataset.gen !== String(IMG_GEN)) continue;
+    IMG_ACTIVE++;
+    (function (node) {
+      const attempt = Number(node.dataset.attempt || 0);
+      const base = node.dataset.src;
+      node.onload = function () { IMG_ACTIVE--; node.classList.remove('pending'); node.classList.add('loaded'); imgPump(); };
+      node.onerror = function () {
+        IMG_ACTIVE--;
+        if (attempt < 2) {
+          node.dataset.attempt = attempt + 1;
+          setTimeout(function () { IMG_Q.push(node); imgPump(); }, 1400 * (attempt + 1));
+        } else {
+          node.classList.remove('pending');
+          node.classList.add('img-fail');
+        }
+        imgPump();
+      };
+      node.src = base + (attempt ? ('&retry=' + attempt + '&_=' + Date.now()) : '');
+    })(im);
+  }
+}
+function imgQueue(node) {
+  if (!node || node.dataset.queued) return;
+  node.dataset.queued = '1';
+  IMG_Q.push(node);
+  imgPump();
+}
+function observeTripImgs() {
+  const root = document.getElementById('timeline');
+  if (!root) return;
+  if (!imgObserver) {
+    imgObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { imgObserver.unobserve(e.target); imgQueue(e.target); }
+      });
+    }, { rootMargin: '120px 0px' });
+  }
+  root.querySelectorAll('img[data-src]').forEach(function (im) { imgObserver.observe(im); });
+}
 function renderTimeline() {
   const el = document.getElementById('timeline');
   if (!el || !TRIP) return;
+  IMG_GEN++;
+  IMG_Q = [];
   let list = ITEMS.slice();
   if (tripFilter === 'pending') list = list.filter(i => i.status !== 'Completed');
   if (tripFilter === 'done') list = list.filter(i => i.status === 'Completed');
@@ -1577,6 +1630,7 @@ function renderTimeline() {
     return '<div class="tl-day"><h4>📍 ' + esc(lb) + ' <span class="dt">' + esc(date) + '</span></h4>' +
       arr.map(it => tlItemHtml(it)).join('') + '</div>';
   }).join('');
+  observeTripImgs();
 }
 
 function tlItemHtml(it) {
@@ -1593,7 +1647,7 @@ function tlItemHtml(it) {
   if (it.place && it.place.name) bits.push('📍 ' + esc(it.place.name));
 
   const thumbs = (it.images || []).map(im =>
-    '<img src="' + J09_WORKER + '/api/media?token=' + encodeURIComponent(im.token) + '" alt="' + esc(im.name) + '" onclick="openLightbox(this.src)" loading="lazy">'
+    '<img class="tl-img pending" data-gen="' + IMG_GEN + '" data-src="' + J09_WORKER + '/api/media?token=' + encodeURIComponent(im.token) + '" alt="' + esc(im.name) + '" onclick="openLightbox(this.src||this.dataset.src)" loading="lazy">'
   ).join('');
 
   return '<div class="tl-item' + (it.status === 'Completed' ? ' done' : '') + '">' +
